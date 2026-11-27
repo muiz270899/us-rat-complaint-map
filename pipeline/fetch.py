@@ -145,6 +145,8 @@ def fetch_arcgis(cfg):
     geometry can instead name Latitude/Longitude attribute fields."""
     f = cfg["fields"]
     out = {f["date"], f["type"], f["status"]}
+    if cfg.get("dedupe_on"):
+        out.add(cfg["dedupe_on"])
     if f.get("lat") not in (None, "", "__lat"):
         out.add(f["lat"])
         out.add(f["lng"])
@@ -180,6 +182,20 @@ def fetch_arcgis(cfg):
                 if len(feats) < 2000 and not d.get("exceededTransferLimit"):
                     break
                 time.sleep(0.3)
+    dedupe_on = cfg.get("dedupe_on")
+    if dedupe_on:
+        # some archive layers repeat each request (e.g. one row per export
+        # pass); keep the first (earliest-dated) row per request id
+        seen = set()
+        uniq = []
+        for r in rows:
+            k = r.get(dedupe_on)
+            if k in seen:
+                continue
+            seen.add(k)
+            uniq.append(r)
+        log(f"  {cfg['slug']}: dedupe on {dedupe_on}: {len(rows)} -> {len(uniq)}")
+        rows = uniq
     return rows
 
 
@@ -259,8 +275,22 @@ def normalize(cfg, raw):
             lat = norm_coord(r.get("__lat"))
             lng = norm_coord(r.get("__lng"))
         else:
-            lat = norm_coord(r.get(f["lat"]))
-            lng = norm_coord(r.get(f["lng"]))
+            lat_raw = r.get(f["lat"])
+            lng_raw = r.get(f["lng"])
+            # Socrata point columns arrive either as a GeoJSON Point
+            # ({"coordinates": [lng, lat]}) when explicitly $select-ed, or as
+            # {"latitude": .., "longitude": ..} in full-row responses
+            if isinstance(lat_raw, dict) and isinstance(lng_raw, dict) \
+                    and lat_raw is lng_raw and "coordinates" in lat_raw:
+                coords = lat_raw.get("coordinates") or [None, None]
+                lng_raw, lat_raw = coords[0], coords[1]
+            else:
+                if isinstance(lat_raw, dict):
+                    lat_raw = lat_raw.get("latitude")
+                if isinstance(lng_raw, dict):
+                    lng_raw = lng_raw.get("longitude")
+            lat = norm_coord(lat_raw)
+            lng = norm_coord(lng_raw)
         type_counts[t_orig] = type_counts.get(t_orig, 0) + 1
         std_counts[t_std] = std_counts.get(t_std, 0) + 1
         if date:

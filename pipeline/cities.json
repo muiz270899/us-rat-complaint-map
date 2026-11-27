@@ -591,6 +591,150 @@
    },
    "state": "CT",
    "where": "upper(USER_Record_Type) LIKE '%RODENT%'"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Baltimore",
+   "fields": {
+    "date": "CreatedDate",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "status": "SRStatus",
+    "type": "SRType"
+   },
+   "filter_description": "SRType = 'HCD-Rodents' exactly \u2014 resident-filed rodent complaints taken by Baltimore's Housing & Community Development code enforcement. The original SW-Rat-only filter missed this category entirely; it is counted as resident-initiated.",
+   "population_2020_census": 585708,
+   "service_layers": [
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_Yearly/FeatureServer",
+     [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_2023/FeatureServer",
+     [
+      0
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_2024/FeatureServer",
+     [
+      0
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_2025/FeatureServer",
+     [
+      0
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_current/FeatureServer",
+     [
+      0
+     ]
+    ]
+   ],
+   "slug": "baltimore",
+   "source_name": "Baltimore Open Data (ArcGIS) - 311 Customer Service Requests, yearly layers 2004-2022 + annual services 2023-2026 (HCD-Rodents)",
+   "source_url": "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_Yearly/FeatureServer",
+   "standard_map": {
+    "HCD-Rodents": "Rodent activity / signs"
+   },
+   "state": "MD",
+   "where": "SRType='HCD-Rodents'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Cambridge",
+   "dataset": "2z9k-mv9g",
+   "domain": "data.cambridgema.gov",
+   "fields": {
+    "date": "ticket_created_date_time",
+    "lat": "lat",
+    "lng": "lng",
+    "status": "ticket_status",
+    "type": "issue_type"
+   },
+   "filter_description": "issue_type = 'Rodent Sighting' exactly \u2014 the dataset's formal rodent category. Free-text one-off ticket titles in the same feed are not a category and are excluded.",
+   "population_2020_census": 118403,
+   "slug": "cambridge",
+   "source_name": "Cambridge Open Data - Commonwealth Connect (SeeClickFix) Service Requests",
+   "source_url": "https://data.cambridgema.gov/d/2z9k-mv9g",
+   "standard_map": {
+    "Rodent Sighting": "Rat sighting"
+   },
+   "state": "MA",
+   "where": "issue_type='Rodent Sighting'"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Evanston",
+   "dedupe_on": "ID",
+   "fields": {
+    "date": "Date_Created",
+    "lat": "__lat",
+    "lng": "__lng",
+    "status": "Status",
+    "type": "Title"
+   },
+   "filter_description": "Title IN ('Dead Rodent-Rat','Rodents- Rats') in the city's historical 311 archive (2013-2022; the archive ends Feb 2022). The layer repeats requests, so rows are deduplicated on the city request ID, keeping the earliest record per request.",
+   "layers": [
+    0
+   ],
+   "population_2020_census": 78110,
+   "service": "https://services3.arcgis.com/RVAJnWJd9M0xRdYG/arcgis/rest/services/311_Service_Requests_(2013_to_2022)/FeatureServer",
+   "slug": "evanston",
+   "source_name": "City of Evanston Open Data (ArcGIS) - 311 Service Requests 2013 to 2022 (historical archive)",
+   "source_url": "https://services3.arcgis.com/RVAJnWJd9M0xRdYG/arcgis/rest/services/311_Service_Requests_(2013_to_2022)/FeatureServer/0",
+   "standard_map": {
+    "Dead Rodent-Rat": "Dead rodent removal",
+    "Rodents- Rats": "Rat sighting"
+   },
+   "state": "IL",
+   "where": "Title IN ('Dead Rodent-Rat','Rodents- Rats')"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Baton Rouge",
+   "dataset": "bktv-u9ua",
+   "domain": "data.brla.gov",
+   "fields": {
+    "date": "call_in_date",
+    "lat": "geolocation",
+    "lng": "geolocation",
+    "status": "",
+    "type": "type"
+   },
+   "filter_description": "type = 'RODENT' exactly in the East Baton Rouge Parish Mosquito & Rodent Control call-in log (resident service requests). 'MOSQUITO' requests and the joint 'BOTH' category are excluded. Parish-wide program: about 89% of RODENT records are in Baton Rouge proper; the rest are in parish communities (Baker, Zachary, Central, Greenwell Springs).",
+   "population_2020_census": 227470,
+   "slug": "baton-rouge",
+   "source_name": "East Baton Rouge Parish Open Data - Mosquito and Rodent Service Requests",
+   "source_url": "https://data.brla.gov/d/bktv-u9ua",
+   "standard_map": {
+    "RODENT": "Rodent activity / signs"
+   },
+   "state": "LA",
+   "where": "type='RODENT'"
   }
  ]
 }
