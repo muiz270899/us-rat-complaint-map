@@ -1,0 +1,596 @@
+{
+ "cities": [
+  {
+   "adapter": "socrata",
+   "city": "New York",
+   "dataset": "erm2-nwe9",
+   "domain": "data.cityofnewyork.us",
+   "fields": {
+    "date": "created_date",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "descriptor"
+   },
+   "filter_description": "complaint_type = 'Rodent'; original type shown is the NYC descriptor",
+   "population_2020_census": 8804190,
+   "slug": "new-york",
+   "source_name": "NYC Open Data - 311 Service Requests from 2020 to Present",
+   "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
+   "split_years": {
+    "field": "created_date",
+    "from": 2020,
+    "to": 2026
+   },
+   "standard_map": {
+    "Condition Attracting Rodents": "Conditions attracting rodents",
+    "Mouse Sighting": "Mouse sighting",
+    "Rat Sighting": "Rat sighting",
+    "Rodent Bite": "Rodent bite",
+    "Rodent Bite - PCS Only": "Rodent bite",
+    "Signs of Rodents": "Rodent activity / signs"
+   },
+   "state": "NY",
+   "type_fallback": "Rodent",
+   "where": "complaint_type='Rodent'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "New York",
+   "dataset": "76ig-c548",
+   "domain": "data.cityofnewyork.us",
+   "fields": {
+    "date": "created_date",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "descriptor"
+   },
+   "filter_description": "complaint_type = 'Rodent' in the archived 2010-2019 dataset (NYC split its 311 dataset in Dec 2025; the current dataset starts 2020, no overlap)",
+   "population_2020_census": 8804190,
+   "slug": "new-york",
+   "source_name": "NYC Open Data - 311 Service Requests from 2010 to 2019",
+   "source_url": "https://data.cityofnewyork.us/d/76ig-c548",
+   "split_years": {
+    "field": "created_date",
+    "from": 2010,
+    "to": 2019
+   },
+   "standard_map": {
+    "Condition Attracting Rodents": "Conditions attracting rodents",
+    "Mouse Sighting": "Mouse sighting",
+    "Rat Sighting": "Rat sighting",
+    "Rodent Bite": "Rodent bite",
+    "Rodent Bite - PCS Only": "Rodent bite",
+    "Signs of Rodents": "Rodent activity / signs"
+   },
+   "state": "NY",
+   "type_fallback": "Rodent",
+   "where": "complaint_type='Rodent'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Chicago",
+   "dataset": "v6vf-nfxy",
+   "domain": "data.cityofchicago.org",
+   "fields": {
+    "date": "created_date",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "sr_type"
+   },
+   "filter_description": "sr_type = 'Rodent Baiting/Rat Complaint'",
+   "population_2020_census": 2746388,
+   "slug": "chicago",
+   "source_name": "Chicago Data Portal - 311 Service Requests (current system, 2019-present)",
+   "source_url": "https://data.cityofchicago.org/Service-Requests/311-Service-Requests/v6vf-nfxy",
+   "split_years": {
+    "field": "created_date",
+    "from": 2019,
+    "to": 2026
+   },
+   "standard_map": {
+    "Rodent Baiting/Rat Complaint": "Rodent baiting / treatment"
+   },
+   "state": "IL",
+   "where": "sr_type='Rodent Baiting/Rat Complaint'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Chicago",
+   "dataset": "97t6-zrhs",
+   "domain": "data.cityofchicago.org",
+   "fields": {
+    "date": "creation_date",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "type_of_service_request"
+   },
+   "filter_description": "historical rodent-baiting dataset (ends 2018-12-18; current system starts 2019-02-25, no overlap)",
+   "population_2020_census": 2746388,
+   "slug": "chicago",
+   "source_name": "Chicago Data Portal - 311 Service Requests, Rodent Baiting (historical, to Dec 2018)",
+   "source_url": "https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Rodent-Baiting-Historical/97t6-zrhs",
+   "split_years": {
+    "field": "creation_date",
+    "from": 1999,
+    "to": 2018
+   },
+   "standard_map": {
+    "Rodent Baiting/Rat Complaint": "Rodent baiting / treatment"
+   },
+   "state": "IL",
+   "where": "type_of_service_request='Rodent Baiting/Rat Complaint'"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Washington",
+   "fields": {
+    "date": "ADDDATE",
+    "lat": "__lat",
+    "lng": "__lng",
+    "status": "SERVICEORDERSTATUS",
+    "type": "SERVICECODEDESCRIPTION"
+   },
+   "filter_description": "SERVICECODEDESCRIPTION = 'Rodent Inspection and Treatment' exactly ('Rat Replacement Containers' is a trash-can program and is excluded)",
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    14,
+    15,
+    16,
+    18,
+    21
+   ],
+   "population_2020_census": 689545,
+   "service": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer",
+   "slug": "washington-dc",
+   "source_name": "DC GIS - 311 City Service Requests, yearly layers 2009-2026",
+   "source_url": "https://opendata.dc.gov/datasets/311-city-service-requests",
+   "standard_map": {
+    "Rodent Inspection and Treatment": "Rodent inspection"
+   },
+   "state": "DC",
+   "where": "SERVICECODEDESCRIPTION='Rodent Inspection and Treatment'"
+  },
+  {
+   "adapter": "ckan",
+   "base": "https://data.boston.gov",
+   "city": "Boston",
+   "fields": {
+    "date": "open_dt",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "case_status",
+    "type": "type"
+   },
+   "filter_description": "type LIKE '%Rodent%' (in practice the single value 'Rodent Activity') in each yearly 311 file 2011-2026",
+   "population_2020_census": 675647,
+   "resources": [
+    "94b499d9-712a-4d2a-b790-7ceec5c9c4b1",
+    "382e10d9-1864-40ba-bef6-4eea3c75463c",
+    "407c5cd0-f764-4a41-adf8-054ff535049e",
+    "bdae89c8-d4ce-40e9-a6e1-a5203953a2e0",
+    "c9509ab4-6f6d-4b97-979a-0cf2a10c922b",
+    "b7ea6b1b-3ca4-4c5b-9713-6dc1db52379a",
+    "30022137-709d-465e-baae-ca155b51927d",
+    "2be28d90-3a90-4af1-a3f6-f28c1e25880a",
+    "ea2e4696-4a2d-429c-9807-d02eb92e0222",
+    "6ff6a6fd-3141-4440-a880-6f60a37fe789",
+    "f53ebccd-bc61-49f9-83db-625f209c95f5",
+    "81a7b022-f8fc-4da5-80e4-b160058ca207",
+    "e6013a93-1321-4f2a-bf91-8d8a02f1e62f",
+    "dff4d804-5031-443a-8409-8344efd0e5c8",
+    "9d7c2214-4709-478a-a2e8-fb2020a5bb94",
+    "1a0b420d-99f1-4887-9851-990b2a5a6e17"
+   ],
+   "slug": "boston",
+   "source_name": "Boston Open Data (Analyze Boston) - 311 Service Requests, yearly files 2011-2026",
+   "source_url": "https://data.boston.gov/dataset/311-service-requests",
+   "standard_map": {
+    "Rodent Activity": "Rodent activity / signs"
+   },
+   "state": "MA",
+   "where": "\"type\" like '%Rodent%'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Kansas City",
+   "dataset": "7at3-sxhp",
+   "domain": "data.kcmo.org",
+   "fields": {
+    "date": "creation_date",
+    "lat": "ycoordinate",
+    "lng": "xcoordinate",
+    "status": "status",
+    "type": "type"
+   },
+   "filter_description": "type IN ('Rat Treatment','Rat Control and Treatment','Rodent')",
+   "population_2020_census": 508090,
+   "slug": "kansas-city",
+   "source_name": "Open Data KC - 311 Call Center Service Requests 2007-Mar 2021",
+   "source_url": "https://data.kcmo.org/Operations/311-Call-Center-Service-Requests-2007-March-2021/7at3-sxhp",
+   "standard_map": {
+    "Rat Control and Treatment": "Rodent baiting / treatment",
+    "Rat Treatment": "Rodent baiting / treatment",
+    "Rodent": "Other rodent complaint"
+   },
+   "state": "MO",
+   "where": "type in('Rat Treatment','Rat Control and Treatment','Rodent')"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Kansas City",
+   "dataset": "d4px-6rwg",
+   "domain": "data.kcmo.org",
+   "fields": {
+    "date": "open_date_time",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "current_status",
+    "type": "issue_sub_type"
+   },
+   "filter_description": "issue_sub_type = 'Rats' (this dataset publishes no coordinate columns; records are CSV-only)",
+   "population_2020_census": 508090,
+   "slug": "kansas-city",
+   "source_name": "Open Data KC - 311 Call Center Reported Issues (current)",
+   "source_url": "https://data.kcmo.org/Operations/311-Call-Center-Reported-Issues/d4px-6rwg",
+   "standard_map": {
+    "Rats": "Rat sighting"
+   },
+   "state": "MO",
+   "where": "issue_sub_type='Rats'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "New Orleans",
+   "dataset": "2jgv-pqrq",
+   "domain": "data.nola.gov",
+   "fields": {
+    "date": "date_created",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "request_status",
+    "type": "request_reason"
+   },
+   "filter_description": "request_type = 'Mosquito, Termite & Rodent Control' AND request_reason IN ('Rodent Complaint (Rats)','Rodent Complaint (Mice & Rats)'); the same dataset's 'Non-Rodent Complaint' reasons are excluded",
+   "population_2020_census": 383997,
+   "slug": "new-orleans",
+   "source_name": "NOLA.gov Open Data - 311 OPCD Calls (2012-Present)",
+   "source_url": "https://data.nola.gov/Administrative-Data/311-OPCD-Calls-2012-Present-/2jgv-pqrq",
+   "standard_map": {
+    "Rodent Complaint (Mice & Rats)": "Rodent activity / signs",
+    "Rodent Complaint (Rats)": "Rodent activity / signs"
+   },
+   "state": "LA",
+   "where": "request_type='Mosquito, Termite & Rodent Control' AND request_reason in('Rodent Complaint (Rats)','Rodent Complaint (Mice & Rats)')"
+  },
+  {
+   "adapter": "socrata",
+   "city": "San Francisco",
+   "dataset": "vw6y-z8j6",
+   "domain": "data.sf.gov",
+   "fields": {
+    "date": "requested_datetime",
+    "lat": "lat",
+    "lng": "long",
+    "status": "status_description",
+    "type": "service_subtype"
+   },
+   "filter_description": "service_subtype IN ('Building - Infestation_Rodent_Insect','infestation_rodent_insect') - SF's combined rodent/insect building-infestation category",
+   "population_2020_census": 873965,
+   "slug": "san-francisco",
+   "source_name": "DataSF - 311 Cases",
+   "source_url": "https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6",
+   "standard_map": {
+    "Building - Infestation_Rodent_Insect": "Rodent infestation",
+    "infestation_rodent_insect": "Rodent infestation"
+   },
+   "state": "CA",
+   "where": "service_subtype in('Building - Infestation_Rodent_Insect','infestation_rodent_insect')"
+  },
+  {
+   "adapter": "ckan",
+   "base": "https://data.wprdc.org",
+   "city": "Pittsburgh",
+   "fields": {
+    "date": "created_date_utc",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "subject"
+   },
+   "filter_description": "subject = 'Rodent Control' exactly (substring lookalikes such as 'Catch Basins, Grates and Sewers' and 'Operating Without a License' deliberately excluded)",
+   "population_2020_census": 302971,
+   "resources": [
+    "5202679a-d243-402e-b82a-63189995a942"
+   ],
+   "slug": "pittsburgh",
+   "source_name": "Western Pennsylvania Regional Data Center - Pittsburgh 311 Data (combined)",
+   "source_url": "https://data.wprdc.org/dataset/pittsburgh-311-data",
+   "standard_map": {
+    "Rodent Control": "Rodent baiting / treatment"
+   },
+   "state": "PA",
+   "where": "\"subject\" = 'Rodent Control'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Somerville",
+   "dataset": "4pyi-uqq6",
+   "domain": "data.somervillema.gov",
+   "fields": {
+    "date": "date_created",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "most_recent_status",
+    "type": "type"
+   },
+   "filter_description": "type LIKE '%Rodent%' OR type = 'Rats' (this dataset publishes no coordinate columns; records are CSV-only)",
+   "population_2020_census": 81045,
+   "slug": "somerville",
+   "source_name": "City of Somerville Open Data - 311 Service, Information and Feedback Requests",
+   "source_url": "https://data.somervillema.gov/Public-Services/311-Service-Information-and-Feedback-Requests/4pyi-uqq6",
+   "standard_map": {
+    "Rats": "Rat sighting",
+    "Rodent Assistance Program inquiry": "Rodent inspection",
+    "Rodent Assistance Program request": "Rodent baiting / treatment",
+    "School Rodent Control": "Rodent baiting / treatment"
+   },
+   "state": "MA",
+   "where": "type like '%Rodent%' OR type='Rats'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Cincinnati",
+   "dataset": "gcej-gmiw",
+   "domain": "data.cincinnati-oh.gov",
+   "fields": {
+    "date": "date_created",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "sr_status",
+    "type": "sr_type_desc"
+   },
+   "filter_description": "sr_type_desc IN (12 verified rat/rodent values) - the full list was enumerated from the dataset's own type values; substring lookalikes (REGISTRATION, RESTORATION, OPERATING, REFRIGERATOR, GENERATOR) deliberately excluded",
+   "population_2020_census": 309034,
+   "slug": "cincinnati",
+   "source_name": "City of Cincinnati Open Data - 311 (Non-Emergency) Service Requests",
+   "source_url": "https://data.cincinnati-oh.gov/Safer-Streets/Cincinnati-311-Non-Emergency-Service-Requests/gcej-gmiw",
+   "standard_map": {
+    "FOOD OPERATION, RODENTS": "Rodent infestation",
+    "INSTITUTION, RATS IN  BLDG": "Rodent infestation",
+    "RATS IN SEWER, REM REQ": "Rodent activity / signs",
+    "RATS, CHILDRENS HOSP REFERRAL": "Other rodent complaint",
+    "RATS, IN A BUILDING": "Rat sighting",
+    "RATS, IN OR AROUND A BUILDING": "Rat sighting",
+    "RATS, OUTSIDE A BUILDING": "Rat sighting",
+    "RATS, PROBLEM/INFESTATION": "Rodent infestation",
+    "RESTAURANT, RODENTS": "Rodent infestation",
+    "RODENT/INSECT INFEST, HOTEL/MT": "Rodent infestation",
+    "RODENT/INSECT INFEST, NURSE HM": "Rodent infestation",
+    "SCHOOL, RODENTS IN OR AROUND": "Rodent infestation"
+   },
+   "state": "OH",
+   "where": "sr_type_desc in('RATS, IN A BUILDING','RATS, OUTSIDE A BUILDING','RATS, PROBLEM/INFESTATION','RATS, IN OR AROUND A BUILDING','RATS IN SEWER, REM REQ','FOOD OPERATION, RODENTS','INSTITUTION, RATS IN  BLDG','RATS, CHILDRENS HOSP REFERRAL','SCHOOL, RODENTS IN OR AROUND','RODENT/INSECT INFEST, HOTEL/MT','RESTAURANT, RODENTS','RODENT/INSECT INFEST, NURSE HM')"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Detroit",
+   "fields": {
+    "date": "created_at",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "request_type"
+   },
+   "filter_description": "request_type LIKE '%Rodent%' in the Improve Detroit issues layer",
+   "layers": [
+    0
+   ],
+   "population_2020_census": 639111,
+   "service": "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/improve_detroit/FeatureServer",
+   "slug": "detroit",
+   "source_name": "City of Detroit Open Data - Improve Detroit Issues (ArcGIS FeatureServer)",
+   "source_url": "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/improve_detroit/FeatureServer",
+   "standard_map": {},
+   "state": "MI",
+   "where": "request_type LIKE '%Rodent%'"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Baltimore",
+   "fields": {
+    "date": "CreatedDate",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "status": "SRStatus",
+    "type": "SRType"
+   },
+   "filter_description": "SRType LIKE 'SW-Rat%' \u2014 Baltimore's Rat Rubout program. Most records are 'SW-Rat Rubout Proactive': city-initiated baiting/inspection visits that Baltimore itself logs as 311 service requests; resident-initiated complaints are the 'SW-Rat Rubout' type. Both are counted, with the split visible in the per-type breakdown.",
+   "population_2020_census": 585708,
+   "service_layers": [
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_Yearly/FeatureServer",
+     [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_2023/FeatureServer",
+     [
+      0
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_2024/FeatureServer",
+     [
+      0
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_2025/FeatureServer",
+     [
+      0
+     ]
+    ],
+    [
+     "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_current/FeatureServer",
+     [
+      0
+     ]
+    ]
+   ],
+   "slug": "baltimore",
+   "source_name": "Baltimore Open Data (ArcGIS) - 311 Customer Service Requests, yearly layers 2004-2022 + annual services 2023-2026",
+   "source_url": "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_Yearly/FeatureServer",
+   "standard_map": {
+    "SW-Rat Rubout": "Rodent baiting / treatment",
+    "SW-Rat Rubout Alley Concern": "Rodent baiting / treatment",
+    "SW-Rat Rubout Alley Concern (SW creation only)": "Rodent baiting / treatment",
+    "SW-Rat Rubout Follow-up": "Rodent baiting / treatment",
+    "SW-Rat Rubout Proactive": "Rodent baiting / treatment"
+   },
+   "state": "MD",
+   "where": "SRType LIKE 'SW-Rat%'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Norfolk",
+   "dataset": "nbyu-xjez",
+   "domain": "data.norfolk.gov",
+   "fields": {
+    "date": "creation_date",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "service_request_type"
+   },
+   "filter_description": "service_request_type IN ('Rat Observed','Potential Rat Harborage') - this dataset publishes street-address text only, no coordinate columns; records are CSV-only",
+   "population_2020_census": 238005,
+   "slug": "norfolk",
+   "source_name": "City of Norfolk Open Data - Citizen Request Tracker (Norfolk AIR)",
+   "source_url": "https://data.norfolk.gov/d/nbyu-xjez",
+   "standard_map": {
+    "Potential Rat Harborage": "Conditions attracting rodents",
+    "Rat Observed": "Rat sighting"
+   },
+   "state": "VA",
+   "where": "service_request_type in('Rat Observed','Potential Rat Harborage')"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Buffalo",
+   "dataset": "whkc-e5vr",
+   "domain": "data.buffalony.gov",
+   "fields": {
+    "date": "open_date",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "type"
+   },
+   "filter_description": "type = 'Rodents (Req_Serv)' (2008-May 2024 dataset)",
+   "population_2020_census": 278349,
+   "slug": "buffalo",
+   "source_name": "Open Data Buffalo - 311 Service Requests (July 2008 - May 2024)",
+   "source_url": "https://data.buffalony.gov/Quality-of-Life/311-Service-Requests/whkc-e5vr",
+   "standard_map": {
+    "Rodents (Req_Serv)": "Rodent activity / signs"
+   },
+   "state": "NY",
+   "where": "type='Rodents (Req_Serv)'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Buffalo",
+   "dataset": "3tj7-3tdz",
+   "domain": "data.buffalony.gov",
+   "fields": {
+    "date": "createddate",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "type"
+   },
+   "filter_description": "type = 'Rodent Control Issue' (May 2024-present dataset; continues the older dataset without overlap)",
+   "population_2020_census": 278349,
+   "slug": "buffalo",
+   "source_name": "Open Data Buffalo - 311 Service Requests (May 2024 - Present)",
+   "source_url": "https://data.buffalony.gov/Quality-of-Life/311-Service-Requests-May-2024-Present-/3tj7-3tdz",
+   "standard_map": {
+    "Rodent Control Issue": "Rodent activity / signs"
+   },
+   "state": "NY",
+   "where": "type='Rodent Control Issue'"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Hartford",
+   "fields": {
+    "date": "USER_Opened_Date",
+    "lat": "__lat",
+    "lng": "__lng",
+    "status": "USER_Record_Status",
+    "type": "USER_Record_Type"
+   },
+   "filter_description": "USER_Record_Type LIKE '%RODENT%' (values: 'External Rodent Complaint' and the older path-style 'ServiceRequest/HHS/Environmental/External Rodent Complaint')",
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "population_2020_census": 121054,
+   "service": "https://utility.arcgis.com/usrsvcs/servers/fa056981accc4bb993ff2f85573bf7dd/rest/services/Service_Requests_2015_to_Current/FeatureServer",
+   "slug": "hartford",
+   "source_name": "Hartford Open Data (ArcGIS) - Service Requests 2015 to Current, yearly layers",
+   "source_url": "https://utility.arcgis.com/usrsvcs/servers/fa056981accc4bb993ff2f85573bf7dd/rest/services/Service_Requests_2015_to_Current/FeatureServer",
+   "standard_map": {
+    "External Rodent Complaint": "Rat sighting",
+    "ServiceRequest/HHS/Environmental/External Rodent Complaint": "Rat sighting"
+   },
+   "state": "CT",
+   "where": "upper(USER_Record_Type) LIKE '%RODENT%'"
+  }
+ ]
+}

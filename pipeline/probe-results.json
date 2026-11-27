@@ -1,0 +1,830 @@
+{
+ "socrata:Chicago": {
+  "domain": "data.cityofchicago.org",
+  "dataset": "v6vf-nfxy",
+  "label": "311 Service Requests (current)",
+  "fields": [
+   "sr_number",
+   "sr_type",
+   "sr_short_code",
+   "created_department",
+   "owner_department",
+   "status",
+   "origin",
+   "created_date",
+   "last_modified_date",
+   "closed_date",
+   "street_address",
+   "city",
+   "state",
+   "zip_code",
+   "street_number",
+   "street_direction",
+   "street_name",
+   "street_type",
+   "duplicate",
+   "legacy_record",
+   "created_hour",
+   "created_day_of_week",
+   "created_month"
+  ],
+  "rat_matches": [
+   {
+    "field": "sr_type",
+    "value": "Rodent Baiting/Rat Complaint",
+    "count": 392683
+   }
+  ]
+ },
+ "socrata:Baltimore": {
+  "domain": "data.baltimorecity.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:New Orleans": {
+  "domain": "data.nola.gov",
+  "catalog": [
+   [
+    "2jgv-pqrq",
+    "311 OPCD Calls (2012-Present)"
+   ],
+   [
+    "3iz8-nghx",
+    "311 Calls (Historic Data: 2012-2018)"
+   ],
+   [
+    "se4p-ierc",
+    "Catch Basins"
+   ],
+   [
+    "i3e4-42kc",
+    "Streetlights Other"
+   ],
+   [
+    "xhih-vxs6",
+    "Grass Cutting (Lot Abatement/Chapter 66)"
+   ],
+   [
+    "bqmt-f3jk",
+    "Calls for Service 2017"
+   ],
+   [
+    "9san-ivhk",
+    "Calls for Service 2018"
+   ],
+   [
+    "m99x-bsvt",
+    "City Jobs Requisition Requests"
+   ],
+   [
+    "qf6q-pp4b",
+    "Calls for Service 2019"
+   ],
+   [
+    "hp7u-i9hf",
+    "Call for Service 2020"
+   ],
+   [
+    "2zcj-b6ts",
+    "Calls for Service 2024"
+   ],
+   [
+    "pc5d-tvaw",
+    "Calls for Service 2023"
+   ],
+   [
+    "jsyu-nz5r",
+    "Calls for Service 2014"
+   ],
+   [
+    "nci8-thrr",
+    "Calls for Service 2022"
+   ]
+  ],
+  "probes": [
+   {
+    "domain": "data.nola.gov",
+    "dataset": "2jgv-pqrq",
+    "label": "311 OPCD Calls (2012-Present)",
+    "fields": [
+     "service_request",
+     "request_type",
+     "request_reason",
+     "date_created",
+     "date_modified",
+     "case_close_date",
+     "request_status",
+     "responsible_agency",
+     "status",
+     "rowid",
+     "longitude",
+     "latitude",
+     "geocoded_column"
+    ],
+    "rat_matches": [
+     {
+      "field": "request_type",
+      "value": "Mosquito, Termite & Rodent Control",
+      "count": 12668
+     },
+     {
+      "field": "request_reason",
+      "value": "Non-Rodent Complaint (Mice, Possums, Snakes)",
+      "count": 1004
+     },
+     {
+      "field": "request_reason",
+      "value": "Non-Rodent Complaint (Possums & Snakes)",
+      "count": 780
+     },
+     {
+      "field": "request_reason",
+      "value": "Rodent Complaint (Mice & Rats)",
+      "count": 1692
+     },
+     {
+      "field": "request_reason",
+      "value": "Rodent Complaint (Rats)",
+      "count": 4828
+     }
+    ]
+   },
+   {
+    "domain": "data.nola.gov",
+    "dataset": "3iz8-nghx",
+    "label": "311 Calls (Historic Data: 2012-2018)",
+    "fields": [
+     "ticket_id",
+     "issue_type",
+     "ticket_created_date_time",
+     "ticket_closed_date_time",
+     "ticket_status",
+     "issue_description",
+     "street_address",
+     "neighborhood_district",
+     "council_district",
+     "city",
+     "state",
+     "zip_code",
+     "location",
+     "latitude",
+     "longitude",
+     "closure_reason",
+     "case_title"
+    ],
+    "rat_matches": [
+     {
+      "field": "issue_type",
+      "value": "Non Rodent Complaint",
+      "count": 366
+     },
+     {
+      "field": "issue_type",
+      "value": "Rodent Complaint",
+      "count": 3689
+     },
+     {
+      "field": "issue_description",
+      "value": "4018 Mithra st. overgrown with weeds. rodent infested. collapsing house",
+      "count": 1
+     },
+     {
+      "field": "issue_description",
+      "value": "5/15/2012 - Caller would like to have the status of this property.  He is concerned with the Rodent Problem that he is having because of this property.",
+      "count": 1
+     }
+    ]
+   }
+  ]
+ },
+ "socrata:Cincinnati": {
+  "domain": "data.cincinnati-oh.gov",
+  "dataset": "gcej-gmiw",
+  "label": "Cincinnati 311",
+  "fields": [
+   "sr_number",
+   "user_id",
+   "sr_type",
+   "sr_type_desc",
+   "priority",
+   "group_id",
+   "group_title",
+   "group_desc",
+   "dept_code",
+   "dept_name",
+   "dept_division",
+   "address",
+   "location",
+   "neighborhood",
+   "zipcode",
+   "nearest_parcel_no",
+   "method_received",
+   "date_created",
+   "time_received",
+   "sr_status",
+   "sr_status_flag",
+   "date_status_change",
+   "time_status_change",
+   "date_last_update",
+   "time_last_update",
+   "planned_hours_tostart_response",
+   "planned_response_time",
+   "planned_end_date",
+   "planned_completion_days",
+   "collection_day",
+   "collection_route",
+   "collection_dist",
+   "transfer_allow",
+   "transfered_num_times",
+   "street_no",
+   "street_name",
+   "city_id",
+   "munitwnshp",
+   "num_bulky_items",
+   "num_tires",
+   "num_freons",
+   "num_sofabeds",
+   "num_potholes",
+   "police_district",
+   "police_rpt_area",
+   "segidusng_xref",
+   "latitude",
+   "longitude",
+   "date_time_received",
+   "community_council_neighborhood",
+   "ham_pave_polygon_id"
+  ],
+  "rat_matches": [
+   {
+    "field": "sr_type_desc",
+    "value": "FOOD OPERATION, RODENTS",
+    "count": 223
+   },
+   {
+    "field": "sr_type_desc",
+    "value": "INSTITUTION, RATS IN  BLDG",
+    "count": 71
+   }
+  ]
+ },
+ "socrata:Kansas City": {
+  "domain": "data.kcmo.org",
+  "dataset": "d4px-6rwg",
+  "label": "311 Call Center Reported Issues",
+  "fields": [
+   "reported_issue",
+   "current_status",
+   "open_date_time",
+   "days_to_close",
+   "report_source",
+   "issue_type",
+   "issue_sub_type",
+   "department_work_group",
+   "last_updated",
+   "source_category"
+  ],
+  "rat_matches": [
+   {
+    "field": "issue_sub_type",
+    "value": "Rats",
+    "count": 3395
+   }
+  ]
+ },
+ "socrata:Kansas City (historic)": {
+  "domain": "data.kcmo.org",
+  "dataset": "7at3-sxhp",
+  "label": "311 SR 2007-Mar 2021",
+  "fields": [
+   "case_id",
+   "source",
+   "department",
+   "work_group",
+   "request_type",
+   "category",
+   "type",
+   "detail",
+   "creation_date",
+   "creation_time",
+   "creation_month",
+   "creation_year",
+   "status",
+   "exceeded_est_timeframe",
+   "street_address",
+   "address_with_geocode",
+   "zip_code",
+   "neighborhood",
+   "county",
+   "council_district",
+   "police_district",
+   "parcel_id_no",
+   "ycoordinate",
+   "xcoordinate",
+   "case_url",
+   "days_open",
+   ":@computed_region_kk66_ngf4",
+   ":@computed_region_9t2m_phkm",
+   ":@computed_region_my34_vmp8",
+   ":@computed_region_w4hf_t6bp"
+  ],
+  "rat_matches": [
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-City Block",
+    "count": 233
+   },
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-City Const Site",
+    "count": 11
+   },
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-Inside Residence",
+    "count": 4707
+   },
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-In the Sewer",
+    "count": 118
+   },
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-Outside",
+    "count": 3135
+   },
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-Vacant Home",
+    "count": 364
+   },
+   {
+    "field": "request_type",
+    "value": "Animals / Pets-Rat Treatment-Vacant Property",
+    "count": 117
+   },
+   {
+    "field": "type",
+    "value": "Rat Control and Treatment",
+    "count": 3133
+   },
+   {
+    "field": "type",
+    "value": "Rat Treatment",
+    "count": 8685
+   },
+   {
+    "field": "type",
+    "value": "Rodent",
+    "count": 4964
+   }
+  ]
+ },
+ "socrata:Buffalo": {
+  "domain": "data.buffalony.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Austin": {
+  "domain": "data.austintexas.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Hartford": {
+  "domain": "data.hartford.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Cambridge MA": {
+  "domain": "data.cambridgema.gov",
+  "dataset": "2z9k-mv9g",
+  "label": "Commonwealth Connect SR",
+  "fields": [
+   "ticket_id",
+   "city",
+   "issue_type",
+   "ticket_status",
+   "issue_description",
+   "ticket_created_date_time",
+   "ticket_last_updated_date_time",
+   "address",
+   "lat",
+   "lng",
+   "location",
+   "html_url",
+   ":@computed_region_swkg_bavi",
+   ":@computed_region_rffn_qbt6",
+   ":@computed_region_v7jj_366k",
+   ":@computed_region_guic_hr4a",
+   ":@computed_region_rcj3_ccgu"
+  ],
+  "rat_matches": [
+   {
+    "field": "issue_type",
+    "value": "23 Valentine feeding rats and pigeons daily",
+    "count": 1
+   },
+   {
+    "field": "issue_type",
+    "value": "3+ weeks of garbage piling up in open cans attracting rats",
+    "count": 1
+   },
+   {
+    "field": "issue_type",
+    "value": "6+ garbage cans that seem to have rodent damage",
+    "count": 1
+   },
+   {
+    "field": "issue_type",
+    "value": "Abandoned grocery delivery that rats had a picnic on and left the remnants",
+    "count": 1
+   },
+   {
+    "field": "issue_type",
+    "value": "Abundance of rats",
+    "count": 1
+   },
+   {
+    "field": "issue_type",
+    "value": "Another Rat restaurant open on Pearl",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "101-103 Hammond St.  Rodent holes outside building in the back, plus rodents wandering inside.  Need help to rid ourselves of them.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "10-20 Chihuahua-sized rats hanging around the rear perimeter of 41 Wendell St.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "104 Pearl Street has had garbage spilling out of its barrels for over two years now.  The bins and piles of debris block sidewalks, attract rodents and depresses the neighborhood. I have filed dozens of complaints and fines have been given but, when does this stop? The owner of this multi-unit building is clearly making enough money not to care about his residents or the neighborhood or the city employees who have to clean this dump heap every week.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "109 Otis St do not have the proper trash cans with lids. They have rats going in and out of their yard because of this.  It is on the street now like this",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "10 babies about 3 days old rented by mother rat.  Condo association.  Help!!",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "10+ rats (big and small) sighted scurrying around in the back parking lot. Many around a dumpster, but others in the grass on the perimeter of the lot.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "10 rats drinking from puddle in community center parking lot. We saw them running through alley beside 35 Howard St.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "10+ rats sighted. At least 3+ sightings per day. Picture is of neighbors lot mainly used for parking. Burrows often come from under the brush into our garden. There is no food left out, no dropping in our yard, no bite marks around our trash. Please let me know if anything can be done as soon as possible.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "11 PM, 6 to 7 inch rat ran from vicinity of 10 Marie Ave or 6 Marie Ave,  across the sidewalk and into the street.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "1/2/17 (9:05 pm) 1 rat crossed street from 15 Lawrence St. to other side of street.  Could also have come from 8 & 8.5 Perry St.\n1/10 (4:34 pm) two rats scampered among the garbage bins at 7 Lawrence St.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "125 Harvard st has had recurrent issues [ icreported this 2-3 years ago] with rodent burrows near their transformer on Davis St. which has active rodent burrows now. \n\nThey need to dig up the surround of the transformer, remove the dirt and fill it with gravel or concrete as the rodents seem drawn to the transformer.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "#12 magnolia Ave leaving trash cans on sidewalk  Obstructing side walk, rats, overflowing",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "12\u201d Rat near barrels in driveway",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "137 fifth street dead rat in road",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "13 Line at (Cambridge side) food waste and garbage on the street. This is not helping with the terrible rat problem.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "14 Centre St is not properly containing their trash.  The attached photo could be taken any week.  As a result of poor containment, there is a rat problem.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "15 months homeless camp with horrid food filth waste, person toilets in grass, bushes, trees, food & rodents around, food and trash blown over 30 yard area in flowers and bushes and into the river.  Criminal neglect of the city due to 15 months of many people reporting this.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "1610-22 Massachusetts Ave always has overflowing trash and many rats feed and burrow in neighboring yards. This apartment needs more trash barrels and attention spent to make sure the trash is placed inside trash barrels.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "16 Ellery SQUARE leaves their garbage bins on Ellery Street in front of their poor neighbors at 60 Ellery Street. The owners do not bring empty cans back to their house, they leave them on the street for weeks on end until the 60 Ellery Street neighbors drag them to the fenceline. These cans are then left open and garbage dropped into them where rats feed (see photos).  The owners of 16 Ellery Square have been asked multiple times to be responsible with their garbage and continue to ignore the requests. Perhaps getting the city involved will get their attention?",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "17a Putnam ave I couldn't sleep due to noise in my room where I was recently moved due to multiple code citations on the landlords for property neglect. This mouse was caught on my surveillance as I slept. Additionally I am hearing rats outside, have seen them as well including delivery drivers who have seen them in early morning. Additionally neighbors who police wrote a report on for disturbing the peace are continuing parties and blasting music after 1030-11pm. I am disabled.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "17 Elm St. Private Dumpster in Back on Richardson CT is out of control and is a rat haven. Trash is all over the ground and it\u2019s constantly over flowing. RAT ACTIVITY IS RAMPANT IN THE AREA. I believe they are living off both adjacent dumpsters.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "19,21 Speridakis Terrace leaving open trash bags and oiverflowing trash for two days-RAT FEAST",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "19 Plymouth does not have recycle or trash bins and plastic bags are lining the curb.  These will be rat-torn by morning.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "19 Shea Road, 6:10 a.m.  Please ticket?  Rats everywhere.",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "19 Shea Road; trash overflowing and not in receptacles.  This neighborhood has a MAJOR rat problem.  This is why.  \nLiz Caiazzi\n17 Shea Road\nCambridge, MA  02140",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "19 Trowbridge str left their trash cans out since Wednesday  They even put some trash into them while the trash and are out on the sidewalk  lids are open and rats having a feast  This happens often at 19 Trowbridge st  Please notify the owners so that they, the building managers or the tenants bring the trash cans in right after pickup and not have them block the sidewalk for days",
+    "count": 1
+   },
+   {
+    "field": "issue_description",
+    "value": "1 and 2 Walker Court, Cambridge, Ma. Have holes in their backyard fence and is allowing rodents into the adjacent properties. We are doing everything we can to alleviate the rodent issue but if those two properties aren't treating the rat infestation and cover their fence holes we are going to continue having a rat issue.",
+    "count": 1
+   }
+  ]
+ },
+ "socrata:Somerville MA": {
+  "domain": "data.somervillema.gov",
+  "dataset": "4pyi-uqq6",
+  "label": "311 Service Requests",
+  "fields": [
+   "id",
+   "classification",
+   "category",
+   "type",
+   "origin_of_request",
+   "most_recent_status_date",
+   "most_recent_status",
+   "date_created",
+   "block_code",
+   "emergency_readiness_and_response_planning",
+   "green_space_care_and_maintenance",
+   "infrastructure_maintenance_and_repairs",
+   "noise_and_activity_disturbances",
+   "reliable_service_delivery",
+   "navigating_city_services_and_policies",
+   "public_space_cleanliness_and_environmental_health",
+   "voting_and_election_information"
+  ],
+  "rat_matches": [
+   {
+    "field": "category",
+    "value": "Rodent Assistance Program request",
+    "count": 3760
+   },
+   {
+    "field": "type",
+    "value": "Rats",
+    "count": 8824
+   },
+   {
+    "field": "type",
+    "value": "Rodent Assistance Program inquiry",
+    "count": 2082
+   },
+   {
+    "field": "type",
+    "value": "Rodent Assistance Program request",
+    "count": 3760
+   },
+   {
+    "field": "type",
+    "value": "School Rodent Control ",
+    "count": 144
+   }
+  ]
+ },
+ "socrata:Sacramento": {
+  "domain": "data.cityofsacramento.org",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Dallas": {
+  "domain": "dallasopendata.com",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Seattle": {
+  "domain": "data.seattle.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Cleveland": {
+  "domain": "data.clevelandohio.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Miami-Dade": {
+  "domain": "data.miamidade.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Providence RI": {
+  "domain": "data.providenceri.gov",
+  "catalog": [
+   [
+    "rz3y-pz8v",
+    "Providence Police Case Log - Past 180 days"
+   ]
+  ],
+  "probes": []
+ },
+ "socrata:New Haven CT": {
+  "domain": "data.newhavenct.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Honolulu": {
+  "domain": "data.honolulu.gov",
+  "dataset": "6hui-dvrh",
+  "label": "Honolulu 311 Reports",
+  "fields": [
+   "id",
+   "datecreated",
+   "dateupdated",
+   "requesttype",
+   "city",
+   "zipcode",
+   "location",
+   "statustype",
+   "description",
+   ":@computed_region_7asa_3qps"
+  ],
+  "rat_matches": []
+ },
+ "socrata:Honolulu (HNL)": {
+  "domain": "data.honolulu.gov",
+  "dataset": "jdy7-ftwe",
+  "label": "HNL 311 Reports",
+  "fields": [
+   "id",
+   "date_created",
+   "request_type",
+   "street",
+   "city",
+   "state",
+   "zip_code",
+   "status",
+   "description"
+  ],
+  "rat_matches": [
+   {
+    "field": "description",
+    "value": "Aloha,\n\nI am reaching out to kindly request assistance with cleaning up a strip of City & County-owned land located between my home at 216 Kuliouou Road and the Kuliouou Canal.\n\nI would first like to express my appreciation to the City crews who have come out to cut the grass and maintain the surrounding areas. I am truly thankful for the work that has been done.\n\nHowever, there is a section directly adjacent to my property that appears to be consistently missed during routine maintenance. Over time, a significant amount of fallen palm fronds and dried vegetation has accumulated, and the area has become increasingly overgrown.\n\nI am a new resident of this home, and I understand that the previous occupants may not have brought this concern to the City\u2019s attention. However, as a family with young children who enjoy playing outdoors, I am becoming increasingly concerned about the condition of this area.\n\nI have already noticed an increase in rodent activity, and I worry that the accumulated palm fronds and overgrown vegetation are creating an ideal environment for rodents, centipedes, and mosquitoes. With my children frequently playing outside, this has become a health and safety concern for my family.\n\nI would greatly appreciate it if someone from the appropriate department could come out to assess the area and arrange for the removal of the accumulated palm fronds and overgrown vegetation. If possible, I would also kindly ask that this particular section be included in future routine maintenance so that the issue does not continue.\n\nI understand that the City has many areas to maintain, and I truly appreciate the hard work of the crews who care for our community. My hope is simply to have this area properly maintained so that my family and our neighbors can enjoy a cleaner and safer environment.\n\nThank you so much for your time, consideration, and assistance. I look forward to hearing from you.\n\nMahalo!\n\n",
+    "count": 1
+   },
+   {
+    "field": "description",
+    "value": "Aloha.  The corner of Coral and Ala Moana Blvd.  there is a strip of land outside the grocery store which has become very overgrown.  The grass is 2+ feet high and filled with garbage.   Yesterday I saw 2 rats in the grass eating something.  The walkway outside the store Korean snack store - is used by tourists and locals alike. \nIt would take 20 minutes to clean area and cut grass. \nTom Waithe  206-708-3528\n",
+    "count": 1
+   },
+   {
+    "field": "description",
+    "value": "Aloha, this pile began with one sofa and over the past couple months has grown to what is in the photograph. Makes it difficult to walk on Poki Street and afraid rodents will make it a home. M\u0101halo",
+    "count": 1
+   },
+   {
+    "field": "description",
+    "value": "Behind the sound barrier wall on Kahekili Highway in Kaneohe  there's lots of debris and people dumping/throwing things behind the wall attracting stray cats, mongoose, rats and other items which eventually cause flooding. \nM",
+    "count": 1
+   }
+  ]
+ },
+ "socrata:Fort Worth": {
+  "domain": "data.fortworthtexas.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Memphis": {
+  "domain": "data.memphistn.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Nashville": {
+  "domain": "data.nashville.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Tulsa": {
+  "domain": "data.cityoftulsa.org",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Norfolk VA": {
+  "domain": "data.norfolk.gov",
+  "dataset": "nbyu-xjez",
+  "label": "MyNorfolk",
+  "fields": [
+   "service_request_number",
+   "service_request_category",
+   "service_request_type",
+   "status",
+   "location",
+   "creation_date",
+   "modification_date"
+  ],
+  "rat_matches": [
+   {
+    "field": "service_request_type",
+    "value": "Potential Rat Harborage",
+    "count": 734
+   },
+   {
+    "field": "service_request_type",
+    "value": "Rat Observed",
+    "count": 1278
+   }
+  ]
+ },
+ "socrata:Birmingham AL": {
+  "domain": "data.birminghamal.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:San Diego": {
+  "domain": "data.sandiego.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Oakland CA": {
+  "domain": "data.oaklandca.gov",
+  "dataset": "quth-gb8e",
+  "label": "OAK 311 Call Center",
+  "fields": [
+   "requestid",
+   "datetimeinit",
+   "source",
+   "description",
+   "reqcategory",
+   "status",
+   "datetimeclosed",
+   "probaddress",
+   "city",
+   "state"
+  ],
+  "rat_matches": []
+ },
+ "socrata:Long Beach CA": {
+  "domain": "data.longbeach.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:San Jose": {
+  "domain": "data.sanjoseca.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:St. Louis": {
+  "domain": "data.stlouis-mo.gov",
+  "catalog": [],
+  "probes": []
+ },
+ "socrata:Detroit": {
+  "domain": "data.detroitmi.gov",
+  "catalog": [],
+  "probes": []
+ }
+}
