@@ -1,0 +1,3 @@
+city,state,date,latitude,longitude,type_original,type_standard,status,source
+Chicago,IL,2006-07-27,41.94388,-87.65666,Rodent Baiting/Rat Complaint,Rodent baiting / treatment,Completed,"Chicago Data Portal - 311 Service Requests (current system, 2019-present)"
+Chicago,IL,2006-07-27,41.94388,-87.65666,Rodent Baiting/Rat Complaint,Rodent baiting / treatment,Completed - Dup,"Chicago Data Portal - 311 Service Requests (current system, 2019-present)"

@@ -1,0 +1,2 @@
+city,state,date,latitude,longitude,type_original,type_standard,status,source
+Chicago,IL,1999-11-29,41.79505,-87.59654,Rodent Baiting/Rat Complaint,Rodent baiting / treatment,Completed,"Chicago Data Portal - 311 Service Requests (current system, 2019-present)"
