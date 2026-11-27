@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>US 311 Rat Complaint Map — National Open Data Atlas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="head-text">
+    <h1>US 311 Rat <span class="amp">&amp;</span> Rodent Complaint Map</h1>
+    <p class="sub">Every rat &amp; rodent complaint filed with city 311 systems across the
+    United States, consolidated from official municipal open-data portals into one map.</p>
+  </div>
+  <div class="head-stats" id="headStats">Loading data summary…</div>
+</header>
+
+<main>
+  <aside id="panel">
+    <section>
+      <h2>Cities</h2>
+      <div class="row-btns">
+        <button id="btnAllCities" type="button">All</button>
+        <button id="btnTopCities" type="button">Top 5</button>
+        <button id="btnNoCities" type="button">None</button>
+      </div>
+      <div id="cityList" class="city-list"></div>
+    </section>
+
+    <section>
+      <h2>Date range</h2>
+      <label>From <input type="date" id="dateFrom"></label>
+      <label>To <input type="date" id="dateTo"></label>
+      <div class="row-btns">
+        <button id="btnAllDates" type="button">All dates</button>
+        <button id="btnLastYear" type="button">Last 12 months</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Selection summary</h2>
+      <div id="selSummary" class="sel-summary">—</div>
+      <h3>By city (in current selection)</h3>
+      <div id="byCity"></div>
+      <h3>By complaint type (standardized)</h3>
+      <div id="byType"></div>
+    </section>
+
+    <section>
+      <h2>City comparison</h2>
+      <div id="compareTable"></div>
+      <p class="hint">“Per 100k” = complaint <em>records</em> per 100,000 residents
+      (population: 2020 US Census, city proper). It measures reporting volume,
+      <strong>not</strong> rat population.</p>
+    </section>
+
+    <section>
+      <h2>Trends — complaints per year</h2>
+      <div id="trends"></div>
+    </section>
+
+    <section>
+      <h2>Export</h2>
+      <button id="btnCsv" type="button" class="primary">Download CSV of current selection</button>
+      <p class="hint">Exports exactly what is selected above (cities + dates),
+      including latitude and longitude for every record.</p>
+      <div id="fullCsv"></div>
+    </section>
+
+    <section>
+      <h2>About the data</h2>
+      <div id="aboutData"></div>
+      <h3>Limitations</h3>
+      <p class="hint callout"><strong>Important:</strong> complaint volume does not necessarily
+      reflect actual rat population sizes. It also reflects how easy a city makes it
+      to file a 311 complaint, public awareness, and how each city classifies rodent
+      cases.</p>
+      <p class="hint">Some records lack coordinates in the source data and cannot be
+      mapped; they are counted per city above (pulled vs mapped vs missing) and are
+      included in the downloadable full CSVs. A few cities publish no coordinates at
+      all — their records are CSV-only. Coordinate precision varies by city (some
+      portals round coordinates). Categories differ between cities; the original
+      city classification is always preserved next to the standardized one.</p>
+    </section>
+  </aside>
+
+  <div id="mapWrap">
+    <div id="map"></div>
+    <div class="view-toggle" role="group" aria-label="Map view mode">
+      <button id="btnViewPoints" type="button" class="active">Points</button>
+      <button id="btnViewHeat" type="button">Heatmap</button>
+    </div>
+    <div id="mapStatus" class="map-status">Loading…</div>
+    <div class="legend" id="legendPoints">
+      <div><span class="dot dot-single"></span> Individual complaint (zoom in)</div>
+      <div><span class="dot dot-cluster"></span> Aggregated complaints per area (zoomed out)</div>
+    </div>
+    <div class="legend" id="legendHeat" hidden>
+      <div>Complaint density</div>
+      <div class="heat-scale"></div>
+      <div class="heat-labels"><span>Fewer</span><span>More</span></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>Open source — data pipeline and full documentation in the project repository.</span>
+  <span>Basemap © OpenStreetMap contributors. Complaint data © the respective cities, via their open-data portals.</span>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
