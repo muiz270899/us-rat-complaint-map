@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-27T04:42:09.264997+00:00",
+ "generated_utc": "2026-11-27T10:58:22.520897+00:00",
  "cities": [
   {
    "city": "Baltimore",
@@ -8,11 +8,11 @@
    "source_name": "Baltimore Open Data (ArcGIS) - 311 Customer Service Requests, yearly layers 2004-2022 + annual services 2023-2026",
    "source_url": "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_Yearly/FeatureServer",
    "dataset": "",
-   "filter": "SRType LIKE 'SW-Rat%' \u2014 Baltimore's Rat Rubout program. Most records are 'SW-Rat Rubout Proactive': city-initiated baiting/inspection visits that Baltimore itself logs as 311 service requests; resident-initiated complaints are the 'SW-Rat Rubout' type. Both are counted, with the split visible in the per-type breakdown.",
+   "filter": "SRType LIKE 'SW-Rat%' \u2014 Baltimore's Rat Rubout program. Most records are 'SW-Rat Rubout Proactive': city-initiated baiting/inspection visits that Baltimore itself logs as 311 service requests; resident-initiated complaints are the 'SW-Rat Rubout' type. Both are counted, with the split visible in the per-type breakdown. | SRType = 'HCD-Rodents' exactly \u2014 resident-filed rodent complaints taken by Baltimore's Housing & Community Development code enforcement. The original SW-Rat-only filter missed this category entirely; it is counted as resident-initiated.",
    "population_2020_census": 585708,
-   "pulled": 1880678,
-   "geocoded": 1879644,
-   "missing_coords": 1034,
+   "pulled": 1922689,
+   "geocoded": 1921638,
+   "missing_coords": 1051,
    "date_min": "2010-01-01",
    "date_max": "2026-11-25",
    "types_original": {
@@ -20,256 +20,280 @@
     "SW-Rat Rubout": 102422,
     "SW-Rat Rubout Follow-up": 750,
     "SW-Rat Rubout Alley Concern": 276,
-    "SW-Rat Rubout Alley Concern (SW creation only)": 49
+    "SW-Rat Rubout Alley Concern (SW creation only)": 49,
+    "HCD-Rodents": 42011
    },
    "types_standard": {
-    "Rodent baiting / treatment": 1880402,
-    "Other rodent complaint": 276
+    "Rodent baiting / treatment": 1880678,
+    "Rodent activity / signs": 42011
    },
    "by_year": {
-    "2010": 19275,
-    "2011": 39730,
-    "2012": 30001,
-    "2013": 41337,
-    "2014": 74307,
-    "2015": 115384,
-    "2016": 116579,
-    "2017": 131926,
-    "2018": 171948,
-    "2019": 147442,
-    "2020": 121784,
-    "2021": 160010,
-    "2022": 138985,
-    "2023": 138301,
-    "2024": 153261,
-    "2025": 121693,
-    "2026": 158715
+    "2010": 21312,
+    "2011": 41708,
+    "2012": 32307,
+    "2013": 43618,
+    "2014": 76583,
+    "2015": 118209,
+    "2016": 119514,
+    "2017": 134392,
+    "2018": 174045,
+    "2019": 149763,
+    "2020": 124253,
+    "2021": 163634,
+    "2022": 142031,
+    "2023": 140980,
+    "2024": 155306,
+    "2025": 123755,
+    "2026": 161279
    },
    "points_files": [
     {
      "file": "baltimore-2010.json",
-     "rows": 19275,
-     "bytes": 1806063
+     "rows": 21312,
+     "bytes": 1974675
     },
     {
      "file": "baltimore-2011.json",
-     "rows": 39730,
-     "bytes": 3809971
+     "rows": 41708,
+     "bytes": 3973715
     },
     {
      "file": "baltimore-2012.json",
-     "rows": 30001,
-     "bytes": 2848998
+     "rows": 32307,
+     "bytes": 3039887
     },
     {
      "file": "baltimore-2013.json",
-     "rows": 41337,
-     "bytes": 3958186
+     "rows": 43618,
+     "bytes": 4146986
     },
     {
      "file": "baltimore-2014.json",
-     "rows": 74307,
-     "bytes": 7190524
+     "rows": 76583,
+     "bytes": 7379664
     },
     {
      "file": "baltimore-2015.json",
-     "rows": 115038,
-     "bytes": 11163057
+     "rows": 117862,
+     "bytes": 11396947
     },
     {
      "file": "baltimore-2016.json",
-     "rows": 116167,
-     "bytes": 11285261
+     "rows": 119102,
+     "bytes": 11528499
     },
     {
      "file": "baltimore-2017.json",
-     "rows": 131763,
-     "bytes": 12828952
+     "rows": 134224,
+     "bytes": 13033318
     },
     {
      "file": "baltimore-2018.json",
-     "rows": 171836,
-     "bytes": 16757498
+     "rows": 173922,
+     "bytes": 16930567
     },
     {
      "file": "baltimore-2019.json",
-     "rows": 147442,
-     "bytes": 14377066
+     "rows": 149763,
+     "bytes": 14569782
     },
     {
      "file": "baltimore-2020.json",
-     "rows": 121784,
-     "bytes": 11867696
+     "rows": 124253,
+     "bytes": 12072629
     },
     {
      "file": "baltimore-2021.json",
-     "rows": 160009,
-     "bytes": 15583478
+     "rows": 163633,
+     "bytes": 15884468
     },
     {
      "file": "baltimore-2022.json",
-     "rows": 138985,
-     "bytes": 13540981
+     "rows": 142031,
+     "bytes": 13794298
     },
     {
      "file": "baltimore-2023.json",
-     "rows": 138301,
-     "bytes": 13475603
+     "rows": 140980,
+     "bytes": 13698379
     },
     {
      "file": "baltimore-2024.json",
-     "rows": 153261,
-     "bytes": 14939144
+     "rows": 155306,
+     "bytes": 15109347
     },
     {
      "file": "baltimore-2025.json",
-     "rows": 121693,
-     "bytes": 11861395
+     "rows": 123755,
+     "bytes": 12033376
     },
     {
      "file": "baltimore-2026.json",
-     "rows": 158715,
-     "bytes": 15472429
+     "rows": 161279,
+     "bytes": 15685878
     }
    ],
-   "points_bytes": 182766302,
+   "points_bytes": 186252415,
    "csv_files": [
     {
      "file": "csv/baltimore-2010.csv",
-     "rows": 19275,
-     "bytes": 4119140
+     "rows": 21312,
+     "bytes": 4532192
     },
     {
      "file": "csv/baltimore-2011.csv",
-     "rows": 39730,
-     "bytes": 8577648
+     "rows": 41708,
+     "bytes": 8978752
     },
     {
      "file": "csv/baltimore-2012.csv",
-     "rows": 30001,
-     "bytes": 6449195
+     "rows": 32307,
+     "bytes": 6916804
     },
     {
      "file": "csv/baltimore-2013.csv",
-     "rows": 41337,
-     "bytes": 8918703
+     "rows": 43618,
+     "bytes": 9381223
     },
     {
      "file": "csv/baltimore-2014.csv",
-     "rows": 74307,
-     "bytes": 16107441
+     "rows": 76583,
+     "bytes": 16569701
     },
     {
-     "file": "csv/baltimore-2015.csv",
-     "rows": 115384,
-     "bytes": 25037160
+     "file": "csv/baltimore-2015-part1.csv",
+     "rows": 90006,
+     "bytes": 19499963
     },
     {
-     "file": "csv/baltimore-2016.csv",
-     "rows": 116579,
-     "bytes": 25308190
+     "file": "csv/baltimore-2015-part2.csv",
+     "rows": 28203,
+     "bytes": 6110231
+    },
+    {
+     "file": "csv/baltimore-2016-part1.csv",
+     "rows": 90043,
+     "bytes": 19499804
+    },
+    {
+     "file": "csv/baltimore-2016-part2.csv",
+     "rows": 29471,
+     "bytes": 6403902
     },
     {
      "file": "csv/baltimore-2017-part1.csv",
-     "rows": 120000,
-     "bytes": 26077918
+     "rows": 90293,
+     "bytes": 19499951
     },
     {
      "file": "csv/baltimore-2017-part2.csv",
-     "rows": 11926,
-     "bytes": 2595492
+     "rows": 44099,
+     "bytes": 9539681
     },
     {
      "file": "csv/baltimore-2018-part1.csv",
-     "rows": 120000,
-     "bytes": 26100083
+     "rows": 90112,
+     "bytes": 19499974
     },
     {
      "file": "csv/baltimore-2018-part2.csv",
-     "rows": 51948,
-     "bytes": 11299752
+     "rows": 83933,
+     "bytes": 18151253
     },
     {
      "file": "csv/baltimore-2019-part1.csv",
-     "rows": 120000,
-     "bytes": 26098087
+     "rows": 90164,
+     "bytes": 19499795
     },
     {
      "file": "csv/baltimore-2019-part2.csv",
-     "rows": 27442,
-     "bytes": 5972174
+     "rows": 59599,
+     "bytes": 12891937
     },
     {
      "file": "csv/baltimore-2020-part1.csv",
-     "rows": 120000,
-     "bytes": 26093633
+     "rows": 90242,
+     "bytes": 19499988
     },
     {
      "file": "csv/baltimore-2020-part2.csv",
-     "rows": 1784,
-     "bytes": 388298
+     "rows": 34011,
+     "bytes": 7358901
     },
     {
      "file": "csv/baltimore-2021-part1.csv",
-     "rows": 120000,
-     "bytes": 26087193
+     "rows": 90228,
+     "bytes": 19499839
     },
     {
      "file": "csv/baltimore-2021-part2.csv",
-     "rows": 40010,
-     "bytes": 8697721
+     "rows": 73406,
+     "bytes": 15857309
     },
     {
      "file": "csv/baltimore-2022-part1.csv",
-     "rows": 120000,
-     "bytes": 26090068
+     "rows": 90230,
+     "bytes": 19499969
     },
     {
      "file": "csv/baltimore-2022-part2.csv",
-     "rows": 18985,
-     "bytes": 4129268
+     "rows": 51801,
+     "bytes": 11196171
     },
     {
      "file": "csv/baltimore-2023-part1.csv",
-     "rows": 120000,
-     "bytes": 26089746
+     "rows": 90252,
+     "bytes": 19499805
     },
     {
      "file": "csv/baltimore-2023-part2.csv",
-     "rows": 18301,
-     "bytes": 3982132
+     "rows": 50728,
+     "bytes": 10975347
     },
     {
      "file": "csv/baltimore-2024-part1.csv",
-     "rows": 120000,
-     "bytes": 26095169
+     "rows": 90141,
+     "bytes": 19499910
     },
     {
      "file": "csv/baltimore-2024-part2.csv",
-     "rows": 33261,
-     "bytes": 7235450
+     "rows": 65165,
+     "bytes": 14091004
     },
     {
      "file": "csv/baltimore-2025-part1.csv",
-     "rows": 120000,
-     "bytes": 26096088
+     "rows": 90181,
+     "bytes": 19499827
     },
     {
      "file": "csv/baltimore-2025-part2.csv",
-     "rows": 1693,
-     "bytes": 368622
+     "rows": 33574,
+     "bytes": 7260547
     },
     {
      "file": "csv/baltimore-2026-part1.csv",
-     "rows": 120000,
-     "bytes": 26100520
+     "rows": 90157,
+     "bytes": 19499820
     },
     {
      "file": "csv/baltimore-2026-part2.csv",
-     "rows": 38715,
-     "bytes": 8417864
+     "rows": 71122,
+     "bytes": 15378412
     }
-   ]
+   ],
+   "resident": {
+    "citizen_types": [
+     "SW-Rat Rubout",
+     "SW-Rat Rubout Follow-up",
+     "HCD-Rodents"
+    ],
+    "citizen_pulled": 145183,
+    "citizen_geocoded": 145091,
+    "proactive_pulled": 1777181,
+    "proactive_geocoded": 1776223,
+    "other_pulled": 325,
+    "note": "Resident-filed = 'SW-Rat Rubout' complaints, their follow-up visits, and 'HCD-Rodents' housing complaints. Proactive = 'SW-Rat Rubout Proactive' baiting/inspection rounds initiated by the city itself. Other = the two 'Alley Concern' types."
+   }
   },
   {
    "city": "Chicago",
@@ -959,6 +983,46 @@
    ]
   },
   {
+   "city": "Baton Rouge",
+   "state": "LA",
+   "slug": "baton-rouge",
+   "source_name": "East Baton Rouge Parish Open Data - Mosquito and Rodent Service Requests",
+   "source_url": "https://data.brla.gov/d/bktv-u9ua",
+   "dataset": "bktv-u9ua",
+   "filter": "type = 'RODENT' exactly in the East Baton Rouge Parish Mosquito & Rodent Control call-in log (resident service requests). 'MOSQUITO' requests and the joint 'BOTH' category are excluded. Parish-wide program: about 89% of RODENT records are in Baton Rouge proper; the rest are in parish communities (Baker, Zachary, Central, Greenwell Springs).",
+   "population_2020_census": 227470,
+   "pulled": 18345,
+   "geocoded": 18325,
+   "missing_coords": 20,
+   "date_min": "2019-02-07",
+   "date_max": "2026-11-25",
+   "types_original": {
+    "RODENT": 18345
+   },
+   "types_standard": {
+    "Rodent activity / signs": 18345
+   },
+   "by_year": {
+    "2019": 3501,
+    "2020": 3045,
+    "2021": 2435,
+    "2022": 2196,
+    "2023": 1837,
+    "2024": 1797,
+    "2025": 2135,
+    "2026": 1399
+   },
+   "points_file": "baton-rouge.json",
+   "points_bytes": 1314999,
+   "csv_files": [
+    {
+     "file": "csv/baton-rouge.csv",
+     "rows": 18345,
+     "bytes": 2765431
+    }
+   ]
+  },
+  {
    "city": "Pittsburgh",
    "state": "PA",
    "slug": "pittsburgh",
@@ -1026,6 +1090,49 @@
      "file": "csv/new-orleans.csv",
      "rows": 6519,
      "bytes": 1000946
+    }
+   ]
+  },
+  {
+   "city": "Cambridge",
+   "state": "MA",
+   "slug": "cambridge",
+   "source_name": "Cambridge Open Data - Commonwealth Connect (SeeClickFix) Service Requests",
+   "source_url": "https://data.cambridgema.gov/d/2z9k-mv9g",
+   "dataset": "2z9k-mv9g",
+   "filter": "issue_type = 'Rodent Sighting' exactly \u2014 the dataset's formal rodent category. Free-text one-off ticket titles in the same feed are not a category and are excluded.",
+   "population_2020_census": 118403,
+   "pulled": 5166,
+   "geocoded": 5166,
+   "missing_coords": 0,
+   "date_min": "2016-01-07",
+   "date_max": "2026-11-23",
+   "types_original": {
+    "Rodent Sighting": 5166
+   },
+   "types_standard": {
+    "Rat sighting": 5166
+   },
+   "by_year": {
+    "2016": 196,
+    "2017": 178,
+    "2018": 207,
+    "2019": 237,
+    "2020": 763,
+    "2021": 845,
+    "2022": 839,
+    "2023": 427,
+    "2024": 513,
+    "2025": 510,
+    "2026": 451
+   },
+   "points_file": "cambridge.json",
+   "points_bytes": 401757,
+   "csv_files": [
+    {
+     "file": "csv/cambridge.csv",
+     "rows": 5166,
+     "bytes": 804782
     }
    ]
   },
@@ -1143,6 +1250,49 @@
      "file": "csv/san-francisco.csv",
      "rows": 5746,
      "bytes": 712176
+    }
+   ]
+  },
+  {
+   "city": "Evanston",
+   "state": "IL",
+   "slug": "evanston",
+   "source_name": "City of Evanston Open Data (ArcGIS) - 311 Service Requests 2013 to 2022 (historical archive)",
+   "source_url": "https://services3.arcgis.com/RVAJnWJd9M0xRdYG/arcgis/rest/services/311_Service_Requests_(2013_to_2022)/FeatureServer/0",
+   "dataset": "",
+   "filter": "Title IN ('Dead Rodent-Rat','Rodents- Rats') in the city's historical 311 archive (2013-2022; the archive ends Feb 2022). The layer repeats requests, so rows are deduplicated on the city request ID, keeping the earliest record per request.",
+   "population_2020_census": 78110,
+   "pulled": 4169,
+   "geocoded": 4168,
+   "missing_coords": 1,
+   "date_min": "2014-01-09",
+   "date_max": "2022-02-22",
+   "types_original": {
+    "Rodents- Rats": 3723,
+    "Dead Rodent-Rat": 446
+   },
+   "types_standard": {
+    "Rat sighting": 3723,
+    "Dead rodent removal": 446
+   },
+   "by_year": {
+    "2014": 193,
+    "2015": 413,
+    "2016": 635,
+    "2017": 647,
+    "2018": 557,
+    "2019": 488,
+    "2020": 530,
+    "2021": 677,
+    "2022": 29
+   },
+   "points_file": "evanston.json",
+   "points_bytes": 324604,
+   "csv_files": [
+    {
+     "file": "csv/evanston.csv",
+     "rows": 4169,
+     "bytes": 724965
     }
    ]
   },
@@ -1283,8 +1433,10 @@
    ]
   }
  ],
- "total_pulled": 3402317,
- "total_geocoded": 3377635,
- "total_missing_coords": 24682,
- "city_count": 15
+ "total_pulled": 3472008,
+ "total_geocoded": 3447288,
+ "total_missing_coords": 24720,
+ "city_count": 18,
+ "total_citizen_pulled": 1694502,
+ "total_citizen_geocoded": 1670741
 }
