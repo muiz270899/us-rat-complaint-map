@@ -20,6 +20,22 @@
   var aggregates = null;  // last drawn aggregate cells [{x,y,count,lat,lng}]
   var drawnPts = null;    // last drawn individual points [{x,y,rec}]
   var viewMode = "points"; // "points" | "heat"
+  var citizenMode = false; // true: count/map resident-filed cases only
+
+  // A point counts as citizen-filed when its city has no resident/proactive
+  // split in the source data (all its categories are resident-filed 311
+  // requests), or when its original city type is one of the resident types.
+  function isCitizenPoint(meta, p) {
+    if (!citizenMode) return true;
+    if (!meta || !meta.resident || !meta.resident.citizen_types) return true;
+    return meta.resident.citizen_types.indexOf(p[3]) >= 0;
+  }
+  function cityPulled(c) {
+    return citizenMode && c.resident ? c.resident.citizen_pulled : c.pulled;
+  }
+  function cityGeocoded(c) {
+    return citizenMode && c.resident ? c.resident.citizen_geocoded : c.geocoded;
+  }
 
   var map = L.map("map", { preferCanvas: true }).setView([39.5, -98.35], 4);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -85,6 +101,7 @@
       for (var i = 0; i < pts.length; i++) {
         var p = pts[i];
         if (p[2] < df || p[2] > dt) continue;
+        if (!isCitizenPoint(meta, p)) continue;
         view.push({
           lat: p[0], lng: p[1], date: p[2], to: p[3], ts: p[4], status: p[5],
           city: meta.city, state: meta.state, slug: slug,
@@ -288,7 +305,11 @@
       nm.textContent = c.city + ", " + c.state;
       var sub = document.createElement("span");
       sub.className = "sub";
-      if (c.geocoded > 0) {
+      if (citizenMode && c.resident) {
+        sub.textContent = fmt(c.resident.citizen_pulled) + " citizen-filed · " +
+          fmt(c.resident.citizen_geocoded) + " mapped (of " + fmt(c.pulled) +
+          " total records incl. proactive city work)";
+      } else if (c.geocoded > 0) {
         sub.textContent = fmt(c.pulled) + " pulled · " + fmt(c.geocoded) + " mapped" +
           (c.missing_coords > 0 ? " · " + fmt(c.missing_coords) + " no coords" : "");
       } else {
@@ -339,7 +360,8 @@
       byType[r.ts] = (byType[r.ts] || 0) + 1;
     });
     document.getElementById("selSummary").textContent =
-      fmt(total) + " complaints selected";
+      fmt(total) + (citizenMode ? " citizen-filed complaints selected"
+                                : " complaints selected");
     document.getElementById("byCity").innerHTML = miniTable(byCity, total);
     document.getElementById("byType").innerHTML = miniTable(byType, total);
   }
@@ -361,16 +383,22 @@
     var el = document.getElementById("compareTable");
     var cities = summary.cities.filter(function (c) { return !c.error; })
       .slice().sort(function (a, b) { return b.pulled - a.pulled; });
-    var h = "<table class='compare'><thead><tr><th>City</th><th>Pulled</th>" +
-      "<th>Mapped</th><th>No coords</th><th>Dates</th><th>Per 100k</th></tr></thead><tbody>";
+    var h = "<table class='compare'><thead><tr><th>City</th><th>Records</th>" +
+      "<th>Mapped</th><th>% mapped</th><th>No coords</th><th>Resident-filed</th>" +
+      "<th>Years</th><th>Per 100k</th></tr></thead><tbody>";
     cities.forEach(function (c) {
       var per = c.population_2020_census
         ? Math.round((c.pulled / c.population_2020_census) * 100000).toLocaleString()
         : "—";
+      var pct = c.pulled > 0 ? (100 * c.geocoded / c.pulled).toFixed(1) + "%" : "—";
+      var res = c.resident ? fmt(c.resident.citizen_pulled) : "—";
+      var years = (c.date_min || "?").slice(0, 4) + "–" + (c.date_max || "?").slice(0, 4);
       h += "<tr><td>" + escapeHtml(c.city) + ", " + c.state + "</td>" +
         "<td>" + fmt(c.pulled) + "</td><td>" + fmt(c.geocoded) + "</td>" +
+        "<td>" + pct + "</td>" +
         "<td>" + fmt(c.missing_coords) + "</td>" +
-        "<td class='dates'>" + (c.date_min || "?") + " – " + (c.date_max || "?") + "</td>" +
+        "<td>" + res + "</td>" +
+        "<td class='dates'>" + years + "</td>" +
         "<td>" + per + "</td></tr>";
     });
     el.innerHTML = h + "</tbody></table>";
@@ -410,7 +438,12 @@
       "<p class='hint'>Every record comes straight from an official city 311 open-data API " +
       "(Socrata, CKAN, ArcGIS) — no scraping, no third-party resellers. The fetch pipeline is " +
       "re-runnable end-to-end from a clean checkout; see the repository README for the " +
-      "methodology, cleaning rules and per-city coverage.</p><h3>Sources</h3><ul class='sources'>";
+      "methodology, cleaning rules and per-city coverage.</p>" +
+      "<p class='hint'><strong>Full coverage documentation:</strong> " +
+      "<a href='../COVERAGE.md' target='_blank' rel='noopener'>COVERAGE.md</a> lists, " +
+      "for every city, the source dataset, the exact category filter used, the date " +
+      "range, and the pulled vs mapped counts — including how Baltimore's resident-filed " +
+      "cases are separated from its proactive Rat Rubout rounds.</p><h3>Sources</h3><ul class='sources'>";
     summary.cities.filter(function (c) { return !c.error; }).forEach(function (c) {
       h += "<li><a href='" + c.source_url + "' target='_blank' rel='noopener'>" +
         escapeHtml(c.city) + ", " + c.state + "</a> — " + escapeHtml(c.source_name || "") +
@@ -452,7 +485,43 @@
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
   });
 
+  function renderHeadStats() {
+    if (!summary) return;
+    var mapped = citizenMode && summary.total_citizen_geocoded != null
+      ? summary.total_citizen_geocoded : summary.total_geocoded;
+    var pulled = citizenMode && summary.total_citizen_pulled != null
+      ? summary.total_citizen_pulled : summary.total_pulled;
+    document.getElementById("headStats").innerHTML =
+      "<span class='chip'><b>" + fmt(summary.city_count) + "</b> cities</span>" +
+      "<span class='chip'><b>" + fmt(mapped) + "</b> complaints mapped" +
+      (citizenMode ? " (citizen-filed)" : "") + "</span>" +
+      "<span class='chip'><b>" + fmt(pulled) + "</b> records" +
+      (citizenMode ? " (citizen-filed)" : " pulled") + "</span>" +
+      "<span class='chip'>" + (summary.date_min_all || "?") + " &rarr; " +
+      (summary.date_max_all || "?") + "</span>";
+    var note = document.getElementById("modeNote");
+    var balt = cityBySlug["baltimore"];
+    if (citizenMode && balt && balt.resident) {
+      note.hidden = false;
+      note.innerHTML = "Citizen reports only is <b>on</b>. Baltimore now counts " +
+        fmt(balt.resident.citizen_pulled) + " resident-filed cases instead of " +
+        fmt(balt.pulled) + " total records — the difference is " +
+        fmt(balt.resident.proactive_pulled) + " proactive Rat Rubout rounds " +
+        "logged by the city itself, plus a small number of alley-concern cases.";
+    } else {
+      note.hidden = true;
+      note.innerHTML = "";
+    }
+  }
+
   // ---------------------------------------------------------- controls
+  document.getElementById("citizenToggle").addEventListener("change", function () {
+    citizenMode = this.checked;
+    viewDirty = true;
+    renderHeadStats();
+    renderCityList();
+    pointLayer.redraw();
+  });
   function setAllCities(mode) {
     var cities = summary.cities.filter(function (c) { return !c.error; });
     cities.forEach(function (c, i) {
@@ -506,6 +575,13 @@
   DATA_BASES.forEach(function (b) { chain = chain.catch(function () { return boot(b); }); });
   chain.then(function (s) {
     summary = s;
+    // deep link: ?citizen=1 starts in "Citizen reports only" mode
+    try {
+      if (new URLSearchParams(window.location.search).get("citizen") === "1") {
+        citizenMode = true;
+        document.getElementById("citizenToggle").checked = true;
+      }
+    } catch (e) { /* older browser: ignore */ }
     var dmin = null, dmax = null;
     summary.cities.forEach(function (c) {
       cityBySlug[c.slug] = c;
@@ -514,11 +590,7 @@
     });
     summary.date_min_all = dmin;
     summary.date_max_all = dmax;
-    document.getElementById("headStats").innerHTML =
-      "<span class='chip'><b>" + fmt(summary.city_count) + "</b> cities</span>" +
-      "<span class='chip'><b>" + fmt(summary.total_geocoded) + "</b> complaints mapped</span>" +
-      "<span class='chip'><b>" + fmt(summary.total_pulled) + "</b> records pulled</span>" +
-      "<span class='chip'>" + (dmin || "?") + " &rarr; " + (dmax || "?") + "</span>";
+    renderHeadStats();
     var df = document.getElementById("dateFrom"), dt = document.getElementById("dateTo");
     df.min = dt.min = dmin; df.max = dt.max = dmax;
     df.value = dmin; dt.value = dmax;

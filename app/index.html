@@ -20,6 +20,23 @@
 <main>
   <aside id="panel">
     <section>
+      <h2>Counting mode</h2>
+      <label class="toggle-row">
+        <input type="checkbox" id="citizenToggle">
+        <span><strong>Citizen reports only</strong></span>
+      </label>
+      <p class="hint">Some cities log their own proactive work as 311 records.
+      Baltimore is the big case: most of its records are the Rat Rubout crews'
+      <em>proactive</em> baiting &amp; inspection rounds, not resident complaints.
+      Turn this on to count and map only <strong>resident-filed</strong> cases.
+      For Baltimore that means the <em>SW-Rat Rubout</em> complaint type, its
+      follow-ups, and <em>HCD-Rodents</em> housing complaints. Cities whose
+      source data has no proactive/resident split are unchanged — their 311
+      categories are resident-filed requests.</p>
+      <div id="modeNote" class="mode-note" hidden></div>
+    </section>
+
+    <section>
       <h2>Cities</h2>
       <div class="row-btns">
         <button id="btnAllCities" type="button">All</button>
@@ -53,7 +70,11 @@
       <div id="compareTable"></div>
       <p class="hint">“Per 100k” = complaint <em>records</em> per 100,000 residents
       (population: 2020 US Census, city proper). It measures reporting volume,
-      <strong>not</strong> rat population.</p>
+      <strong>not</strong> rat population. “Resident-filed” is shown only where
+      the source data separates resident-filed cases from city-initiated
+      proactive work (Baltimore); elsewhere the categories are resident-filed
+      311 requests, some of which include the inspection or treatment the city
+      performs in response.</p>
     </section>
 
     <section>
