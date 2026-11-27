@@ -1,0 +1,171 @@
+# US 311 Rat & Rodent Complaint Map
+
+**Every rat and rodent complaint filed with city 311 systems across the United States — pulled directly from official municipal open-data portals, standardized, and consolidated into one interactive map and one open dataset.**
+
+| | |
+|---|---|
+| **Cities covered** | 15 |
+| **Records pulled** | 3,402,317 |
+| **Complaints mapped** | 3,377,635 (99.3% of records carry coordinates) |
+| **Historical span** | 1999 – 2026 |
+| **Data last fetched** | 2026-11-27 |
+| **Sources** | Official city open-data APIs only (Socrata, CKAN, ArcGIS) — no scraping, no resellers |
+
+> **Read this first:** complaint volume does **not** necessarily reflect actual rat population sizes. It also reflects how easy each city makes it to file a 311 complaint, public awareness, whether the city runs proactive inspection programs, and how each city classifies rodent cases. This dataset measures *reporting*, not rats. See [Limitations](#limitations).
+
+*Screenshots: to be added from the live deployment — the app itself is in [`app/`](app/) and runs locally in one step, below.*
+
+---
+
+## Quick start
+
+```bash
+# 1. Serve the folder (any static host works, including GitHub Pages)
+python3 -m http.server 8000
+
+# 2. Open the app
+#    http://localhost:8000/app/
+```
+
+The app is fully static — no build step, no backend. It reads `data/summary.json` and the per-city point files beside it.
+
+To rebuild the entire dataset from the official sources:
+
+```bash
+python3 pipeline/fetch.py        # that is the whole pipeline — one command
+```
+
+The pipeline is config-driven (`pipeline/cities.json`), idempotent, and re-runnable end-to-end from a clean checkout. It refreshes every city, rewrites every output file, and re-stamps the fetch date.
+
+---
+
+## Coverage
+
+Every count below is the number of records actually pulled from the city's own API on the fetch date — nothing is estimated or extrapolated. "No coords" records are real complaints whose source records carry no usable coordinates; they are included in the CSVs and in every total, and excluded only from the map itself.
+
+| City | Records pulled | Mapped | No coords | Date range | Records / 100k residents* |
+|---|---:|---:|---:|---|---:|
+| Baltimore, MD | 1,880,678 | 1,879,644 | 1,034 | 2010-01-01 – 2026-11-25 | 321,095 |
+| Chicago, IL | 711,869 | 711,440 | 429 | 1999-11-29 – 2026-11-26 | 25,920 |
+| New York, NY | 517,619 | 514,277 | 3,342 | 2010-01-01 – 2026-11-25 | 5,879 |
+| Washington, DC | 114,945 | 114,945 | 0 | 2013-05-23 – 2026-05-01 | 16,670 |
+| Boston, MA | 48,172 | 47,731 | 441 | 2012-01-02 – 2026-11-10 | 7,130 |
+| Buffalo, NY | 37,313 | 35,939 | 1,374 | 2008-07-29 – 2026-11-26 | 13,405 |
+| Detroit, MI | 27,177 | 27,177 | 0 | 2017-06-14 – 2026-11-25 | 4,252 |
+| Kansas City, MO | 20,177 | 20,176 | 1 | 2007-01-04 – 2026-11-20 | 3,971 |
+| Somerville, MA | 14,810 | 0 | 14,810 | 2015-07-04 – 2026-11-23 | 18,274 |
+| Pittsburgh, PA | 8,465 | 8,384 | 81 | 2015-04-30 – 2026-11-24 | 2,794 |
+| New Orleans, LA | 6,519 | 6,497 | 22 | 2019-01-01 – 2026-11-23 | 1,698 |
+| San Francisco, CA | 5,746 | 4,645 | 1,101 | 2010-01-26 – 2026-11-25 | 657 |
+| Cincinnati, OH | 4,745 | 4,745 | 0 | 2006-09-13 – 2026-11-22 | 1,535 |
+| Hartford, CT | 2,070 | 2,035 | 35 | 2015-07-06 – 2026-11-02 | 1,710 |
+| Norfolk, VA | 2,012 | 0 | 2,012 | 2019-10-02 – 2026-11-24 | 845 |
+| **Total** | **3,402,317** | **3,377,635** | **24,682** | **1999 – 2026** | |
+
+\* Records per 100,000 residents, using 2020 US Census city-proper populations. This normalizes *reporting volume* — it is **not** a rat-population figure. Baltimore's outsized rate is explained in [Limitations](#limitations): most of its records are the city's own proactive Rat Rubout baiting visits, which Baltimore logs as 311 service requests.
+
+Two cities (Somerville, Norfolk) publish no coordinates at all in their 311 data. Their records are included in full in the CSVs and totals, and are labeled CSV-only in the app.
+
+---
+
+## The app
+
+`app/` is a dependency-light static web app (Leaflet + OpenStreetMap tiles via CDN, everything else hand-rolled vanilla JS):
+
+- **Points & heatmap views** — a canvas renderer draws individual complaints when zoomed in and density-aggregated cells when zoomed out, so cities with 100k+ points stay fluid; a heat/density toggle renders the same selection as a colorized density surface.
+- **Filters** — toggle any combination of the 15 cities; custom start/end dates.
+- **Point popups** — city, date, the city's *original* complaint type, the standardized type, and status.
+- **Selection summary** — live totals for the current filter, broken down by city and by standardized complaint type.
+- **City comparison table** — pulled vs mapped vs missing-coordinate counts, date range, and records per 100k residents for every city.
+- **Per-city trends** — complaints-per-year sparkline for every city, from the full history.
+- **About the data panel** — every source linked to its official portal page, the exact filter used per city, the fetch date, and the limitations.
+- **CSV export** — download exactly the current selection (cities + dates) as CSV, including latitude and longitude for every record. Full per-city CSVs (all records, including non-geocoded ones) are linked in the app and live in [`data/csv/`](data/csv/).
+
+---
+
+## Data sources & filters
+
+Each city was verified by hand against its official portal: the exact dataset, the exact field that classifies complaints, and the exact values that genuinely denote rat/rodent cases. Substring lookalikes were audited and excluded everywhere (e.g. *Registration*, *Restoration*, *Operating*, *Refrigerator*, *Generator*, *Grates* are not rodent complaints). The machine-readable source of truth is [`pipeline/cities.json`](pipeline/cities.json); the app's About panel shows the same information per city.
+
+| City | Portal / dataset | Rat filter (on the city's own classification) |
+|---|---|---|
+| Baltimore, MD | ArcGIS — 311 Customer Service Requests, yearly layers 2004–2022 + annual services 2023–2026 | `SRType LIKE 'SW-Rat%'` |
+| Chicago, IL | Socrata `v6vf-nfxy` (2019– ) + `97t6-zrhs` (historical, –2018) | `sr_type = 'Rodent Baiting/Rat Complaint'` |
+| New York, NY | Socrata `erm2-nwe9` (2020– ) + `76ig-c548` (2010–2019) | `complaint_type = 'Rodent'`; original type = descriptor |
+| Washington, DC | ArcGIS — 311 City Service Requests, yearly layers 2009–2026 | `SERVICECODEDESCRIPTION = 'Rodent Inspection and Treatment'` |
+| Boston, MA | CKAN — 311 Service Requests, yearly files 2011–2026 | `type LIKE '%Rodent%'` (in practice: 'Rodent Activity') |
+| Buffalo, NY | Socrata `whkc-e5vr` (2008–May 2024) + `3tj7-3tdz` (May 2024– ) | `type = 'Rodents (Req_Serv)'` / `'Rodent Control Issue'` |
+| Detroit, MI | ArcGIS — Improve Detroit Issues | `request_type LIKE '%Rodent%'` (all: 'Rodent Extermination') |
+| Kansas City, MO | Socrata `7at3-sxhp` (2007–2021) + `d4px-6rwg` (current) | `type IN ('Rat Treatment','Rat Control and Treatment','Rodent')`; `issue_sub_type = 'Rats'` |
+| Somerville, MA | Socrata `4pyi-uqq6` | `type LIKE '%Rodent%' OR type = 'Rats'` |
+| Pittsburgh, PA | CKAN (WPRDC) — Pittsburgh 311, combined file | `subject = 'Rodent Control'` |
+| New Orleans, LA | Socrata `2jgv-pqrq` | `request_type = 'Mosquito, Termite & Rodent Control'` AND `request_reason IN ('Rodent Complaint (Rats)','Rodent Complaint (Mice & Rats)')` |
+| San Francisco, CA | Socrata `vw6y-z8j6` (311 Cases) | `service_subtype IN ('Building - Infestation_Rodent_Insect','infestation_rodent_insect')` |
+| Cincinnati, OH | Socrata `gcej-gmiw` | `sr_type_desc IN (…)` — 12 verified rat/rodent values, enumerated in `cities.json` |
+| Hartford, CT | ArcGIS — Service Requests 2015 to Current, yearly layers | `upper(USER_Record_Type) LIKE '%RODENT%'` |
+| Norfolk, VA | Socrata `nbyu-xjez` | `service_request_type IN ('Rat Observed','Potential Rat Harborage')` |
+
+Cities investigated and **excluded** because no genuine, separable rat/rodent category exists in their public 311 data (or the data is not openly queryable): Dallas, Seattle, Columbus, Austin, Los Angeles, Nashville, Denver, Minneapolis, Philadelphia, San Antonio, Cambridge (MA), Providence, Honolulu, Memphis (token-secured service), Houston, Milwaukee, Louisville, San Diego. Excluding them is deliberate: padding the city count with non-rodent data would make the dataset less reliable, not more comprehensive.
+
+---
+
+## Methodology
+
+1. **Discovery & verification.** For each candidate city, the portal's own catalog/API was queried for 311 datasets; the classification field's distinct values were enumerated and read by a human reviewer to identify the values that genuinely denote rat/rodent cases — including historical renames and era changes (e.g. NYC's December 2025 dataset split, Buffalo's May 2024 system change, Chicago's 2018/2019 system change), which are stitched together without overlap.
+2. **Extraction.** Full history, all years, paged through each API (Socrata `$limit`/`$offset`, CKAN `datastore_search_sql`, ArcGIS `resultOffset` with transfer-limit handling). Counts were cross-checked against independent `count(*)` queries before and after pulling.
+3. **Standardization.** Every record is normalized to: `date` (ISO), `latitude`, `longitude`, `type_original` (the city's own classification, **always preserved verbatim**), `type_standard` (one of ten shared categories: Rat sighting · Mouse sighting · Rodent activity / signs · Rodent infestation · Rodent baiting / treatment · Rodent inspection · Dead rodent removal · Conditions attracting rodents · Rodent bite · Other rodent complaint), `status`, and `source`.
+4. **Geocoding honesty.** Coordinates are exactly what the source publishes — this project does **not** geocode addresses itself and never invents locations. Records whose source has no usable coordinates are counted as "no coords" per city, kept in the CSVs, and left off the map.
+5. **Accounting.** For every city the pipeline records pulled vs geocoded vs missing-coordinate counts, the observed date range, the full per-type breakdown (original and standardized), and per-year counts. Those figures populate `data/summary.json`, the table above, and the app — one set of numbers, everywhere.
+
+### Data dictionary
+
+Per-city point files (`data/<city>.json`, or `data/<city>-<year>.json` for the largest cities) are compact arrays:
+
+```json
+[latitude, longitude, "YYYY-MM-DD", "type_original", "type_standard", "status"]
+```
+
+Consolidated CSVs (`data/csv/`, one or more files per city, each ≤ 25 MB) have one row per pulled record — including records without coordinates:
+
+```
+city,state,date,latitude,longitude,type_original,type_standard,status,source
+```
+
+`data/summary.json` carries the per-city coverage statistics, type breakdowns, per-year counts, source links, filters, and the fetch timestamp.
+
+---
+
+## Limitations
+
+- **Complaints ≠ rat population.** Reporting propensity, 311 accessibility, awareness campaigns, and classification practices differ by city and over time. Cross-city comparisons measure reporting systems as much as rodents.
+- **Baltimore is a special case.** ~94% of Baltimore's records are `SW-Rat Rubout Proactive` — baiting/inspection visits initiated by the city itself under its Rat Rubout program and logged as 311 service requests. They are genuine records from Baltimore's official 311 dataset and are counted, but they are **not** resident complaints. The resident-initiated type (`SW-Rat Rubout`, 102,422 records) is broken out separately in every per-type breakdown, so the distinction is never hidden.
+- **Category heterogeneity.** Cities classify differently: San Francisco's category is a combined rodent/insect building-infestation type; Detroit's is extermination requests; DC's is inspection-and-treatment orders. The original classification is preserved on every record precisely so these differences stay visible.
+- **Missing coordinates.** 24,682 records (0.7%) have no usable coordinates in their source data, including all records from Somerville and Norfolk, whose portals publish no coordinate fields. They are in the CSVs and totals, not on the map.
+- **Coordinate precision varies.** Some portals publish full-precision coordinates; Pittsburgh's are rounded by the source (block-level approximations). Points show where the *source* locates the complaint.
+- **Source snapshots change.** Cities edit and re-publish their datasets; a re-run may produce slightly different historical counts. Washington DC's 2026 layer, for example, ended at 2026-05-01 in the source at fetch time.
+- **Duplicates across eras were avoided by construction** (non-overlapping date ranges per source), but a single real-world incident can legitimately generate multiple 311 requests in any city's system.
+
+---
+
+## Repository layout
+
+```
+app/                  the static web app (index.html, style.css, app.js)
+data/                 generated dataset — do not edit by hand
+  <city>.json         geocoded points per city (largest cities split by year)
+  csv/                full consolidated CSVs per city (all records)
+  summary.json        coverage statistics, breakdowns, sources, fetch date
+pipeline/
+  fetch.py            the pipeline (Socrata / CKAN / ArcGIS adapters)
+  cities.json         per-city endpoints, fields, filters, standard mappings
+  probe.py            endpoint-verification helper used during development
+README.md             this file
+```
+
+## Adding a city
+
+Add an entry to `pipeline/cities.json` (adapter, endpoint, field mapping, verified rat filter, standard-type mapping, 2020 Census population) and re-run `python3 pipeline/fetch.py`. The summary, app, and CSVs pick it up automatically.
+
+## Attribution
+
+Complaint data © the respective cities, published through their official open-data portals (linked per city above) under their open-data terms. Basemap © OpenStreetMap contributors. Populations: US Census Bureau, 2020 Census. This project consolidates and documents the data; it does not alter the underlying records.
