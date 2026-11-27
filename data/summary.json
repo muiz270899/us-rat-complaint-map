@@ -1,0 +1,1290 @@
+{
+ "generated_utc": "2026-11-27T04:42:09.264997+00:00",
+ "cities": [
+  {
+   "city": "Baltimore",
+   "state": "MD",
+   "slug": "baltimore",
+   "source_name": "Baltimore Open Data (ArcGIS) - 311 Customer Service Requests, yearly layers 2004-2022 + annual services 2023-2026",
+   "source_url": "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/311_Customer_Service_Requests_Yearly/FeatureServer",
+   "dataset": "",
+   "filter": "SRType LIKE 'SW-Rat%' \u2014 Baltimore's Rat Rubout program. Most records are 'SW-Rat Rubout Proactive': city-initiated baiting/inspection visits that Baltimore itself logs as 311 service requests; resident-initiated complaints are the 'SW-Rat Rubout' type. Both are counted, with the split visible in the per-type breakdown.",
+   "population_2020_census": 585708,
+   "pulled": 1880678,
+   "geocoded": 1879644,
+   "missing_coords": 1034,
+   "date_min": "2010-01-01",
+   "date_max": "2026-11-25",
+   "types_original": {
+    "SW-Rat Rubout Proactive": 1777181,
+    "SW-Rat Rubout": 102422,
+    "SW-Rat Rubout Follow-up": 750,
+    "SW-Rat Rubout Alley Concern": 276,
+    "SW-Rat Rubout Alley Concern (SW creation only)": 49
+   },
+   "types_standard": {
+    "Rodent baiting / treatment": 1880402,
+    "Other rodent complaint": 276
+   },
+   "by_year": {
+    "2010": 19275,
+    "2011": 39730,
+    "2012": 30001,
+    "2013": 41337,
+    "2014": 74307,
+    "2015": 115384,
+    "2016": 116579,
+    "2017": 131926,
+    "2018": 171948,
+    "2019": 147442,
+    "2020": 121784,
+    "2021": 160010,
+    "2022": 138985,
+    "2023": 138301,
+    "2024": 153261,
+    "2025": 121693,
+    "2026": 158715
+   },
+   "points_files": [
+    {
+     "file": "baltimore-2010.json",
+     "rows": 19275,
+     "bytes": 1806063
+    },
+    {
+     "file": "baltimore-2011.json",
+     "rows": 39730,
+     "bytes": 3809971
+    },
+    {
+     "file": "baltimore-2012.json",
+     "rows": 30001,
+     "bytes": 2848998
+    },
+    {
+     "file": "baltimore-2013.json",
+     "rows": 41337,
+     "bytes": 3958186
+    },
+    {
+     "file": "baltimore-2014.json",
+     "rows": 74307,
+     "bytes": 7190524
+    },
+    {
+     "file": "baltimore-2015.json",
+     "rows": 115038,
+     "bytes": 11163057
+    },
+    {
+     "file": "baltimore-2016.json",
+     "rows": 116167,
+     "bytes": 11285261
+    },
+    {
+     "file": "baltimore-2017.json",
+     "rows": 131763,
+     "bytes": 12828952
+    },
+    {
+     "file": "baltimore-2018.json",
+     "rows": 171836,
+     "bytes": 16757498
+    },
+    {
+     "file": "baltimore-2019.json",
+     "rows": 147442,
+     "bytes": 14377066
+    },
+    {
+     "file": "baltimore-2020.json",
+     "rows": 121784,
+     "bytes": 11867696
+    },
+    {
+     "file": "baltimore-2021.json",
+     "rows": 160009,
+     "bytes": 15583478
+    },
+    {
+     "file": "baltimore-2022.json",
+     "rows": 138985,
+     "bytes": 13540981
+    },
+    {
+     "file": "baltimore-2023.json",
+     "rows": 138301,
+     "bytes": 13475603
+    },
+    {
+     "file": "baltimore-2024.json",
+     "rows": 153261,
+     "bytes": 14939144
+    },
+    {
+     "file": "baltimore-2025.json",
+     "rows": 121693,
+     "bytes": 11861395
+    },
+    {
+     "file": "baltimore-2026.json",
+     "rows": 158715,
+     "bytes": 15472429
+    }
+   ],
+   "points_bytes": 182766302,
+   "csv_files": [
+    {
+     "file": "csv/baltimore-2010.csv",
+     "rows": 19275,
+     "bytes": 4119140
+    },
+    {
+     "file": "csv/baltimore-2011.csv",
+     "rows": 39730,
+     "bytes": 8577648
+    },
+    {
+     "file": "csv/baltimore-2012.csv",
+     "rows": 30001,
+     "bytes": 6449195
+    },
+    {
+     "file": "csv/baltimore-2013.csv",
+     "rows": 41337,
+     "bytes": 8918703
+    },
+    {
+     "file": "csv/baltimore-2014.csv",
+     "rows": 74307,
+     "bytes": 16107441
+    },
+    {
+     "file": "csv/baltimore-2015.csv",
+     "rows": 115384,
+     "bytes": 25037160
+    },
+    {
+     "file": "csv/baltimore-2016.csv",
+     "rows": 116579,
+     "bytes": 25308190
+    },
+    {
+     "file": "csv/baltimore-2017-part1.csv",
+     "rows": 120000,
+     "bytes": 26077918
+    },
+    {
+     "file": "csv/baltimore-2017-part2.csv",
+     "rows": 11926,
+     "bytes": 2595492
+    },
+    {
+     "file": "csv/baltimore-2018-part1.csv",
+     "rows": 120000,
+     "bytes": 26100083
+    },
+    {
+     "file": "csv/baltimore-2018-part2.csv",
+     "rows": 51948,
+     "bytes": 11299752
+    },
+    {
+     "file": "csv/baltimore-2019-part1.csv",
+     "rows": 120000,
+     "bytes": 26098087
+    },
+    {
+     "file": "csv/baltimore-2019-part2.csv",
+     "rows": 27442,
+     "bytes": 5972174
+    },
+    {
+     "file": "csv/baltimore-2020-part1.csv",
+     "rows": 120000,
+     "bytes": 26093633
+    },
+    {
+     "file": "csv/baltimore-2020-part2.csv",
+     "rows": 1784,
+     "bytes": 388298
+    },
+    {
+     "file": "csv/baltimore-2021-part1.csv",
+     "rows": 120000,
+     "bytes": 26087193
+    },
+    {
+     "file": "csv/baltimore-2021-part2.csv",
+     "rows": 40010,
+     "bytes": 8697721
+    },
+    {
+     "file": "csv/baltimore-2022-part1.csv",
+     "rows": 120000,
+     "bytes": 26090068
+    },
+    {
+     "file": "csv/baltimore-2022-part2.csv",
+     "rows": 18985,
+     "bytes": 4129268
+    },
+    {
+     "file": "csv/baltimore-2023-part1.csv",
+     "rows": 120000,
+     "bytes": 26089746
+    },
+    {
+     "file": "csv/baltimore-2023-part2.csv",
+     "rows": 18301,
+     "bytes": 3982132
+    },
+    {
+     "file": "csv/baltimore-2024-part1.csv",
+     "rows": 120000,
+     "bytes": 26095169
+    },
+    {
+     "file": "csv/baltimore-2024-part2.csv",
+     "rows": 33261,
+     "bytes": 7235450
+    },
+    {
+     "file": "csv/baltimore-2025-part1.csv",
+     "rows": 120000,
+     "bytes": 26096088
+    },
+    {
+     "file": "csv/baltimore-2025-part2.csv",
+     "rows": 1693,
+     "bytes": 368622
+    },
+    {
+     "file": "csv/baltimore-2026-part1.csv",
+     "rows": 120000,
+     "bytes": 26100520
+    },
+    {
+     "file": "csv/baltimore-2026-part2.csv",
+     "rows": 38715,
+     "bytes": 8417864
+    }
+   ]
+  },
+  {
+   "city": "Chicago",
+   "state": "IL",
+   "slug": "chicago",
+   "source_name": "Chicago Data Portal - 311 Service Requests (current system, 2019-present) + Chicago Data Portal - 311 Service Requests, Rodent Baiting (historical, to Dec 2018)",
+   "source_url": "https://data.cityofchicago.org/Service-Requests/311-Service-Requests/v6vf-nfxy",
+   "dataset": "v6vf-nfxy, 97t6-zrhs",
+   "filter": "sr_type = 'Rodent Baiting/Rat Complaint' | historical rodent-baiting dataset (ends 2018-12-18; current system starts 2019-02-25, no overlap)",
+   "population_2020_census": 2746388,
+   "pulled": 711869,
+   "geocoded": 711440,
+   "missing_coords": 429,
+   "date_min": "1999-11-29",
+   "date_max": "2026-11-26",
+   "types_original": {
+    "Rodent Baiting/Rat Complaint": 711869
+   },
+   "types_standard": {
+    "Rodent baiting / treatment": 711869
+   },
+   "by_year": {
+    "2019": 41086,
+    "2020": 54068,
+    "2021": 65897,
+    "2022": 50201,
+    "2023": 48647,
+    "2024": 45732,
+    "2025": 44181,
+    "2026": 42870,
+    "1999": 1,
+    "2006": 2,
+    "2010": 188,
+    "2011": 34331,
+    "2012": 41532,
+    "2013": 33774,
+    "2014": 32855,
+    "2015": 36427,
+    "2016": 50088,
+    "2017": 50963,
+    "2018": 39026
+   },
+   "points_files": [
+    {
+     "file": "chicago-1999.json",
+     "rows": 1,
+     "bytes": 107
+    },
+    {
+     "file": "chicago-2006.json",
+     "rows": 2,
+     "bytes": 219
+    },
+    {
+     "file": "chicago-2010.json",
+     "rows": 188,
+     "bytes": 20320
+    },
+    {
+     "file": "chicago-2011.json",
+     "rows": 34322,
+     "bytes": 3647344
+    },
+    {
+     "file": "chicago-2012.json",
+     "rows": 41529,
+     "bytes": 4413767
+    },
+    {
+     "file": "chicago-2013.json",
+     "rows": 33773,
+     "bytes": 3587347
+    },
+    {
+     "file": "chicago-2014.json",
+     "rows": 32854,
+     "bytes": 3491425
+    },
+    {
+     "file": "chicago-2015.json",
+     "rows": 36426,
+     "bytes": 3870201
+    },
+    {
+     "file": "chicago-2016.json",
+     "rows": 50084,
+     "bytes": 5316465
+    },
+    {
+     "file": "chicago-2017.json",
+     "rows": 50961,
+     "bytes": 5401463
+    },
+    {
+     "file": "chicago-2018.json",
+     "rows": 39023,
+     "bytes": 4135410
+    },
+    {
+     "file": "chicago-2019.json",
+     "rows": 40925,
+     "bytes": 4328920
+    },
+    {
+     "file": "chicago-2020.json",
+     "rows": 54004,
+     "bytes": 5712521
+    },
+    {
+     "file": "chicago-2021.json",
+     "rows": 65845,
+     "bytes": 6965148
+    },
+    {
+     "file": "chicago-2022.json",
+     "rows": 50144,
+     "bytes": 5304175
+    },
+    {
+     "file": "chicago-2023.json",
+     "rows": 48636,
+     "bytes": 5144736
+    },
+    {
+     "file": "chicago-2024.json",
+     "rows": 45719,
+     "bytes": 4836359
+    },
+    {
+     "file": "chicago-2025.json",
+     "rows": 44166,
+     "bytes": 4671631
+    },
+    {
+     "file": "chicago-2026.json",
+     "rows": 42838,
+     "bytes": 4527997
+    }
+   ],
+   "points_bytes": 75375555,
+   "csv_files": [
+    {
+     "file": "csv/chicago-1999.csv",
+     "rows": 1,
+     "bytes": 262
+    },
+    {
+     "file": "csv/chicago-2006.csv",
+     "rows": 2,
+     "bytes": 452
+    },
+    {
+     "file": "csv/chicago-2010.csv",
+     "rows": 188,
+     "bytes": 35061
+    },
+    {
+     "file": "csv/chicago-2011.csv",
+     "rows": 34331,
+     "bytes": 6326040
+    },
+    {
+     "file": "csv/chicago-2012.csv",
+     "rows": 41532,
+     "bytes": 7653607
+    },
+    {
+     "file": "csv/chicago-2013.csv",
+     "rows": 33774,
+     "bytes": 6221885
+    },
+    {
+     "file": "csv/chicago-2014.csv",
+     "rows": 32855,
+     "bytes": 6054281
+    },
+    {
+     "file": "csv/chicago-2015.csv",
+     "rows": 36427,
+     "bytes": 6711673
+    },
+    {
+     "file": "csv/chicago-2016.csv",
+     "rows": 50088,
+     "bytes": 9223762
+    },
+    {
+     "file": "csv/chicago-2017.csv",
+     "rows": 50963,
+     "bytes": 9376832
+    },
+    {
+     "file": "csv/chicago-2018.csv",
+     "rows": 39026,
+     "bytes": 7179782
+    },
+    {
+     "file": "csv/chicago-2019.csv",
+     "rows": 41086,
+     "bytes": 7548013
+    },
+    {
+     "file": "csv/chicago-2020.csv",
+     "rows": 54068,
+     "bytes": 9935581
+    },
+    {
+     "file": "csv/chicago-2021.csv",
+     "rows": 65897,
+     "bytes": 12109819
+    },
+    {
+     "file": "csv/chicago-2022.csv",
+     "rows": 50201,
+     "bytes": 9225003
+    },
+    {
+     "file": "csv/chicago-2023.csv",
+     "rows": 48647,
+     "bytes": 8940258
+    },
+    {
+     "file": "csv/chicago-2024.csv",
+     "rows": 45732,
+     "bytes": 8404689
+    },
+    {
+     "file": "csv/chicago-2025.csv",
+     "rows": 44181,
+     "bytes": 8119159
+    },
+    {
+     "file": "csv/chicago-2026.csv",
+     "rows": 42870,
+     "bytes": 7874764
+    }
+   ]
+  },
+  {
+   "city": "New York",
+   "state": "NY",
+   "slug": "new-york",
+   "source_name": "NYC Open Data - 311 Service Requests from 2020 to Present + NYC Open Data - 311 Service Requests from 2010 to 2019",
+   "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
+   "dataset": "erm2-nwe9, 76ig-c548",
+   "filter": "complaint_type = 'Rodent'; original type shown is the NYC descriptor | complaint_type = 'Rodent' in the archived 2010-2019 dataset (NYC split its 311 dataset in Dec 2025; the current dataset starts 2020, no overlap)",
+   "population_2020_census": 8804190,
+   "pulled": 517619,
+   "geocoded": 514277,
+   "missing_coords": 3342,
+   "date_min": "2010-01-01",
+   "date_max": "2026-11-25",
+   "types_original": {
+    "Rat Sighting": 296094,
+    "Condition Attracting Rodents": 114131,
+    "Signs of Rodents": 48084,
+    "Mouse Sighting": 59246,
+    "Rodent Bite - PCS Only": 64
+   },
+   "types_standard": {
+    "Rat sighting": 296094,
+    "Conditions attracting rodents": 114131,
+    "Rodent activity / signs": 48084,
+    "Mouse sighting": 59246,
+    "Other rodent complaint": 64
+   },
+   "by_year": {
+    "2020": 27583,
+    "2021": 38809,
+    "2022": 41121,
+    "2023": 41748,
+    "2024": 39726,
+    "2025": 31312,
+    "2026": 25436,
+    "2010": 22186,
+    "2011": 21494,
+    "2012": 21327,
+    "2013": 22345,
+    "2014": 24515,
+    "2015": 29329,
+    "2016": 31439,
+    "2017": 35075,
+    "2018": 32530,
+    "2019": 31644
+   },
+   "points_files": [
+    {
+     "file": "new-york-2010.json",
+     "rows": 22067,
+     "bytes": 1871933
+    },
+    {
+     "file": "new-york-2011.json",
+     "rows": 21414,
+     "bytes": 1793869
+    },
+    {
+     "file": "new-york-2012.json",
+     "rows": 21210,
+     "bytes": 1765866
+    },
+    {
+     "file": "new-york-2013.json",
+     "rows": 22247,
+     "bytes": 1881500
+    },
+    {
+     "file": "new-york-2014.json",
+     "rows": 24397,
+     "bytes": 2023290
+    },
+    {
+     "file": "new-york-2015.json",
+     "rows": 29208,
+     "bytes": 2412853
+    },
+    {
+     "file": "new-york-2016.json",
+     "rows": 31256,
+     "bytes": 2575024
+    },
+    {
+     "file": "new-york-2017.json",
+     "rows": 34869,
+     "bytes": 2856003
+    },
+    {
+     "file": "new-york-2018.json",
+     "rows": 32356,
+     "bytes": 2665004
+    },
+    {
+     "file": "new-york-2019.json",
+     "rows": 31108,
+     "bytes": 2563386
+    },
+    {
+     "file": "new-york-2020.json",
+     "rows": 27280,
+     "bytes": 2241805
+    },
+    {
+     "file": "new-york-2021.json",
+     "rows": 38410,
+     "bytes": 3105109
+    },
+    {
+     "file": "new-york-2022.json",
+     "rows": 40791,
+     "bytes": 3275030
+    },
+    {
+     "file": "new-york-2023.json",
+     "rows": 41563,
+     "bytes": 3378547
+    },
+    {
+     "file": "new-york-2024.json",
+     "rows": 39475,
+     "bytes": 3193348
+    },
+    {
+     "file": "new-york-2025.json",
+     "rows": 31247,
+     "bytes": 2538285
+    },
+    {
+     "file": "new-york-2026.json",
+     "rows": 25379,
+     "bytes": 2082406
+    }
+   ],
+   "points_bytes": 42223258,
+   "csv_files": [
+    {
+     "file": "csv/new-york-2010.csv",
+     "rows": 22186,
+     "bytes": 3233225
+    },
+    {
+     "file": "csv/new-york-2011.csv",
+     "rows": 21494,
+     "bytes": 3110106
+    },
+    {
+     "file": "csv/new-york-2012.csv",
+     "rows": 21327,
+     "bytes": 3074510
+    },
+    {
+     "file": "csv/new-york-2013.csv",
+     "rows": 22345,
+     "bytes": 3250759
+    },
+    {
+     "file": "csv/new-york-2014.csv",
+     "rows": 24515,
+     "bytes": 3526618
+    },
+    {
+     "file": "csv/new-york-2015.csv",
+     "rows": 29329,
+     "bytes": 4209690
+    },
+    {
+     "file": "csv/new-york-2016.csv",
+     "rows": 31439,
+     "bytes": 4503942
+    },
+    {
+     "file": "csv/new-york-2017.csv",
+     "rows": 35075,
+     "bytes": 5008489
+    },
+    {
+     "file": "csv/new-york-2018.csv",
+     "rows": 32530,
+     "bytes": 4660427
+    },
+    {
+     "file": "csv/new-york-2019.csv",
+     "rows": 31644,
+     "bytes": 4527905
+    },
+    {
+     "file": "csv/new-york-2020.csv",
+     "rows": 27583,
+     "bytes": 3944473
+    },
+    {
+     "file": "csv/new-york-2021.csv",
+     "rows": 38809,
+     "bytes": 5498451
+    },
+    {
+     "file": "csv/new-york-2022.csv",
+     "rows": 41121,
+     "bytes": 5804640
+    },
+    {
+     "file": "csv/new-york-2023.csv",
+     "rows": 41748,
+     "bytes": 5937215
+    },
+    {
+     "file": "csv/new-york-2024.csv",
+     "rows": 39726,
+     "bytes": 5632026
+    },
+    {
+     "file": "csv/new-york-2025.csv",
+     "rows": 31312,
+     "bytes": 4452516
+    },
+    {
+     "file": "csv/new-york-2026.csv",
+     "rows": 25436,
+     "bytes": 3638038
+    }
+   ]
+  },
+  {
+   "city": "Washington",
+   "state": "DC",
+   "slug": "washington-dc",
+   "source_name": "DC GIS - 311 City Service Requests, yearly layers 2009-2026",
+   "source_url": "https://opendata.dc.gov/datasets/311-city-service-requests",
+   "dataset": "",
+   "filter": "SERVICECODEDESCRIPTION = 'Rodent Inspection and Treatment' exactly ('Rat Replacement Containers' is a trash-can program and is excluded)",
+   "population_2020_census": 689545,
+   "pulled": 114945,
+   "geocoded": 114945,
+   "missing_coords": 0,
+   "date_min": "2013-05-23",
+   "date_max": "2026-05-01",
+   "types_original": {
+    "Rodent Inspection and Treatment": 114945
+   },
+   "types_standard": {
+    "Rodent inspection": 114945
+   },
+   "by_year": {
+    "2013": 202,
+    "2014": 920,
+    "2015": 1779,
+    "2016": 3534,
+    "2017": 5311,
+    "2018": 5715,
+    "2019": 6599,
+    "2020": 8748,
+    "2021": 12211,
+    "2022": 13474,
+    "2023": 17833,
+    "2024": 16883,
+    "2025": 16685,
+    "2026": 5051
+   },
+   "points_file": "washington-dc.json",
+   "points_bytes": 11123447,
+   "csv_files": [
+    {
+     "file": "csv/washington-dc.csv",
+     "rows": 114945,
+     "bytes": 18824839
+    }
+   ]
+  },
+  {
+   "city": "Boston",
+   "state": "MA",
+   "slug": "boston",
+   "source_name": "Boston Open Data (Analyze Boston) - 311 Service Requests, yearly files 2011-2026",
+   "source_url": "https://data.boston.gov/dataset/311-service-requests",
+   "dataset": "",
+   "filter": "type LIKE '%Rodent%' (in practice the single value 'Rodent Activity') in each yearly 311 file 2011-2026",
+   "pulled": 48172,
+   "geocoded": 47731,
+   "missing_coords": 441,
+   "date_min": "2012-01-02",
+   "date_max": "2026-11-10",
+   "types_original": {
+    "Rodent Activity": 48172
+   },
+   "types_standard": {
+    "Rodent activity / signs": 48172
+   },
+   "points_file": "boston.json",
+   "points_bytes": 4141517,
+   "csv_files": [
+    {
+     "file": "csv/boston.csv",
+     "rows": 48172,
+     "bytes": 8218910
+    }
+   ],
+   "population_2020_census": 675647
+  },
+  {
+   "city": "Buffalo",
+   "state": "NY",
+   "slug": "buffalo",
+   "source_name": "Open Data Buffalo - 311 Service Requests (July 2008 - May 2024) + Open Data Buffalo - 311 Service Requests (May 2024 - Present)",
+   "source_url": "https://data.buffalony.gov/Quality-of-Life/311-Service-Requests/whkc-e5vr",
+   "dataset": "whkc-e5vr, 3tj7-3tdz",
+   "filter": "type = 'Rodents (Req_Serv)' (2008-May 2024 dataset) | type = 'Rodent Control Issue' (May 2024-present dataset; continues the older dataset without overlap)",
+   "population_2020_census": 278349,
+   "pulled": 37313,
+   "geocoded": 35939,
+   "missing_coords": 1374,
+   "date_min": "2008-07-29",
+   "date_max": "2026-11-26",
+   "types_original": {
+    "Rodents (Req_Serv)": 32344,
+    "Rodent Control Issue": 4969
+   },
+   "types_standard": {
+    "Rodent activity / signs": 37313
+   },
+   "by_year": {
+    "2008": 545,
+    "2009": 1260,
+    "2010": 1591,
+    "2011": 1401,
+    "2012": 1689,
+    "2013": 1414,
+    "2014": 1156,
+    "2015": 1576,
+    "2016": 2376,
+    "2017": 2631,
+    "2018": 2654,
+    "2019": 2441,
+    "2020": 2838,
+    "2021": 3114,
+    "2022": 2753,
+    "2023": 2281,
+    "2024": 2145,
+    "2025": 1813,
+    "2026": 1635
+   },
+   "points_file": "buffalo.json",
+   "points_bytes": 3000747,
+   "csv_files": [
+    {
+     "file": "csv/buffalo.csv",
+     "rows": 37313,
+     "bytes": 5563788
+    }
+   ]
+  },
+  {
+   "city": "Detroit",
+   "state": "MI",
+   "slug": "detroit",
+   "source_name": "City of Detroit Open Data - Improve Detroit Issues (ArcGIS FeatureServer)",
+   "source_url": "https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/improve_detroit/FeatureServer",
+   "dataset": "",
+   "filter": "request_type LIKE '%Rodent%' in the Improve Detroit issues layer",
+   "population_2020_census": 639111,
+   "pulled": 27177,
+   "geocoded": 27177,
+   "missing_coords": 0,
+   "date_min": "2017-06-14",
+   "date_max": "2026-11-25",
+   "types_original": {
+    "Rodent Extermination": 27177
+   },
+   "types_standard": {
+    "Other rodent complaint": 27177
+   },
+   "by_year": {
+    "2017": 3122,
+    "2018": 4242,
+    "2019": 4066,
+    "2020": 2625,
+    "2021": 3188,
+    "2022": 2782,
+    "2023": 1994,
+    "2024": 1817,
+    "2025": 1778,
+    "2026": 1563
+   },
+   "points_file": "detroit.json",
+   "points_bytes": 2512837,
+   "csv_files": [
+    {
+     "file": "csv/detroit.csv",
+     "rows": 27177,
+     "bytes": 4578366
+    }
+   ]
+  },
+  {
+   "city": "Kansas City",
+   "state": "MO",
+   "slug": "kansas-city",
+   "source_name": "Open Data KC - 311 Call Center Service Requests 2007-Mar 2021 + Open Data KC - 311 Call Center Reported Issues (current)",
+   "source_url": "https://data.kcmo.org/Operations/311-Call-Center-Service-Requests-2007-March-2021/7at3-sxhp",
+   "dataset": "7at3-sxhp, d4px-6rwg",
+   "filter": "type IN ('Rat Treatment','Rat Control and Treatment','Rodent') | issue_sub_type = 'Rats' (this dataset publishes no coordinate columns; records are CSV-only)",
+   "population_2020_census": 508090,
+   "pulled": 20177,
+   "geocoded": 20176,
+   "missing_coords": 1,
+   "date_min": "2007-01-04",
+   "date_max": "2026-11-20",
+   "types_original": {
+    "Rat Treatment": 8685,
+    "Rodent": 4964,
+    "Rat Control and Treatment": 3133,
+    "Rats": 3395
+   },
+   "types_standard": {
+    "Rodent baiting / treatment": 11818,
+    "Other rodent complaint": 4964,
+    "Rat sighting": 3395
+   },
+   "by_year": {
+    "2007": 583,
+    "2008": 1047,
+    "2009": 956,
+    "2010": 996,
+    "2011": 1047,
+    "2012": 1063,
+    "2013": 979,
+    "2014": 1034,
+    "2015": 1246,
+    "2016": 1874,
+    "2017": 2423,
+    "2018": 1387,
+    "2019": 1036,
+    "2020": 1010,
+    "2021": 808,
+    "2022": 714,
+    "2023": 626,
+    "2024": 528,
+    "2025": 476,
+    "2026": 344
+   },
+   "points_file": "kansas-city.json",
+   "points_bytes": 1666263,
+   "csv_files": [
+    {
+     "file": "csv/kansas-city.csv",
+     "rows": 20177,
+     "bytes": 3038426
+    }
+   ]
+  },
+  {
+   "city": "Pittsburgh",
+   "state": "PA",
+   "slug": "pittsburgh",
+   "source_name": "Western Pennsylvania Regional Data Center - Pittsburgh 311 Data (combined)",
+   "source_url": "https://data.wprdc.org/dataset/pittsburgh-311-data",
+   "dataset": "",
+   "filter": "subject = 'Rodent Control' exactly (substring lookalikes such as 'Catch Basins, Grates and Sewers' and 'Operating Without a License' deliberately excluded)",
+   "pulled": 8465,
+   "geocoded": 8384,
+   "missing_coords": 81,
+   "date_min": "2015-04-30",
+   "date_max": "2026-11-24",
+   "types_original": {
+    "Rodent Control": 8465
+   },
+   "types_standard": {
+    "Rodent baiting / treatment": 8465
+   },
+   "points_file": "pittsburgh.json",
+   "points_bytes": 694254,
+   "csv_files": [
+    {
+     "file": "csv/pittsburgh.csv",
+     "rows": 8465,
+     "bytes": 1377363
+    }
+   ],
+   "population_2020_census": 302971
+  },
+  {
+   "city": "New Orleans",
+   "state": "LA",
+   "slug": "new-orleans",
+   "source_name": "NOLA.gov Open Data - 311 OPCD Calls (2012-Present)",
+   "source_url": "https://data.nola.gov/Administrative-Data/311-OPCD-Calls-2012-Present-/2jgv-pqrq",
+   "dataset": "2jgv-pqrq",
+   "filter": "request_type = 'Mosquito, Termite & Rodent Control' AND request_reason IN ('Rodent Complaint (Rats)','Rodent Complaint (Mice & Rats)'); the same dataset's 'Non-Rodent Complaint' reasons are excluded",
+   "population_2020_census": 383997,
+   "pulled": 6519,
+   "geocoded": 6497,
+   "missing_coords": 22,
+   "date_min": "2019-01-01",
+   "date_max": "2026-11-23",
+   "types_original": {
+    "Rodent Complaint (Rats)": 4828,
+    "Rodent Complaint (Mice & Rats)": 1691
+   },
+   "types_standard": {
+    "Rodent activity / signs": 6519
+   },
+   "by_year": {
+    "2019": 4068,
+    "2020": 361,
+    "2021": 355,
+    "2022": 330,
+    "2023": 298,
+    "2024": 288,
+    "2025": 428,
+    "2026": 391
+   },
+   "points_file": "new-orleans.json",
+   "points_bytes": 627563,
+   "csv_files": [
+    {
+     "file": "csv/new-orleans.csv",
+     "rows": 6519,
+     "bytes": 1000946
+    }
+   ]
+  },
+  {
+   "city": "Cincinnati",
+   "state": "OH",
+   "slug": "cincinnati",
+   "source_name": "City of Cincinnati Open Data - 311 (Non-Emergency) Service Requests",
+   "source_url": "https://data.cincinnati-oh.gov/Safer-Streets/Cincinnati-311-Non-Emergency-Service-Requests/gcej-gmiw",
+   "dataset": "gcej-gmiw",
+   "filter": "sr_type_desc IN (12 verified rat/rodent values) - the full list was enumerated from the dataset's own type values; substring lookalikes (REGISTRATION, RESTORATION, OPERATING, REFRIGERATOR, GENERATOR) deliberately excluded",
+   "population_2020_census": 309034,
+   "pulled": 4745,
+   "geocoded": 4745,
+   "missing_coords": 0,
+   "date_min": "2006-09-13",
+   "date_max": "2026-11-22",
+   "types_original": {
+    "RATS, IN A BUILDING": 2056,
+    "RATS, OUTSIDE A BUILDING": 717,
+    "RATS, PROBLEM/INFESTATION": 714,
+    "RATS, IN OR AROUND A BUILDING": 541,
+    "RATS IN SEWER, REM REQ": 331,
+    "FOOD OPERATION, RODENTS": 223,
+    "INSTITUTION, RATS IN  BLDG": 71,
+    "RATS, CHILDRENS HOSP REFERRAL": 62,
+    "SCHOOL, RODENTS IN OR AROUND": 13,
+    "RODENT/INSECT INFEST, HOTEL/MT": 10,
+    "RESTAURANT, RODENTS": 5,
+    "RODENT/INSECT INFEST, NURSE HM": 2
+   },
+   "types_standard": {
+    "Rat sighting": 3314,
+    "Rodent infestation": 1038,
+    "Rodent activity / signs": 331,
+    "Other rodent complaint": 62
+   },
+   "by_year": {
+    "2006": 1,
+    "2007": 2,
+    "2008": 2,
+    "2009": 158,
+    "2010": 296,
+    "2011": 230,
+    "2012": 236,
+    "2013": 319,
+    "2014": 239,
+    "2015": 209,
+    "2016": 294,
+    "2017": 290,
+    "2018": 303,
+    "2019": 303,
+    "2020": 277,
+    "2021": 326,
+    "2022": 272,
+    "2023": 259,
+    "2024": 228,
+    "2025": 226,
+    "2026": 275
+   },
+   "points_file": "cincinnati.json",
+   "points_bytes": 410937,
+   "csv_files": [
+    {
+     "file": "csv/cincinnati.csv",
+     "rows": 4745,
+     "bytes": 766889
+    }
+   ]
+  },
+  {
+   "city": "San Francisco",
+   "state": "CA",
+   "slug": "san-francisco",
+   "source_name": "DataSF - 311 Cases",
+   "source_url": "https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6",
+   "dataset": "vw6y-z8j6",
+   "filter": "service_subtype IN ('Building - Infestation_Rodent_Insect','infestation_rodent_insect') - SF's combined rodent/insect building-infestation category",
+   "population_2020_census": 873965,
+   "pulled": 5746,
+   "geocoded": 4645,
+   "missing_coords": 1101,
+   "date_min": "2010-01-26",
+   "date_max": "2026-11-25",
+   "types_original": {
+    "Building - Infestation_Rodent_Insect": 3956,
+    "infestation_rodent_insect": 1790
+   },
+   "types_standard": {
+    "Rodent infestation": 5746
+   },
+   "by_year": {
+    "2010": 65,
+    "2011": 80,
+    "2012": 128,
+    "2013": 142,
+    "2014": 160,
+    "2015": 243,
+    "2016": 263,
+    "2017": 302,
+    "2018": 353,
+    "2019": 204,
+    "2020": 300,
+    "2021": 397,
+    "2022": 445,
+    "2023": 563,
+    "2024": 680,
+    "2025": 639,
+    "2026": 782
+   },
+   "points_file": "san-francisco.json",
+   "points_bytes": 462281,
+   "csv_files": [
+    {
+     "file": "csv/san-francisco.csv",
+     "rows": 5746,
+     "bytes": 712176
+    }
+   ]
+  },
+  {
+   "city": "Hartford",
+   "state": "CT",
+   "slug": "hartford",
+   "source_name": "Hartford Open Data (ArcGIS) - Service Requests 2015 to Current, yearly layers",
+   "source_url": "https://utility.arcgis.com/usrsvcs/servers/fa056981accc4bb993ff2f85573bf7dd/rest/services/Service_Requests_2015_to_Current/FeatureServer",
+   "dataset": "",
+   "filter": "USER_Record_Type LIKE '%RODENT%' (values: 'External Rodent Complaint' and the older path-style 'ServiceRequest/HHS/Environmental/External Rodent Complaint')",
+   "population_2020_census": 121054,
+   "pulled": 2070,
+   "geocoded": 2035,
+   "missing_coords": 35,
+   "date_min": "2015-07-06",
+   "date_max": "2026-11-02",
+   "types_original": {
+    "ServiceRequest/HHS/Environmental/External Rodent Complaint": 1384,
+    "External Rodent Complaint": 686
+   },
+   "types_standard": {
+    "Rat sighting": 2070
+   },
+   "by_year": {
+    "2015": 48,
+    "2016": 131,
+    "2017": 126,
+    "2018": 144,
+    "2019": 159,
+    "2020": 190,
+    "2021": 165,
+    "2022": 204,
+    "2023": 229,
+    "2024": 245,
+    "2025": 209,
+    "2026": 220
+   },
+   "points_file": "hartford.json",
+   "points_bytes": 257096,
+   "csv_files": [
+    {
+     "file": "csv/hartford.csv",
+     "rows": 2070,
+     "bytes": 428138
+    }
+   ]
+  },
+  {
+   "city": "Somerville",
+   "state": "MA",
+   "slug": "somerville",
+   "source_name": "City of Somerville Open Data - 311 Service, Information and Feedback Requests",
+   "source_url": "https://data.somervillema.gov/Public-Services/311-Service-Information-and-Feedback-Requests/4pyi-uqq6",
+   "dataset": "4pyi-uqq6",
+   "filter": "type LIKE '%Rodent%' OR type = 'Rats' (this dataset publishes no coordinate columns; records are CSV-only)",
+   "population_2020_census": 81045,
+   "pulled": 14810,
+   "geocoded": 0,
+   "missing_coords": 14810,
+   "date_min": "2015-07-04",
+   "date_max": "2026-11-23",
+   "types_original": {
+    "Rats": 8824,
+    "Rodent Assistance Program request": 3760,
+    "Rodent Assistance Program inquiry": 2082,
+    "School Rodent Control": 144
+   },
+   "types_standard": {
+    "Rat sighting": 8824,
+    "Rodent baiting / treatment": 3904,
+    "Rodent inspection": 2082
+   },
+   "by_year": {
+    "2015": 265,
+    "2016": 593,
+    "2017": 635,
+    "2018": 799,
+    "2019": 1045,
+    "2020": 1405,
+    "2021": 2250,
+    "2022": 1897,
+    "2023": 1643,
+    "2024": 1601,
+    "2025": 1541,
+    "2026": 1136
+   },
+   "points_file": "somerville.json",
+   "points_bytes": 2,
+   "csv_files": [
+    {
+     "file": "csv/somerville.csv",
+     "rows": 14810,
+     "bytes": 2206787
+    }
+   ]
+  },
+  {
+   "city": "Norfolk",
+   "state": "VA",
+   "slug": "norfolk",
+   "source_name": "City of Norfolk Open Data - Citizen Request Tracker (Norfolk AIR)",
+   "source_url": "https://data.norfolk.gov/d/nbyu-xjez",
+   "dataset": "nbyu-xjez",
+   "filter": "service_request_type IN ('Rat Observed','Potential Rat Harborage') - this dataset publishes street-address text only, no coordinate columns; records are CSV-only",
+   "population_2020_census": 238005,
+   "pulled": 2012,
+   "geocoded": 0,
+   "missing_coords": 2012,
+   "date_min": "2019-10-02",
+   "date_max": "2026-11-24",
+   "types_original": {
+    "Rat Observed": 1278,
+    "Potential Rat Harborage": 734
+   },
+   "types_standard": {
+    "Rat sighting": 1278,
+    "Conditions attracting rodents": 734
+   },
+   "by_year": {
+    "2019": 34,
+    "2020": 229,
+    "2021": 231,
+    "2022": 298,
+    "2023": 329,
+    "2024": 316,
+    "2025": 280,
+    "2026": 295
+   },
+   "points_file": "norfolk.json",
+   "points_bytes": 2,
+   "csv_files": [
+    {
+     "file": "csv/norfolk.csv",
+     "rows": 2012,
+     "bytes": 272798
+    }
+   ]
+  }
+ ],
+ "total_pulled": 3402317,
+ "total_geocoded": 3377635,
+ "total_missing_coords": 24682,
+ "city_count": 15
+}
