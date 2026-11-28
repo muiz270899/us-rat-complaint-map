@@ -37,7 +37,8 @@
     return citizenMode && c.resident ? c.resident.citizen_geocoded : c.geocoded;
   }
 
-  var map = L.map("map", { preferCanvas: true }).setView([39.5, -98.35], 4);
+  var map = L.map("map", { preferCanvas: true, zoomControl: false }).setView([39.5, -98.35], 4);
+  L.control.zoom({ position: "topright" }).addTo(map);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "&copy; OpenStreetMap contributors",
