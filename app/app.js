@@ -71,9 +71,10 @@
       c.height = size.y * dpr;
       c.style.width = size.x + "px";
       c.style.height = size.y + "px";
-      var topLeft = m.containerPointToLatLng([0, 0]);
-      L.DomUtil.setPosition(c, m.latLngToLayerPoint(topLeft).subtract(m.getPixelOrigin()).add([0, 0]));
-      // simpler & robust: pin canvas to container origin via layer point of (0,0) container point
+      // Pin the canvas to the layer point of the container's top-left
+      // corner. drawPoints() draws in coordinates relative to this same
+      // point, so canvas position and drawing can never drift apart
+      // when Leaflet re-bases the panes after a pan.
       var pos = m.containerPointToLayerPoint([0, 0]);
       L.DomUtil.setPosition(c, pos);
       drawPoints(c.getContext("2d"), size, dpr);
@@ -81,14 +82,6 @@
   });
   var pointLayer = new PointLayer();
   pointLayer.addTo(map);
-
-  function project(lat, lng, zoom, origin) {
-    var scale = 256 * Math.pow(2, zoom);
-    var x = ((lng + 180) / 360) * scale;
-    var sin = Math.sin((lat * Math.PI) / 180);
-    var y = (0.5 - Math.log((1 + sin) / (1 - sin)) / (4 * Math.PI)) * scale;
-    return [x - origin.x, y - origin.y];
-  }
 
   function currentView() {
     if (!viewDirty) return view;
@@ -116,16 +109,23 @@
 
   function drawPoints(ctx, size, dpr) {
     var recs = currentView();
-    var zoom = map.getZoom();
-    var origin = map.getPixelOrigin();
+    // Draw in layer-point space relative to the layer point of the
+    // container's top-left corner — the exact point the canvas is
+    // pinned to in redraw(). (The previous hand-rolled Web-Mercator
+    // projection subtracted map.getPixelOrigin(), which double-counts
+    // the map pane position: correct on first load, but after any pan
+    // every point drifted by the pan distance and ended up over the
+    // wrong part of the world.)
+    var topLeft = map.containerPointToLayerPoint([0, 0]);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, size.x, size.y);
     aggregates = null;
     drawnPts = null;
     var inView = [];
-    var i, xy;
+    var i, xy, lp;
     for (i = 0; i < recs.length; i++) {
-      xy = project(recs[i].lat, recs[i].lng, zoom, origin);
+      lp = map.latLngToLayerPoint([recs[i].lat, recs[i].lng]);
+      xy = [lp.x - topLeft.x, lp.y - topLeft.y];
       if (xy[0] < -30 || xy[1] < -30 || xy[0] > size.x + 30 || xy[1] > size.y + 30) continue;
       inView.push([xy[0], xy[1], recs[i]]);
     }
