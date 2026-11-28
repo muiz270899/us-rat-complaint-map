@@ -307,3 +307,22 @@ city's total and invites a zoom-in. Grid clustering resumes from
 zoom 6. Verified headlessly: all-cities national view groups
 3,449,580 complaints into 19 jurisdictions (Somerville and Norfolk
 publish no coordinates); Chicago zoom 10 grid regression intact.
+
+## Addendum — 28 Nov 2026 (10): US-only veil
+
+At the owner's direction the map must read as a map of the United
+States only, not a world map. The basemap is a world map and cannot
+drop its other countries, so everything outside the US is veiled
+under a translucent paper layer (data/us-outline.json, a coarse
+national outline used purely as a presentation mask — complaint
+positions are untouched) and only the US stays fully visible. The
+veil lives in its own pane (z-index 350) below the points canvas
+(400), so no point, cluster or label is ever faded, and clicks pass
+through it. An initial maxBounds pan-lock was removed before
+release: on tall viewports the visible area exceeds the bounds at
+low zoom and Leaflet's limiter dragged the map centre far north
+(verified: centre latitude 59.2 with it, 38.1 without). Verified
+headlessly: opening centre (38.14, -96) at the US-framed bounds,
+the US silhouette fully unveiled with Canada/Mexico/oceans faded,
+city-bubble popup and an exact individual-point popup both working
+with the veil in place.
