@@ -43,6 +43,41 @@
     attribution: "&copy; OpenStreetMap contributors",
   }).addTo(map);
 
+  // US-only presentation: the basemap is a world map and cannot drop
+  // its other countries, so everything outside the United States is
+  // veiled under a translucent paper layer and only the US stays
+  // fully visible. The veil sits in its own pane (z-index 350),
+  // below the points canvas (overlay pane, 400), so no complaint
+  // point, cluster or label is ever faded by it. If the outline
+  // file cannot be loaded the map simply works without the veil.
+  // (An earlier version also set maxBounds, but on tall viewports
+  // the visible area exceeds the bounds at low zoom and Leaflet's
+  // limiter dragged the centre far north — removed; the veil alone
+  // carries the US-only presentation.)
+  map.createPane("veilPane");
+  map.getPane("veilPane").style.zIndex = 350;
+  (function addVeil() {
+    var bases = DATA_BASES.slice();
+    function tryNext() {
+      if (!bases.length) return;
+      var url = bases.shift() + "us-outline.json";
+      fetch(url).then(function (r) { if (!r.ok) throw new Error("bad"); return r.json(); })
+        .then(function (gj) {
+          var geom = gj.features ? gj.features[0].geometry : gj.geometry;
+          var polys = geom.type === "MultiPolygon" ? geom.coordinates : [geom.coordinates];
+          var rings = [[[-89, -540], [-89, 540], [89, 540], [89, -540]]];
+          polys.forEach(function (poly) {
+            var outer = poly[0].map(function (pt) { return [pt[1], pt[0]]; });
+            rings.push(outer);
+          });
+          L.polygon(rings, { pane: "veilPane", stroke: false, fillColor: "#f4efe3",
+            fillOpacity: 0.66, interactive: false }).addTo(map);
+        })
+        .catch(tryNext);
+    }
+    tryNext();
+  })();
+
   // ---------------------------------------------------------- canvas layer
   var PointLayer = L.Layer.extend({
     onAdd: function (m) {
