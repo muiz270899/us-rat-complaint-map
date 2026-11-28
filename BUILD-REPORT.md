@@ -268,3 +268,24 @@ hundreds of overlapping grid balls); Kansas City zoom 10/11 renders
 30/89 clusters; the national view renders one cluster per metro with
 city labels intact; Boston zoom 12 still draws individual points and
 its click popup still opens the exact complaint.
+
+## Addendum — 28 Nov 2026 (7): density-aware dot threshold
+
+A regional phone view of Denver (1,230 mapped complaints) still
+painted a pile of individual dots: the addendum-5 rule keyed only on
+the in-view count (≤ 3,000 = dots at any zoom), but at zoom 6 a whole
+city occupies a few pixels, so even a "sparse" total piles up. The
+rule is now density-aware: dots require ≤ 400 in view at any zoom,
+or zoom ≥ 10 for up to 3,000 in view, or zoom ≥ 12 above that.
+Verified headlessly: Denver at zoom 6 now renders 2 clusters (a
+labelled 1.2k ball on the city), and Denver at zoom 13 still draws
+individual clickable points.
+
+## Addendum — 28 Nov 2026 (8): calmer colours
+
+The blood-red rendering (dark-red cluster balls, red dots) read as
+alarming and messy on the basemap. Points view now uses the site's
+own navy-and-gold palette: cluster balls are deep slate navy with a
+gold ring and white count, individual dots are warm amber, and the
+legend swatches match. The heat view keeps its conventional density
+ramp. No data or behaviour change.
