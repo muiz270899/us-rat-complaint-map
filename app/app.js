@@ -36,7 +36,7 @@
     return citizenMode && c.resident ? c.resident.citizen_geocoded : c.geocoded;
   }
 
-  var map = L.map("map", { preferCanvas: true, zoomControl: false }).setView([39.5, -98.35], 4);
+  var map = L.map("map", { preferCanvas: true, zoomControl: false }).fitBounds([[24.0, -126.0], [50.0, -66.0]]);
   L.control.zoom({ position: "topright" }).addTo(map);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -276,6 +276,14 @@
     });
   }
 
+  // Compact count for ball labels: 1.9M / 514k / 47.7k / 987.
+  function fmtBallCount(n) {
+    if (n >= 1000000) return (Math.round(n / 100000) / 10) + "M";
+    if (n >= 100000) return Math.round(n / 1000) + "k";
+    if (n >= 1000) return (Math.round(n / 100) / 10) + "k";
+    return "" + n;
+  }
+
   function drawPoints(ctx, size, dpr) {
     if (viewDirty) computeStats();
     // One affine projection calibrated per redraw from Leaflet itself:
@@ -330,7 +338,69 @@
     var aggregate = totalVis > 50000 ||
       (totalVis > 400 && zoomNow < 10) ||
       (totalVis > 3000 && zoomNow < 12);
+    var bubbleMode = false;
     if (aggregate) {
+      if (zoomNow <= 5) {
+        // National view: one bubble per jurisdiction, placed at the
+        // jurisdiction's own complaint centroid and sized by its
+        // (filtered) count, with the name labelled under the bubble.
+        // A screen-grid cluster at this scale would merge whole
+        // cities into anonymous balls and the map would read as
+        // nearly empty.
+        bubbleMode = true;
+        aggregates = [];
+        var maxCity = 0, bSlug, bIx;
+        for (bSlug in perCity) { if (perCity[bSlug] > maxCity) maxCity = perCity[bSlug]; }
+        for (bSlug in perCity) {
+          bIx = loaded[bSlug];
+          if (!bIx || !bIx.centroid || !perCity[bSlug]) continue;
+          var gb = { count: perCity[bSlug], lat: bIx.centroid[0], lng: bIx.centroid[1],
+                     city: bIx.meta.city, state: bIx.meta.state };
+          gb.x = projX((gb.lng + 180) / 360);
+          gb.y = projY(wyOf(gb.lat));
+          gb.r = 11 + 11 * Math.sqrt(gb.count / (maxCity || 1));
+          aggregates.push(gb);
+        }
+        aggregates.sort(function (a, b) { return b.count - a.count; });
+        aggregates.forEach(function (g) {
+          ctx.beginPath();
+          ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(18,42,66,0.88)";
+          ctx.fill();
+          ctx.lineWidth = 1.6;
+          ctx.strokeStyle = "#f2b04a";
+          ctx.stroke();
+        });
+        // "Name · count" labels under their own bubbles, largest
+        // first, skipping any that would overlap a label already
+        // placed (the north-east corridor is too tight to label
+        // everyone at this scale; the rest appear as the user
+        // zooms in). Counts ride in the name label rather than
+        // inside the ball: corridor bubbles overlap, so an in-ball
+        // count would be painted over by the neighbouring ball.
+        ctx.font = "600 10px sans-serif";
+        ctx.textAlign = "center";
+        var placedB = [];
+        aggregates.forEach(function (g) {
+          var nameCount = g.city + " · " + fmtBallCount(g.count);
+          var w = ctx.measureText(nameCount).width + 8, h = 13;
+          var nx = Math.max(w / 2 + 2, Math.min(size.x - w / 2 - 2, g.x));
+          var ny = g.y + g.r + 12;
+          var box = { x0: nx - w / 2, y0: ny - h, x1: nx + w / 2, y1: ny + 2 };
+          for (var qi = 0; qi < placedB.length; qi++) {
+            var q = placedB[qi];
+            if (box.x0 < q.x1 && box.x1 > q.x0 && box.y0 < q.y1 && box.y1 > q.y0) return;
+          }
+          placedB.push(box);
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "rgba(255,253,248,0.92)";
+          ctx.strokeText(nameCount, nx, ny);
+          ctx.fillStyle = "#43382a";
+          ctx.fillText(nameCount, nx, ny);
+        });
+        status.textContent = totalVis.toLocaleString() + " complaints in view, grouped into " +
+          aggregates.length.toLocaleString() + " jurisdictions — zoom in to explore each city.";
+      } else {
       // Google-Maps-style clustering: complaints within a ~48px
       // screen cell merge into ONE ball placed at the complaints'
       // own average location (not the cell's centre). Cluster
@@ -384,7 +454,7 @@
         ctx.lineWidth = 1.6;
         ctx.strokeStyle = "#f2b04a";
         ctx.stroke();
-        var label = g.count >= 1000 ? Math.round(g.count / 100) / 10 + "k" : "" + g.count;
+        var label = fmtBallCount(g.count);
         ctx.font = "bold 9px sans-serif";
         if (g.count >= 10 && ctx.measureText(label).width <= r * 2 - 5) {
           ctx.fillStyle = "#fff";
@@ -394,6 +464,7 @@
       });
       status.textContent = totalVis.toLocaleString() + " complaints in view, aggregated into " +
         aggregates.length.toLocaleString() + " cells — zoom in to see individual points.";
+      }
     } else {
       drawnPts = [];
       ctx.fillStyle = "rgba(219,150,30,0.78)";
@@ -419,7 +490,7 @@
         (selTotal !== totalVis ? " (" + selTotal.toLocaleString() + " in selection)" : "") +
         ". Click a point for details.";
     }
-    drawCityLabels(ctx, size, perCity, projX, projY);
+    if (!bubbleMode) drawCityLabels(ctx, size, perCity, projX, projY);
   }
 
   // City name labels on the map itself (the basemap does not label
@@ -542,8 +613,12 @@
       for (i = 0; i < aggregates.length; i++) {
         dx = aggregates[i].x - pt.x; dy = aggregates[i].y - pt.y;
         if (dx * dx + dy * dy < 26 * 26) {
-          L.popup().setLatLng([aggregates[i].lat, aggregates[i].lng])
-            .setContent("<b>" + aggregates[i].count.toLocaleString() + " complaints</b> in this area.<br>Zoom in to see individual complaints.")
+          var ag = aggregates[i];
+          L.popup().setLatLng([ag.lat, ag.lng])
+            .setContent(ag.city
+              ? "<b>" + ag.city + ", " + ag.state + "</b> — " + ag.count.toLocaleString() +
+                " complaints in the current selection.<br>Zoom in to explore this city."
+              : "<b>" + ag.count.toLocaleString() + " complaints</b> in this area.<br>Zoom in to see individual complaints.")
             .openOn(map);
           return;
         }
