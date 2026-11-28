@@ -22,10 +22,10 @@ Snapshot assembled 2026-11-28 by re-running the project's open pipeline (`pipeli
 | Evanston, IL | 2014-01-09 | 2022-02-22 | 4,169 | 4,168 | 1 | — |
 | Hartford, CT | 2015-07-06 | 2026-11-02 | 2,070 | 2,035 | 35 | — |
 | Norfolk, VA | 2019-10-02 | 2026-11-24 | 2,012 | 0 | 2,012 | — |
-| Denver, CO | 2007-03-15 | 2026-11-19 | 1,536 | 1,231 | 305 | — |
+| Denver, CO | 2007-03-15 | 2026-11-19 | 1,536 | 1,230 | 306 | — |
 | Prince George's County, MD | 2012-07-12 | 2016-08-13 | 1,179 | 1,037 | 142 | — |
 | Berkeley, CA | 2026-01-24 | 2026-06-24 | 25 | 25 | 0 | — |
-| **Total — 21 jurisdictions** | | | **3,474,748** | **3,449,581** | **25,167** | **1,697,242** |
+| **Total — 21 jurisdictions** | | | **3,474,748** | **3,449,580** | **25,168** | **1,697,242** |
 
 “Resident-filed” is shown only where the source data itself separates resident-filed cases from city-initiated proactive work (Baltimore). For all other jurisdictions the 311 categories are resident-filed requests; some categories name the inspection or treatment the city performs in response to the request.
 
@@ -63,7 +63,7 @@ Filter as configured: `type LIKE '%Rodent%' (in practice the single value 'Roden
 
 **Buffalo, NY** — [Open Data Buffalo - 311 Service Requests (July 2008 - May 2024) + Open Data Buffalo - 311 Service Requests (May 2024 - Present)](https://data.buffalony.gov/Quality-of-Life/311-Service-Requests/whkc-e5vr)
 
-`type = 'Rodents (Req_Serv)'` in the July 2008 – May 2024 dataset and `type = 'Rodent Control Issue'` in its May 2024–present successor; the two are stitched without overlap.
+`type = 'Rodents (Req_Serv)'` in the July 2008 – May 2024 dataset and `type = 'Rodent Control Issue'` in its May 2024–present successor; the two are stitched without overlap. **Correction applied (28 Nov 2026): Buffalo's May 2024–present dataset stores latitude and longitude interchanged for 191 records (its `latitude` field holds values like −78.83 and `longitude` values like 42.91). The interchange is unambiguous — Buffalo longitudes are negative and latitudes positive — so those 191 records are restored to the evident order in the map points and the CSV; every other record is reproduced exactly as published.
 
 Filter as configured: `type = 'Rodents (Req_Serv)' (2008-May 2024 dataset) | type = 'Rodent Control Issue' (May 2024-present dataset; continues the older dataset without overlap)`
 
@@ -75,7 +75,7 @@ Filter as configured: `request_type LIKE '%Rodent%' in the Improve Detroit issue
 
 **Kansas City, MO** — [Open Data KC - 311 Call Center Service Requests 2007-Mar 2021 + Open Data KC - 311 Call Center Reported Issues (current)](https://data.kcmo.org/Operations/311-Call-Center-Service-Requests-2007-March-2021/7at3-sxhp)
 
-Historic system (2007 – Mar 2021): `type IN ('Rat Treatment','Rat Control and Treatment','Rodent')`. Current system: `issue_sub_type = 'Rats'`. Treatment types are resident-requested services — the request is the complaint, the treatment is the response.
+Historic system (2007 – Mar 2021): `type IN ('Rat Treatment','Rat Control and Treatment','Rodent')`. Current system: `issue_sub_type = 'Rats'`. Treatment types are resident-requested services — the request is the complaint, the treatment is the response. Note: the historic system assigns one placeholder coordinate pair (35.7975, −103.8906 — a default pin in the legacy system, shared by 40,610 records of all types) to 353 of the rodent records; those records are mapped at the coordinates the source publishes.
 
 Filter as configured: `type IN ('Rat Treatment','Rat Control and Treatment','Rodent') | issue_sub_type = 'Rats' (this dataset publishes no coordinate columns; records are CSV-only)`
 
@@ -141,7 +141,7 @@ Filter as configured: `service_request_type IN ('Rat Observed','Potential Rat Ha
 
 **Denver, CO** — [City & County of Denver Open Data (ArcGIS) - 311 Service Requests, yearly archive tables 2007-2023 + City & County of Denver Open Data (ArcGIS) - 311 Service Requests, current rolling 12 months](https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2023/FeatureServer)
 
-Denver's 311 archive is split into one table per year (2007–2023) plus a current rolling-12-months table. The category lives in `Case_Summary`, which also carries thousands of free-text one-off summaries; only the five exact controlled values are counted: 'Rat Problems' (to 2015), 'Mice Problems' (2007 only), 'EQ - Rats' (2016–2019), 'Rats' (a few from 2015–2019, the main label from 2020) and 'Rats & Mice' (2022– ). Denver's SQL matching is case-insensitive, so the pipeline keeps only rows whose stored value matches an allowlisted value exactly — case-variant noise in the source ('rats', 'RATS'; 22 records) is excluded. The combined 'Cockroaches, rodents, maggots, ants, spiders, fleas' category is not counted. **Coverage gap: Denver publishes no queryable 311 source for Jan 2024 – Nov 2025** (the 2024 archive is not exposed on the city's ArcGIS org and the rolling table covers only the last 12 months), so the series jumps from Dec 2023 to Nov 2025. 252 records carry placeholder 0,0 coordinates in the source and are counted as unmapped, exactly like records with no coordinates. Each yearly table's system ObjectId is unique within its table and the tables cover disjoint periods, so no record can be double-counted.
+Denver's 311 archive is split into one table per year (2007–2023) plus a current rolling-12-months table. The category lives in `Case_Summary`, which also carries thousands of free-text one-off summaries; only the five exact controlled values are counted: 'Rat Problems' (to 2015), 'Mice Problems' (2007 only), 'EQ - Rats' (2016–2019), 'Rats' (a few from 2015–2019, the main label from 2020) and 'Rats & Mice' (2022– ). Denver's SQL matching is case-insensitive, so the pipeline keeps only rows whose stored value matches an allowlisted value exactly — case-variant noise in the source ('rats', 'RATS'; 22 records) is excluded. The combined 'Cockroaches, rodents, maggots, ants, spiders, fleas' category is not counted. **Coverage gap: Denver publishes no queryable 311 source for Jan 2024 – Nov 2025** (the 2024 archive is not exposed on the city's ArcGIS org and the rolling table covers only the last 12 months), so the series jumps from Dec 2023 to Nov 2025. 252 records carry placeholder 0,0 coordinates in the source and are counted as unmapped, exactly like records with no coordinates. Each yearly table's system ObjectId is unique within its table and the tables cover disjoint periods, so no record can be double-counted. One record (24 Mar 2023) publishes a longitude identical to its latitude (39.74159, 39.74159) — not a real location; it is kept in the CSV but excluded from the map and counted as unmapped.
 
 Filter as configured: `Case_Summary IN ('Rat Problems','Mice Problems','EQ - Rats','Rats','Rats & Mice') in Denver's yearly 311 archive tables 2007-2023 — the exact controlled rodent values of Denver's own taxonomy (the label changed over the years: 'Rat Problems' to 2015, 'EQ - Rats' from 2016, 'Rats'/'Rats & Mice' from 2020). Free-text one-off summaries that also occur in Case_Summary are not a category and are excluded. Denver publishes no queryable 311 source for Jan 2024 - Nov 2025, so the series has that gap. | the same five exact Case_Summary values in Denver's current rolling-12-months 311 table (its rodent records currently span 2025-11-25 onward; the table rolls, so a re-run may shift the window)`
 

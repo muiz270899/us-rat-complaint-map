@@ -6,7 +6,7 @@
 |---|---|
 | **Jurisdictions covered** | 21 (20 cities + Prince George's County, MD) |
 | **Records pulled** | 3,474,748 |
-| **Complaints mapped** | 3,449,581 (99.3% of records carry coordinates) |
+| **Complaints mapped** | 3,449,580 (99.3% of records carry coordinates) |
 | **Historical span** | 1999 – 2026 |
 | **Data last fetched** | 2026-11-28 |
 | **Sources** | Official municipal open-data APIs only (Socrata, CKAN, ArcGIS) — no scraping, no resellers |
@@ -61,10 +61,10 @@ Every count below is the number of records actually pulled from the jurisdiction
 | Evanston, IL | 4,169 | 4,168 | 1 | 2014-01-09 – 2022-02-22 | 5,337 |
 | Hartford, CT | 2,070 | 2,035 | 35 | 2015-07-06 – 2026-11-02 | 1,710 |
 | Norfolk, VA | 2,012 | 0 | 2,012 | 2019-10-02 – 2026-11-24 | 845 |
-| Denver, CO | 1,536 | 1,231 | 305 | 2007-03-15 – 2026-11-19 | 211 |
+| Denver, CO | 1,536 | 1,230 | 306 | 2007-03-15 – 2026-11-19 | 211 |
 | Prince George's County, MD | 1,179 | 1,037 | 142 | 2012-07-12 – 2016-08-13 | 122 |
 | Berkeley, CA | 25 | 25 | 0 | 2026-01-24 – 2026-06-24 | 20 |
-| **Total** | **3,474,748** | **3,449,581** | **25,167** | **1999 – 2026** | |
+| **Total** | **3,474,748** | **3,449,580** | **25,167** | **1999 – 2026** | |
 
 \* Records per 100,000 residents, using 2020 US Census city-proper populations. This normalizes *reporting volume* — it is **not** a rat-population figure. Baltimore's outsized rate is explained in [Limitations](#limitations): most of its records are the city's own proactive Rat Rubout baiting visits, which Baltimore logs as 311 service requests.
 

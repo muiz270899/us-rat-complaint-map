@@ -108,3 +108,32 @@ City sums reconcile exactly with the headline totals; per-city point-file row co
 1. **Denver pulled: probe 1,423 → build 1,536 (+113).** The probe counted 'Rats' only for 2020 onward, assuming era-exclusive labels. The stored data also carries the exact value 'Rats' in 2015 (2), 2016 (29), and 2019 (82) — genuine in-year records with the exact allowlisted value, so they are included. All other category counts match the probe exactly. (The probe's ArcGIS group-by counts also folded case variants; measured exactly, the source holds 22 additional case-variant rows — 'rats'/'RATS' — which the exact-match rule excludes.)
 2. **Denver mapped: probe 1,370 → build 1,231 (−139).** The probe counted records with non-null Latitude/Longitude as "with coordinates". Denver's archive stores **0,0 placeholder coordinates** on 252 of the kept records (plus 53 with null coordinates = 305 unmapped). A 0,0 point is not a real location (it plots off West Africa), and the atlas's rule for every jurisdiction is that only real published coordinates map — so placeholders count as missing, exactly like nulls. Reconciliation, verified against the live API: raw case-insensitive set 1,558 = 53 null + 256 zero + 1,249 valid; minus the 22 excluded case variants (18 valid + 4 zero) = 1,536 pulled / 1,231 mapped / 305 missing. Exact.
 3. Berkeley (25/25) and Prince George's County (1,179/1,037) match the probe numbers exactly, including date ranges.
+
+## Round-3 correction addendum (2026-11-28, post-integration audit)
+
+A full re-audit of every point and CSV row (all 21 jurisdictions) found two
+source-data defects, both verified against the live source APIs:
+
+1. **Buffalo — 191 records with latitude/longitude interchanged in the
+   source.** Buffalo's May 2024–present dataset (3tj7-3tdz) stores
+   `latitude` = −78.8… and `longitude` = 42.9… for 191 'Rodent Control
+   Issue' records (verified directly against data.buffalony.gov). The
+   interchange is unambiguous, so the 191 records were restored to the
+   evident order in `data/buffalo.json` and `data/csv/buffalo.csv`.
+   Counts unchanged (35,939 mapped / 37,313 pulled). Disclosed in
+   COVERAGE.md's Buffalo note.
+2. **Denver — 1 record with longitude = latitude in the source**
+   (39.74159382, 39.74159382; 24 Mar 2023, verified against Denver's
+   ArcGIS 2023 table, the only Longitude > 0 rodent record there). Not a
+   real location: kept in the CSV, excluded from the map, counted as
+   unmapped. Denver mapped 1,231 → 1,230; atlas mapped 3,449,581 →
+   3,449,580; unmapped 25,167 → 25,168. Disclosed in COVERAGE.md's
+   Denver note.
+
+Also verified and left as published (source's own data, disclosed in
+COVERAGE.md): Kansas City's legacy system assigns one placeholder
+coordinate pair to 353 rodent records (40,610 records of all types share
+it); Washington DC (30) and Evanston (4) carry a handful of
+source-published outlier coordinates. Post-correction audit: zero swapped
+coordinates, zero invalid latitudes in any CSV, per-city point/CSV rows
+reconcile exactly with summary.json.
