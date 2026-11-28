@@ -320,16 +320,27 @@
       drawCityLabels(ctx, size, perCity, projX, projY);
       return;
     }
-    if (totalVis > 50000) {
-      // aggregate into 16px screen grid cells; leaf cells that are
-      // small on screen contribute their precomputed statistics
-      // without iterating their points
+    // Individual dots only where they can actually be told apart:
+    // a sparse view at any zoom, or a street-level zoom (12+). A
+    // city-level view holding thousands of complaints would otherwise
+    // paint them as one solid pile of overlapping dots.
+    var aggregate = totalVis > 50000 || (totalVis > 3000 && map.getZoom() < 12);
+    if (aggregate) {
+      // Google-Maps-style clustering: complaints within a ~48px
+      // screen cell merge into ONE ball placed at the complaints'
+      // own average location (not the cell's centre). Cluster
+      // centres are therefore at least a cell apart, so the balls —
+      // capped below the cell size — sit side by side instead of
+      // piling over each other. Leaf cells that are small on screen
+      // contribute their precomputed statistics without iterating
+      // their points.
+      var GRID = 48;
       var grid = {};
       function addToGrid(x, y, cnt, sLat, sLng) {
-        var gx = Math.floor(x / 16), gy = Math.floor(y / 16);
+        var gx = Math.floor(x / GRID), gy = Math.floor(y / GRID);
         var key = (gx + 64) * 8192 + (gy + 64);
         var g = grid[key];
-        if (!g) { g = grid[key] = { x: gx * 16 + 8, y: gy * 16 + 8, count: 0, lat: 0, lng: 0 }; }
+        if (!g) { g = grid[key] = { x: 0, y: 0, count: 0, lat: 0, lng: 0 }; }
         g.count += cnt; g.lat += sLat; g.lng += sLng;
       }
       var i, j, k, e, st, idx, cx, cy;
@@ -350,21 +361,30 @@
         }
       }
       aggregates = Object.values(grid);
+      var maxCell = 0;
+      aggregates.forEach(function (g) { if (g.count > maxCell) maxCell = g.count; });
       aggregates.forEach(function (g) {
         g.lat /= g.count; g.lng /= g.count;
-        var r = Math.max(3.5, Math.min(24, 3 + Math.sqrt(g.count) * 1.7));
+        // The ball sits at the cluster's own centroid — the average
+        // location of its complaints — and its radius stays in a
+        // narrow band (12–18px) scaled by the largest cluster in
+        // view, so neighbouring clusters touch at most.
+        g.x = projX((g.lng + 180) / 360);
+        g.y = projY(wyOf(g.lat));
+        var r = 12 + 6 * Math.sqrt(g.count / maxCell);
         ctx.beginPath();
         ctx.arc(g.x, g.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(122,31,20,0.78)";
+        ctx.fillStyle = "rgba(122,31,20,0.85)";
         ctx.fill();
         ctx.lineWidth = 1.6;
         ctx.strokeStyle = "#f2b04a";
         ctx.stroke();
-        if (r > 9) {
+        var label = g.count >= 1000 ? Math.round(g.count / 100) / 10 + "k" : "" + g.count;
+        ctx.font = "bold 9px sans-serif";
+        if (g.count >= 10 && ctx.measureText(label).width <= r * 2 - 5) {
           ctx.fillStyle = "#fff";
-          ctx.font = "bold 9px sans-serif";
           ctx.textAlign = "center";
-          ctx.fillText(g.count >= 1000 ? Math.round(g.count / 100) / 10 + "k" : g.count, g.x, g.y + 3);
+          ctx.fillText(label, g.x, g.y + 3);
         }
       });
       status.textContent = totalVis.toLocaleString() + " complaints in view, aggregated into " +
