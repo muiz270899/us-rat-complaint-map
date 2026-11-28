@@ -251,3 +251,20 @@ counted grid cells at every zoom. Verified headlessly: Kansas City at
 zoom 10/11 now aggregates (142 / 367 cells, counts labelled), while
 Boston at zoom 12 still draws individual points and a click still
 opens the exact complaint popup.
+
+## Addendum — 28 Nov 2026 (6): Google-Maps-style clustering
+
+The 16px aggregate grid put a ball at every grid cell centre, so in a
+saturated city view (Chicago at zoom 10) hundreds of near-maximum
+balls sat 16px apart and piled over each other. Aggregation is now
+Google-Maps-style clustering: complaints within a ~48px screen cell
+merge into one cluster drawn at the complaints' own average location
+(the weighted centroid — the same coordinates the cluster popup
+reports), with the radius kept in a narrow 12–18px band scaled by the
+largest cluster in view. Cluster centres are at least a cell apart,
+so balls sit side by side instead of stacking. Verified headlessly:
+Chicago zoom 10 now renders 35 separated clusters with counts (was
+hundreds of overlapping grid balls); Kansas City zoom 10/11 renders
+30/89 clusters; the national view renders one cluster per metro with
+city labels intact; Boston zoom 12 still draws individual points and
+its click popup still opens the exact complaint.
