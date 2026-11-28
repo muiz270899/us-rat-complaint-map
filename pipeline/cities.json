@@ -735,6 +735,145 @@
    },
    "state": "LA",
    "where": "type='RODENT'"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Denver",
+   "exact_types": [
+    "Rat Problems",
+    "Mice Problems",
+    "EQ - Rats",
+    "Rats",
+    "Rats & Mice"
+   ],
+   "fields": {
+    "date": "Case_Created_Date",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "status": "Case_Status",
+    "type": "Case_Summary"
+   },
+   "filter_description": "Case_Summary IN ('Rat Problems','Mice Problems','EQ - Rats','Rats','Rats & Mice') in Denver's yearly 311 archive tables 2007-2023 \u2014 the exact controlled rodent values of Denver's own taxonomy (the label changed over the years: 'Rat Problems' to 2015, 'EQ - Rats' from 2016, 'Rats'/'Rats & Mice' from 2020). Free-text one-off summaries that also occur in Case_Summary are not a category and are excluded. Denver publishes no queryable 311 source for Jan 2024 - Nov 2025, so the series has that gap.",
+   "layers": [
+    0
+   ],
+   "population_2020_census": 727211,
+   "services": [
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2007/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2008/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2009/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2010/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2011/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2012/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2013/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2014/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2015/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2016/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2017/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2018/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2019/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2020/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2021/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2022/FeatureServer",
+    "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2023/FeatureServer"
+   ],
+   "slug": "denver",
+   "source_name": "City & County of Denver Open Data (ArcGIS) - 311 Service Requests, yearly archive tables 2007-2023",
+   "source_url": "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2023/FeatureServer",
+   "standard_map": {
+    "EQ - Rats": "Rat sighting",
+    "Mice Problems": "Mouse sighting",
+    "Rat Problems": "Rat sighting",
+    "Rats": "Rat sighting",
+    "Rats & Mice": "Rodent activity / signs"
+   },
+   "state": "CO",
+   "where": "Case_Summary IN ('Rat Problems','Mice Problems','EQ - Rats','Rats','Rats & Mice')"
+  },
+  {
+   "adapter": "arcgis",
+   "city": "Denver",
+   "exact_types": [
+    "Rat Problems",
+    "Mice Problems",
+    "EQ - Rats",
+    "Rats",
+    "Rats & Mice"
+   ],
+   "fields": {
+    "date": "Case_Created_Date",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "status": "Case_Status",
+    "type": "Case_Summary"
+   },
+   "filter_description": "the same five exact Case_Summary values in Denver's current rolling-12-months 311 table (its rodent records currently span 2025-11-25 onward; the table rolls, so a re-run may shift the window)",
+   "layers": [
+    53
+   ],
+   "population_2020_census": 727211,
+   "service": "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/ODC_service_requests_311/FeatureServer",
+   "slug": "denver",
+   "source_name": "City & County of Denver Open Data (ArcGIS) - 311 Service Requests, current rolling 12 months",
+   "source_url": "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/ODC_service_requests_311/FeatureServer",
+   "standard_map": {
+    "EQ - Rats": "Rat sighting",
+    "Mice Problems": "Mouse sighting",
+    "Rat Problems": "Rat sighting",
+    "Rats": "Rat sighting",
+    "Rats & Mice": "Rodent activity / signs"
+   },
+   "state": "CO",
+   "where": "Case_Summary IN ('Rat Problems','Mice Problems','EQ - Rats','Rats','Rats & Mice')"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Berkeley",
+   "dataset": "p88g-6gs2",
+   "dedupe_on": "case_id",
+   "domain": "data.cityofberkeley.info",
+   "fields": {
+    "date": "date_opened",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "case_status",
+    "type": "case_request"
+   },
+   "filter_description": "case_request = 'Vector Control' \u2014 Berkeley Environmental Health's combined vector-control category (rodents, mosquitoes and other vectors). The rodent share cannot be separated from the data; the category is labeled combined everywhere it appears, exactly as San Francisco's combined category is. The value exists only from 2026 in this dataset.",
+   "population_2020_census": 124321,
+   "slug": "berkeley",
+   "source_name": "City of Berkeley Open Data - 311 Cases",
+   "source_url": "https://data.cityofberkeley.info/d/p88g-6gs2",
+   "standard_map": {
+    "Vector Control": "Other rodent complaint"
+   },
+   "state": "CA",
+   "where": "case_request='Vector Control'"
+  },
+  {
+   "adapter": "socrata",
+   "city": "Prince George's County",
+   "dataset": "y8p6-7ur2",
+   "dedupe_on": "service_request_id",
+   "domain": "data.princegeorgescountymd.gov",
+   "fields": {
+    "date": "requested_datetime",
+    "lat": "latitude",
+    "lng": "longitude",
+    "status": "status",
+    "type": "service_name"
+   },
+   "filter_description": "service_name IN ('Rodents','Infestation of Bugs and/or Rodents') in the county's County Click 311 (QAlert) system. 'Infestation of Bugs and/or Rodents' is a combined bugs-and-rodents category and is labeled combined everywhere it appears. The QAlert series is historical: it ends in 2016, and the county's successor systems publish no rodent category.",
+   "population_2020_census": 967201,
+   "slug": "prince-georges-county",
+   "source_name": "Prince George's County Open Data - County Click 311, QAlert Service Requests",
+   "source_url": "https://data.princegeorgescountymd.gov/d/y8p6-7ur2",
+   "standard_map": {
+    "Infestation of Bugs and/or Rodents": "Rodent infestation",
+    "Rodents": "Rodent activity / signs"
+   },
+   "state": "MD",
+   "where": "service_name in('Rodents','Infestation of Bugs and/or Rodents')"
   }
  ]
 }

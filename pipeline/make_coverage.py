@@ -128,6 +128,48 @@ NOTES = {
         "Zachary, Central, Greenwell Springs, Pride). The dataset's "
         "caller-name fields are never selected by the pipeline — only "
         "date, type and the published point location are pulled."),
+    "denver": (
+        "Denver's 311 archive is split into one table per year (2007–2023) "
+        "plus a current rolling-12-months table. The category lives in "
+        "`Case_Summary`, which also carries thousands of free-text one-off "
+        "summaries; only the five exact controlled values are counted: "
+        "'Rat Problems' (to 2015), 'Mice Problems' (2007 only), 'EQ - Rats' "
+        "(2016–2019), 'Rats' (a few from 2015–2019, the main label from "
+        "2020) and 'Rats & Mice' (2022– ). Denver's SQL matching is "
+        "case-insensitive, so the pipeline keeps only rows whose stored "
+        "value matches an allowlisted value exactly — case-variant noise "
+        "in the source ('rats', 'RATS'; 22 records) is excluded. The "
+        "combined 'Cockroaches, rodents, maggots, ants, spiders, fleas' "
+        "category is not counted. **Coverage gap: Denver publishes no "
+        "queryable 311 source for Jan 2024 – Nov 2025** (the 2024 archive "
+        "is not exposed on the city's ArcGIS org and the rolling table "
+        "covers only the last 12 months), so the series jumps from Dec "
+        "2023 to Nov 2025. 252 records carry placeholder 0,0 coordinates "
+        "in the source and are counted as unmapped, exactly like records "
+        "with no coordinates. Each yearly table's system ObjectId is "
+        "unique within its table and the tables cover disjoint periods, "
+        "so no record can be double-counted."),
+    "berkeley": (
+        "`case_request = 'Vector Control'` — Berkeley Environmental "
+        "Health's combined vector-control category: rodents, mosquitoes "
+        "and other vectors in a single case type. The rodent share cannot "
+        "be separated from the data; the category is labeled combined "
+        "everywhere it appears, exactly as San Francisco's combined "
+        "category is. The value was introduced in 2026, so Berkeley's "
+        "series covers 2026 only. Records are deduplicated on `case_id` "
+        "(no duplicates found)."),
+    "prince-georges-county": (
+        "`service_name IN ('Rodents','Infestation of Bugs and/or "
+        "Rodents')` in County Click 311, the county's QAlert-based "
+        "system. 'Infestation of Bugs and/or Rodents' (1,114 of the 1,179 "
+        "records) is a combined bugs-and-rodents category and is labeled "
+        "combined everywhere it appears; 'Rodents' alone is 65 records. "
+        "**The series is historical: the QAlert data stops in Aug 2016** "
+        "and the county's successor systems publish no rodent category, "
+        "so Prince George's County cannot support a present-day trend. "
+        "Records are deduplicated on `service_request_id` (no duplicates "
+        "found). It is a county, not a city — the atlas's one county "
+        "jurisdiction."),
 }
 
 
@@ -147,15 +189,16 @@ def main():
     lines.append("# Coverage — US 311 Rat & Rodent Complaint Atlas")
     lines.append("")
     lines.append(f"Snapshot assembled {fetched} by re-running the project's "
-                 f"open pipeline (`pipeline/fetch.py`) against each city's "
-                 f"official open-data API. Dates below are the first and last "
-                 f"qualifying records in each published source; a city may "
-                 f"have internal gaps. Every count is recomputable from the "
+                 f"open pipeline (`pipeline/fetch.py`) against each "
+                 f"jurisdiction's official open-data API. Dates below are "
+                 f"the first and last qualifying records in each published "
+                 f"source; a jurisdiction may have internal gaps. Every "
+                 f"count is recomputable from the "
                  f"CSVs in `data/csv/` and the statistics in "
                  f"`data/summary.json`.")
     lines.append("")
-    lines.append("| City | First record | Latest record | Records | Mapped | "
-                 "Unmapped | Resident-filed |")
+    lines.append("| Jurisdiction | First record | Latest record | Records | "
+                 "Mapped | Unmapped | Resident-filed |")
     lines.append("|---|---|---|---:|---:|---:|---:|")
     for c in cities:
         res = fmt(c["resident"]["citizen_pulled"]) if "resident" in c else "—"
@@ -164,17 +207,17 @@ def main():
             f"{c['date_max']} | {fmt(c['pulled'])} | {fmt(c['geocoded'])} | "
             f"{fmt(c['missing_coords'])} | {res} |")
     lines.append(
-        f"| **Total — {summary['city_count']} cities** | | | "
+        f"| **Total — {summary['city_count']} jurisdictions** | | | "
         f"**{fmt(tp)}** | **{fmt(tg)}** | "
         f"**{fmt(summary['total_missing_coords'])}** | "
         f"**{fmt(summary.get('total_citizen_pulled', tp))}** |")
     lines.append("")
     lines.append("“Resident-filed” is shown only where the source data itself "
                  "separates resident-filed cases from city-initiated proactive "
-                 "work (Baltimore). For all other cities the 311 categories "
-                 "are resident-filed requests; some categories name the "
-                 "inspection or treatment the city performs in response to "
-                 "the request.")
+                 "work (Baltimore). For all other jurisdictions the 311 "
+                 "categories are resident-filed requests; some categories "
+                 "name the inspection or treatment the city performs in "
+                 "response to the request.")
     lines.append("")
     lines.append("## Sources and inclusion rules")
     lines.append("")
@@ -192,12 +235,13 @@ def main():
     lines.append("- Coordinates are exactly what the source publishes. This "
                  "project never geocodes addresses and never invents map "
                  "points; records without coordinates are counted, kept in "
-                 "the CSVs, and left off the map.")
+                 "the CSVs, and left off the map. Coordinates stored as 0,0 "
+                 "placeholders (Denver) count as missing.")
     lines.append("- The original city classification is preserved verbatim "
                  "on every record (`type_original`), next to one of ten "
                  "standardized categories.")
-    lines.append("- Era changes inside a city's 311 system (NYC 2025, "
-                 "Buffalo 2024, Chicago 2018/19) are stitched from "
+    lines.append("- Era changes inside a jurisdiction's 311 system (NYC "
+                 "2025, Buffalo 2024, Chicago 2018/19) are stitched from "
                  "non-overlapping sources so no record is double-counted.")
     lines.append("- Complaint volume measures *reporting*, not rat "
                  "populations: it also reflects 311 accessibility, public "

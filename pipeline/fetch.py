@@ -75,7 +75,10 @@ def q(s):
 # ---------------------------------------------------------------- adapters
 def fetch_socrata(cfg):
     f = cfg["fields"]
-    select = ",".join({f["date"], f["lat"], f["lng"], f["type"], f["status"]}.difference({""}))
+    select_fields = {f["date"], f["lat"], f["lng"], f["type"], f["status"]}
+    if cfg.get("dedupe_on"):
+        select_fields.add(cfg["dedupe_on"])
+    select = ",".join(select_fields.difference({""}))
     base = f"https://{cfg['domain']}/resource/{cfg['dataset']}.json"
     rows = []
 
@@ -112,6 +115,19 @@ def fetch_socrata(cfg):
         cfg = dict(cfg)
         cfg["fields"] = dict(f, lat="", lng="")
         return fetch_socrata(cfg)
+    dedupe_on = cfg.get("dedupe_on")
+    if dedupe_on:
+        # keep the first row per record id (mirrors the ArcGIS adapter)
+        seen = set()
+        uniq = []
+        for r in rows:
+            k = r.get(dedupe_on)
+            if k in seen:
+                continue
+            seen.add(k)
+            uniq.append(r)
+        log(f"  {cfg['slug']}: dedupe on {dedupe_on}: {len(rows)} -> {len(uniq)}")
+        rows = uniq
     return rows
 
 
@@ -262,13 +278,21 @@ def normalize(cfg, raw):
     std_counts = {}
     year_counts = {}
     dmin, dmax = None, None
+    exact_types = cfg.get("exact_types")
+    kept = 0
     for r in raw:
-        date = norm_date(r.get(f["date"]))
-        if len(date) >= 4 and date[:4].isdigit():
-            year_counts[date[:4]] = year_counts.get(date[:4], 0) + 1
         t_orig = str(r.get(f["type"]) or "").strip()
         if not t_orig and cfg.get("type_fallback"):
             t_orig = cfg["type_fallback"]
+        if exact_types and t_orig not in exact_types:
+            # the source's WHERE matching may be case-insensitive (ArcGIS)
+            # or otherwise broader than the verified allowlist; keep only
+            # rows whose stored category is exactly an allowlisted value
+            continue
+        kept += 1
+        date = norm_date(r.get(f["date"]))
+        if len(date) >= 4 and date[:4].isdigit():
+            year_counts[date[:4]] = year_counts.get(date[:4], 0) + 1
         t_std = smap.get(t_orig, "Other rodent complaint")
         status = str(r.get(f["status"]) or "").strip()
         if cfg["adapter"] == "arcgis" and f.get("lat") == "__lat":
@@ -305,7 +329,7 @@ def normalize(cfg, raw):
     points.sort(key=lambda p: p[2])
     all_rows.sort(key=lambda p: p[2])
     return points, all_rows, {
-        "pulled": len(raw),
+        "pulled": kept,
         "geocoded": len(points),
         "missing_coords": missing,
         "date_min": dmin,
