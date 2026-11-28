@@ -167,3 +167,51 @@ zoom 12, clicking a Boston dot opens that exact complaint's popup
 (2012-03-29, Rodent Activity). The underlying data was never affected:
 the defect was purely in display projection after interaction, and the
 initial view (as in the claim screenshot) was always correct.
+
+## Addendum — 28 Nov 2026 (3): rendering performance, zoom animation, city labels
+
+A second user video showed zooming feeling heavy with visible frame
+drops on a phone, the aggregate balls and their count labels not
+following the zoom animation, and city names not readable on the map
+itself.
+
+Performance: the previous draw path rebuilt an array of record objects
+for the whole selection and re-iterated it with per-point allocations
+on every redraw. Measured on the real app with Baltimore (1,921,638
+mapped points) plus the default cities loaded: redraw 0.83–2.37 s per
+pan/zoom. The draw path was rebuilt around a per-city spatial leaf-cell
+index over Web-Mercator world-fraction coordinates (cells of at most
+2,500 points; indices grouped citizen-first and date-sorted inside each
+cell, so any filter combination resolves to at most two contiguous
+ranges per cell). A redraw now touches only cells intersecting the
+view; leaf cells that are small on screen contribute precomputed
+statistics to the aggregate grid without iterating their points. Same
+setup after the rebuild: redraw 1–30 ms. One-time cost: indexing a
+city happens once when it is first loaded; the default first view
+(five mid-size cities) is unaffected.
+
+Zoom animation: the canvas layer now carries Leaflet's
+leaflet-zoom-animated class and handles the zoomanim event with the
+same transform Leaflet applies to its own layers, so the balls and
+their count labels scale together with the map during an animated
+zoom instead of sitting still and snapping at zoomend. Verified
+headlessly: computed canvas transform scale 1.73 mid zoom-in (110 ms
+into the 250 ms transition) and 0.60 mid zoom-out, back to identity
+after each redraw; end-state positions re-verified with the pan/zoom
+pixel-check protocol and a zoom-12 popup check after the change.
+
+City labels: each selected jurisdiction's name is now drawn on the
+canvas at its point centroid (zoom 9 and below), largest first,
+skipping any label that would overlap one already placed, and clamped
+inside the canvas edge — the basemap does not label every jurisdiction
+at these zooms.
+
+Also: the city-comparison table (490 px wide) now scrolls horizontally
+inside its card instead of forcing the 344 px side panel wider.
+
+Phone layout check: at a 360 px mobile viewport the layout stacks as
+designed (map first, 46vh, panels below, no horizontal page overflow).
+The squeezed side-by-side appearance in the user video is the
+browser's forced desktop-site mode (layout viewport ≈ 980 px), which a
+page cannot override from inside; the app-side overflow that made that
+mode look worse (the comparison table) is fixed above.
