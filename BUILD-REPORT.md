@@ -326,3 +326,16 @@ headlessly: opening centre (38.14, -96) at the US-framed bounds,
 the US silhouette fully unveiled with Canada/Mexico/oceans faded,
 city-bubble popup and an exact individual-point popup both working
 with the veil in place.
+
+## Addendum — 28 Nov 2026 (11): owner reverts to the clustering build
+
+After reviewing the national-bubble build (9) and the US-only veil
+build (10) live on his phone, the owner directed a revert to the
+build shown in his screenshot of 28 Nov 17:55 — the
+Google-Maps-style clustering build with the density-aware dot rule
+and the navy-and-gold palette (addenda (6)–(8), commit c7a292a's
+app.js). app/app.js is therefore restored byte-for-byte to that
+version (SHA-256 00e5cb94…). The bubble and veil builds remain in
+git history (commits a08e121 and b5e248c) if ever wanted again;
+data/us-outline.json stays in the repo unused. This reverted build
+is the one the revised claim of 29 Nov 2026 presents.
