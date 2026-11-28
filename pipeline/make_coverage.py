@@ -53,7 +53,14 @@ NOTES = {
     "buffalo": (
         "`type = 'Rodents (Req_Serv)'` in the July 2008 – May 2024 dataset "
         "and `type = 'Rodent Control Issue'` in its May 2024–present "
-        "successor; the two are stitched without overlap."),
+        "successor; the two are stitched without overlap. **Correction "
+        "applied (28 Nov 2026): Buffalo's May 2024–present dataset stores "
+        "latitude and longitude interchanged for 191 records (its "
+        "`latitude` field holds values like −78.83 and `longitude` values "
+        "like 42.91). The interchange is unambiguous — Buffalo longitudes "
+        "are negative and latitudes positive — so those 191 records are "
+        "restored to the evident order in the map points and the CSV; "
+        "every other record is reproduced exactly as published."),
     "detroit": (
         "`request_type LIKE '%Rodent%'` in Improve Detroit issues — in "
         "practice the single value 'Rodent Extermination'. Requests are "
@@ -63,7 +70,11 @@ NOTES = {
         "Control and Treatment','Rodent')`. Current system: "
         "`issue_sub_type = 'Rats'`. Treatment types are resident-requested "
         "services — the request is the complaint, the treatment is the "
-        "response."),
+        "response. Note: the historic system assigns one placeholder "
+        "coordinate pair (35.7975, −103.8906 — a default pin in the "
+        "legacy system, shared by 40,610 records of all types) to 353 of "
+        "the rodent records; those records are mapped at the coordinates "
+        "the source publishes."),
     "pittsburgh": (
         "`subject = 'Rodent Control'` exactly. Substring lookalikes "
         "('Catch Basins, Grates and Sewers', 'Operating Without a License', "
@@ -148,7 +159,10 @@ NOTES = {
         "in the source and are counted as unmapped, exactly like records "
         "with no coordinates. Each yearly table's system ObjectId is "
         "unique within its table and the tables cover disjoint periods, "
-        "so no record can be double-counted."),
+        "so no record can be double-counted. One record (24 Mar 2023) "
+        "publishes a longitude identical to its latitude (39.74159, "
+        "39.74159) — not a real location; it is kept in the CSV but "
+        "excluded from the map and counted as unmapped."),
     "berkeley": (
         "`case_request = 'Vector Control'` — Berkeley Environmental "
         "Health's combined vector-control category: rodents, mosquitoes "
