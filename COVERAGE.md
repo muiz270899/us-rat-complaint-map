@@ -1,8 +1,8 @@
 # Coverage — US 311 Rat & Rodent Complaint Atlas
 
-Snapshot assembled 2026-11-27 by re-running the project's open pipeline (`pipeline/fetch.py`) against each city's official open-data API. Dates below are the first and last qualifying records in each published source; a city may have internal gaps. Every count is recomputable from the CSVs in `data/csv/` and the statistics in `data/summary.json`.
+Snapshot assembled 2026-11-28 by re-running the project's open pipeline (`pipeline/fetch.py`) against each jurisdiction's official open-data API. Dates below are the first and last qualifying records in each published source; a jurisdiction may have internal gaps. Every count is recomputable from the CSVs in `data/csv/` and the statistics in `data/summary.json`.
 
-| City | First record | Latest record | Records | Mapped | Unmapped | Resident-filed |
+| Jurisdiction | First record | Latest record | Records | Mapped | Unmapped | Resident-filed |
 |---|---|---|---:|---:|---:|---:|
 | Baltimore, MD | 2010-01-01 | 2026-11-25 | 1,922,689 | 1,921,638 | 1,051 | 145,183 |
 | Chicago, IL | 1999-11-29 | 2026-11-26 | 711,869 | 711,440 | 429 | — |
@@ -22,9 +22,12 @@ Snapshot assembled 2026-11-27 by re-running the project's open pipeline (`pipeli
 | Evanston, IL | 2014-01-09 | 2022-02-22 | 4,169 | 4,168 | 1 | — |
 | Hartford, CT | 2015-07-06 | 2026-11-02 | 2,070 | 2,035 | 35 | — |
 | Norfolk, VA | 2019-10-02 | 2026-11-24 | 2,012 | 0 | 2,012 | — |
-| **Total — 18 cities** | | | **3,472,008** | **3,447,288** | **24,720** | **1,694,502** |
+| Denver, CO | 2007-03-15 | 2026-11-19 | 1,536 | 1,231 | 305 | — |
+| Prince George's County, MD | 2012-07-12 | 2016-08-13 | 1,179 | 1,037 | 142 | — |
+| Berkeley, CA | 2026-01-24 | 2026-06-24 | 25 | 25 | 0 | — |
+| **Total — 21 jurisdictions** | | | **3,474,748** | **3,449,581** | **25,167** | **1,697,242** |
 
-“Resident-filed” is shown only where the source data itself separates resident-filed cases from city-initiated proactive work (Baltimore). For all other cities the 311 categories are resident-filed requests; some categories name the inspection or treatment the city performs in response to the request.
+“Resident-filed” is shown only where the source data itself separates resident-filed cases from city-initiated proactive work (Baltimore). For all other jurisdictions the 311 categories are resident-filed requests; some categories name the inspection or treatment the city performs in response to the request.
 
 ## Sources and inclusion rules
 
@@ -136,9 +139,27 @@ Filter as configured: `USER_Record_Type LIKE '%RODENT%' (values: 'External Roden
 
 Filter as configured: `service_request_type IN ('Rat Observed','Potential Rat Harborage') - this dataset publishes street-address text only, no coordinate columns; records are CSV-only`
 
+**Denver, CO** — [City & County of Denver Open Data (ArcGIS) - 311 Service Requests, yearly archive tables 2007-2023 + City & County of Denver Open Data (ArcGIS) - 311 Service Requests, current rolling 12 months](https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/311_Service_Requests_2023/FeatureServer)
+
+Denver's 311 archive is split into one table per year (2007–2023) plus a current rolling-12-months table. The category lives in `Case_Summary`, which also carries thousands of free-text one-off summaries; only the five exact controlled values are counted: 'Rat Problems' (to 2015), 'Mice Problems' (2007 only), 'EQ - Rats' (2016–2019), 'Rats' (a few from 2015–2019, the main label from 2020) and 'Rats & Mice' (2022– ). Denver's SQL matching is case-insensitive, so the pipeline keeps only rows whose stored value matches an allowlisted value exactly — case-variant noise in the source ('rats', 'RATS'; 22 records) is excluded. The combined 'Cockroaches, rodents, maggots, ants, spiders, fleas' category is not counted. **Coverage gap: Denver publishes no queryable 311 source for Jan 2024 – Nov 2025** (the 2024 archive is not exposed on the city's ArcGIS org and the rolling table covers only the last 12 months), so the series jumps from Dec 2023 to Nov 2025. 252 records carry placeholder 0,0 coordinates in the source and are counted as unmapped, exactly like records with no coordinates. Each yearly table's system ObjectId is unique within its table and the tables cover disjoint periods, so no record can be double-counted.
+
+Filter as configured: `Case_Summary IN ('Rat Problems','Mice Problems','EQ - Rats','Rats','Rats & Mice') in Denver's yearly 311 archive tables 2007-2023 — the exact controlled rodent values of Denver's own taxonomy (the label changed over the years: 'Rat Problems' to 2015, 'EQ - Rats' from 2016, 'Rats'/'Rats & Mice' from 2020). Free-text one-off summaries that also occur in Case_Summary are not a category and are excluded. Denver publishes no queryable 311 source for Jan 2024 - Nov 2025, so the series has that gap. | the same five exact Case_Summary values in Denver's current rolling-12-months 311 table (its rodent records currently span 2025-11-25 onward; the table rolls, so a re-run may shift the window)`
+
+**Prince George's County, MD** — [Prince George's County Open Data - County Click 311, QAlert Service Requests](https://data.princegeorgescountymd.gov/d/y8p6-7ur2)
+
+`service_name IN ('Rodents','Infestation of Bugs and/or Rodents')` in County Click 311, the county's QAlert-based system. 'Infestation of Bugs and/or Rodents' (1,114 of the 1,179 records) is a combined bugs-and-rodents category and is labeled combined everywhere it appears; 'Rodents' alone is 65 records. **The series is historical: the QAlert data stops in Aug 2016** and the county's successor systems publish no rodent category, so Prince George's County cannot support a present-day trend. Records are deduplicated on `service_request_id` (no duplicates found). It is a county, not a city — the atlas's one county jurisdiction.
+
+Filter as configured: `service_name IN ('Rodents','Infestation of Bugs and/or Rodents') in the county's County Click 311 (QAlert) system. 'Infestation of Bugs and/or Rodents' is a combined bugs-and-rodents category and is labeled combined everywhere it appears. The QAlert series is historical: it ends in 2016, and the county's successor systems publish no rodent category.`
+
+**Berkeley, CA** — [City of Berkeley Open Data - 311 Cases](https://data.cityofberkeley.info/d/p88g-6gs2)
+
+`case_request = 'Vector Control'` — Berkeley Environmental Health's combined vector-control category: rodents, mosquitoes and other vectors in a single case type. The rodent share cannot be separated from the data; the category is labeled combined everywhere it appears, exactly as San Francisco's combined category is. The value was introduced in 2026, so Berkeley's series covers 2026 only. Records are deduplicated on `case_id` (no duplicates found).
+
+Filter as configured: `case_request = 'Vector Control' — Berkeley Environmental Health's combined vector-control category (rodents, mosquitoes and other vectors). The rodent share cannot be separated from the data; the category is labeled combined everywhere it appears, exactly as San Francisco's combined category is. The value exists only from 2026 in this dataset.`
+
 ## Counting rules that apply everywhere
 
-- Coordinates are exactly what the source publishes. This project never geocodes addresses and never invents map points; records without coordinates are counted, kept in the CSVs, and left off the map.
+- Coordinates are exactly what the source publishes. This project never geocodes addresses and never invents map points; records without coordinates are counted, kept in the CSVs, and left off the map. Coordinates stored as 0,0 placeholders (Denver) count as missing.
 - The original city classification is preserved verbatim on every record (`type_original`), next to one of ten standardized categories.
-- Era changes inside a city's 311 system (NYC 2025, Buffalo 2024, Chicago 2018/19) are stitched from non-overlapping sources so no record is double-counted.
+- Era changes inside a jurisdiction's 311 system (NYC 2025, Buffalo 2024, Chicago 2018/19) are stitched from non-overlapping sources so no record is double-counted.
 - Complaint volume measures *reporting*, not rat populations: it also reflects 311 accessibility, public awareness, and whether a city runs proactive programs.

@@ -76,3 +76,35 @@ Dallas (only 'Registration' false positives), Seattle (no rodent type in Custome
 
 - Suggested claim summary line: "15 cities · 3,402,317 real 311 records pulled from official city APIs (3,377,635 mapped) · full history 1999–2026 · interactive map with points + heatmap, city/date filters, per-year trends, city comparison, and full per-city CSV downloads · reproducible one-command pipeline".
 - Still needed from parent: GitHub repo creation + Pages hosting, screenshot for the README placeholder and the claim, claim submission (needs Muiz's confirmation + ~$0.02 gas).
+
+---
+
+## Round 3 — three jurisdictions added (2026-11-28)
+
+Scope: 18 → **21 jurisdictions** (20 cities + 1 county), approved by Muiz. Local-only build; publishing is the parent agent's step.
+
+### New totals (recomputed from the build)
+
+| | Pulled | Mapped |
+|---|---:|---:|
+| Atlas total (21 jurisdictions) | 3,474,748 | 3,449,581 (99.3%) |
+| Atlas, citizen-filed basis | 1,697,242 | 1,673,034 |
+| Denver, CO (new) | 1,536 | 1,231 |
+| Prince George's County, MD (new) | 1,179 | 1,037 |
+| Berkeley, CA (new) | 25 | 25 |
+
+City sums reconcile exactly with the headline totals; per-city point-file row counts equal the mapped counts and CSV row counts equal the pulled counts for all three new jurisdictions.
+
+### What was added
+
+- **Denver, CO** (ArcGIS, org `zdB7qR0BtYrg0Xpl`): yearly archive tables `311_Service_Requests_<year>` 2007–2023 (table 0) + the rolling-12-months table `ODC_service_requests_311` (table 53), merged under one slug. Only the five exact controlled `Case_Summary` values: 'Rat Problems' 293, 'Mice Problems' 1, 'EQ - Rats' 184, 'Rats' 671, 'Rats & Mice' 387. The combined 'Cockroaches, rodents, maggots, ants, spiders, fleas' category was NOT included. **Gap disclosed:** no queryable Denver source covers Jan 2024 – Nov 2025 (2024 AGOL item not exposed; rolling table covers only the last 12 months) — stated in COVERAGE.md, README limitations, and the claim text. Pipeline support added: `exact_types` in `normalize()` — Denver's SQL matching is case-insensitive, so rows are kept only when the stored value matches the allowlist exactly; this excluded 22 case-variant records ('rats' ×21, 'RATS' ×1). Dedupe: each yearly table's system ObjectId is unique within its table and the tables cover disjoint periods. Denver is resident-filed 311 and counts in full toward the citizen totals.
+- **Berkeley, CA** (Socrata `p88g-6gs2`): `case_request = 'Vector Control'` — a **combined** vector category (rodents + mosquitoes + other vectors), labeled combined in the filter text, COVERAGE.md, README, and claim text, mirroring San Francisco's combined-category labeling. 25 records, all with coordinates, 2026-01-24 → 2026-06-24 (the category exists only from 2026). Deduplicated on `case_id` (25 → 25, no duplicates).
+- **Prince George's County, MD** (Socrata `y8p6-7ur2`, County Click 311 / QAlert): `service_name IN ('Rodents' 65, 'Infestation of Bugs and/or Rodents' 1,114)` — the second is a **combined** bugs-and-rodents category, labeled combined everywhere. 1,179 pulled / 1,037 mapped, 2012-07-12 → 2016-08-13. **Historical series, disclosed:** QAlert ended in 2016 and the successor Motorola datasets publish no rodent category. Deduplicated on `service_request_id` (1,179 → 1,179, no duplicates). It is a county — headline wording changed from "cities" to "jurisdictions" in the app header chip, compare table, COVERAGE.md, README, and claim title.
+- Pipeline: Socrata adapter gained `dedupe_on` support (field added to the `$select`, first row kept per id — mirrors the ArcGIS adapter). `pipeline/resident_split.py` re-run (Baltimore split unchanged: 145,183 resident-filed / 1,777,181 proactive).
+- Docs/app updated: COVERAGE.md regenerated (new NOTES for the three jurisdictions + "jurisdictions" wording), README (stats, coverage table +3 rows, sources table +3 rows, Denver removed from the excluded-cities list with the re-audit noted, limitations extended), SUBMIT.md (new title/totals + round-3 paragraph), app header chip "21 jurisdictions", sidebar "Cities & counties", "By jurisdiction", compare-table "Jurisdiction". `claim-image.png` regenerated from the updated app.
+
+### Deviations from the round-3 probe numbers (both are probe-side counting artifacts; the build follows the atlas's own rules)
+
+1. **Denver pulled: probe 1,423 → build 1,536 (+113).** The probe counted 'Rats' only for 2020 onward, assuming era-exclusive labels. The stored data also carries the exact value 'Rats' in 2015 (2), 2016 (29), and 2019 (82) — genuine in-year records with the exact allowlisted value, so they are included. All other category counts match the probe exactly. (The probe's ArcGIS group-by counts also folded case variants; measured exactly, the source holds 22 additional case-variant rows — 'rats'/'RATS' — which the exact-match rule excludes.)
+2. **Denver mapped: probe 1,370 → build 1,231 (−139).** The probe counted records with non-null Latitude/Longitude as "with coordinates". Denver's archive stores **0,0 placeholder coordinates** on 252 of the kept records (plus 53 with null coordinates = 305 unmapped). A 0,0 point is not a real location (it plots off West Africa), and the atlas's rule for every jurisdiction is that only real published coordinates map — so placeholders count as missing, exactly like nulls. Reconciliation, verified against the live API: raw case-insensitive set 1,558 = 53 null + 256 zero + 1,249 valid; minus the 22 excluded case variants (18 valid + 4 zero) = 1,536 pulled / 1,231 mapped / 305 missing. Exact.
+3. Berkeley (25/25) and Prince George's County (1,179/1,037) match the probe numbers exactly, including date ranges.
