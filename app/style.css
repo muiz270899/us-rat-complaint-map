@@ -193,3 +193,13 @@ footer {
   .legend { bottom: 12px; right: 8px; }
   .view-toggle { top: 8px; left: 8px; }
 }
+
+/* phones: stack the map chrome under the map instead of overlaying it, so
+   nothing can overlap the header chips or the panels below */
+@media (max-width: 820px) {
+  #mapWrap { display: flex; flex-direction: column; height: auto; }
+  #map { position: relative; inset: auto; height: 46vh; flex: none; }
+  .view-toggle { position: static; align-self: flex-start; margin: 8px 8px 0; box-shadow: none; }
+  .map-status { position: static; max-width: none; margin: 8px 8px 0; }
+  .legend { position: static; margin: 8px; box-shadow: none; min-width: 0; }
+}
