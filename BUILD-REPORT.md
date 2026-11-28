@@ -289,3 +289,21 @@ own navy-and-gold palette: cluster balls are deep slate navy with a
 gold ring and white count, individual dots are warm amber, and the
 legend swatches match. The heat view keeps its conventional density
 ramp. No data or behaviour change.
+
+## Addendum — 28 Nov 2026 (9): national city bubbles + US framing
+
+Two national-view problems: the opening view centred on the
+continent left Canada filling most of the frame while the US (the
+bounty's actual scope — US municipal 311 data only) sat in a band
+below; and at national scale the screen-grid clusters merged whole
+cities into a few anonymous balls, so the map read as nearly empty.
+The map now opens framed on the continental US (fitBounds), and at
+zoom ≤ 5 the aggregate layer draws one bubble per jurisdiction at
+its complaint centroid, sized by its filtered count, labelled
+"Name · count" underneath (1.9M / 711k / 514k formatting; labels
+decluttered largest-first — the north-east corridor cannot fit
+every name at this scale). Clicking a city bubble reports that
+city's total and invites a zoom-in. Grid clustering resumes from
+zoom 6. Verified headlessly: all-cities national view groups
+3,449,580 complaints into 19 jurisdictions (Somerville and Norfolk
+publish no coordinates); Chicago zoom 10 grid regression intact.
