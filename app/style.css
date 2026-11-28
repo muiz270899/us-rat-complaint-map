@@ -158,8 +158,8 @@ ul.sources a:hover { text-decoration: underline; }
   line-height: 1.7; box-shadow: var(--shadow); min-width: 168px;
 }
 .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; vertical-align: -1px; margin-right: 5px; }
-.dot-single { background: #d43d2a; opacity: .75; }
-.dot-cluster { background: #7a1f14; border: 2px solid var(--gold); width: 9px; height: 9px; }
+.dot-single { background: #db961e; opacity: .85; }
+.dot-cluster { background: #122a42; border: 2px solid var(--gold); width: 9px; height: 9px; }
 .heat-scale {
   height: 10px; border-radius: 5px; margin: 4px 0 2px;
   background: linear-gradient(90deg, #2b58b8, #2296a0, #4ab254, #facd3c, #ee7828, #c41e14);

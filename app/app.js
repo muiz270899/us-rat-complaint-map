@@ -320,11 +320,16 @@
       drawCityLabels(ctx, size, perCity, projX, projY);
       return;
     }
-    // Individual dots only where they can actually be told apart:
-    // a sparse view at any zoom, or a street-level zoom (12+). A
-    // city-level view holding thousands of complaints would otherwise
-    // paint them as one solid pile of overlapping dots.
-    var aggregate = totalVis > 50000 || (totalVis > 3000 && map.getZoom() < 12);
+    // Individual dots only where they can actually be told apart.
+    // The in-view count alone is not enough: a regional view can
+    // hold a "sparse" total that is still one whole city squeezed
+    // into a few pixels (Denver's 1,230 complaints at zoom 6 pile
+    // into a single blob). So the sparser the view, the deeper the
+    // zoom must be before dots take over from clusters.
+    var zoomNow = map.getZoom();
+    var aggregate = totalVis > 50000 ||
+      (totalVis > 400 && zoomNow < 10) ||
+      (totalVis > 3000 && zoomNow < 12);
     if (aggregate) {
       // Google-Maps-style clustering: complaints within a ~48px
       // screen cell merge into ONE ball placed at the complaints'
@@ -374,7 +379,7 @@
         var r = 12 + 6 * Math.sqrt(g.count / maxCell);
         ctx.beginPath();
         ctx.arc(g.x, g.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(122,31,20,0.85)";
+        ctx.fillStyle = "rgba(18,42,66,0.88)";
         ctx.fill();
         ctx.lineWidth = 1.6;
         ctx.strokeStyle = "#f2b04a";
@@ -391,7 +396,7 @@
         aggregates.length.toLocaleString() + " cells — zoom in to see individual points.";
     } else {
       drawnPts = [];
-      ctx.fillStyle = "rgba(212,61,42,0.55)";
+      ctx.fillStyle = "rgba(219,150,30,0.78)";
       var i2, j2, k2, e2, idx2, x2, y2, p2;
       for (i2 = 0; i2 < cellList.length; i2++) {
         e2 = cellList[i2];
