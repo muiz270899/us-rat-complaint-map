@@ -215,3 +215,25 @@ The squeezed side-by-side appearance in the user video is the
 browser's forced desktop-site mode (layout viewport ≈ 980 px), which a
 page cannot override from inside; the app-side overflow that made that
 mode look worse (the comparison table) is fixed above.
+
+## Addendum — 28 Nov 2026 (4): pinch-zoom tracking
+
+Follow-up phone testing showed the balls still not following a pinch
+zoom, although animated button/wheel zoom (addendum 3) already worked.
+Root cause: Leaflet fires no "zoomanim" event during a pinch gesture;
+it updates its state continuously with fractional zooms and fires
+"zoom" instead, which is the event its own renderers use to update
+their transforms mid-gesture. The canvas layer now handles "zoom" as
+well, applying the same transform (relative to the view the content
+was drawn for, whose container-origin lat/lng redraw() stores) on
+every gesture update.
+
+Verified headlessly with a simulated two-finger pinch (CDP touch
+events, phone viewport): mid-gesture the canvas transform scale was
+2.278, exactly matching the tile layer's transform at the same
+instant, and 3.556 at full spread (= 2^(6.83 − 5), the fractional
+zoom reached); in a mid-pinch screenshot the Boston aggregate and a
+Leaflet-rendered reference ring around it scale identically and stay
+centred on each other. After the gesture the layer redraws exactly
+(scale back to 1). Button-zoom animation and the zoom-12 popup check
+were re-run after the change and still pass.
