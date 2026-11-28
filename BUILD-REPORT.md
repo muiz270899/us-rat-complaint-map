@@ -89,7 +89,7 @@ Scope: 18 → **21 jurisdictions** (20 cities + 1 county), approved by Muiz. Loc
 |---|---:|---:|
 | Atlas total (21 jurisdictions) | 3,474,748 | 3,449,581 (99.3%) |
 | Atlas, citizen-filed basis | 1,697,242 | 1,673,034 |
-| Denver, CO (new) | 1,536 | 1,231 |
+| Denver, CO (new) | 1,536 | 1,230 (corrected — see addendum 12) |
 | Prince George's County, MD (new) | 1,179 | 1,037 |
 | Berkeley, CA (new) | 25 | 25 |
 
@@ -106,7 +106,7 @@ City sums reconcile exactly with the headline totals; per-city point-file row co
 ### Deviations from the round-3 probe numbers (both are probe-side counting artifacts; the build follows the atlas's own rules)
 
 1. **Denver pulled: probe 1,423 → build 1,536 (+113).** The probe counted 'Rats' only for 2020 onward, assuming era-exclusive labels. The stored data also carries the exact value 'Rats' in 2015 (2), 2016 (29), and 2019 (82) — genuine in-year records with the exact allowlisted value, so they are included. All other category counts match the probe exactly. (The probe's ArcGIS group-by counts also folded case variants; measured exactly, the source holds 22 additional case-variant rows — 'rats'/'RATS' — which the exact-match rule excludes.)
-2. **Denver mapped: probe 1,370 → build 1,231 (−139).** The probe counted records with non-null Latitude/Longitude as "with coordinates". Denver's archive stores **0,0 placeholder coordinates** on 252 of the kept records (plus 53 with null coordinates = 305 unmapped). A 0,0 point is not a real location (it plots off West Africa), and the atlas's rule for every jurisdiction is that only real published coordinates map — so placeholders count as missing, exactly like nulls. Reconciliation, verified against the live API: raw case-insensitive set 1,558 = 53 null + 256 zero + 1,249 valid; minus the 22 excluded case variants (18 valid + 4 zero) = 1,536 pulled / 1,231 mapped / 305 missing. Exact.
+2. **Denver mapped: probe 1,370 → build 1,231 (−139).** The probe counted records with non-null Latitude/Longitude as "with coordinates". Denver's archive stores **0,0 placeholder coordinates** on 252 of the kept records (plus 53 with null coordinates = 305 unmapped). A 0,0 point is not a real location (it plots off West Africa), and the atlas's rule for every jurisdiction is that only real published coordinates map — so placeholders count as missing, exactly like nulls. Reconciliation, verified against the live API: raw case-insensitive set 1,558 = 53 null + 256 zero + 1,249 valid; minus the 22 excluded case variants (18 valid + 4 zero) = 1,536 pulled / 1,231 mapped / 305 missing. Exact at that stage; the final figures are 1,230 mapped / 306 missing — see addendum 12.
 3. Berkeley (25/25) and Prince George's County (1,179/1,037) match the probe numbers exactly, including date ranges.
 
 ## Round-3 correction addendum (2026-11-28, post-integration audit)
@@ -339,3 +339,18 @@ version (SHA-256 00e5cb94…). The bubble and veil builds remain in
 git history (commits a08e121 and b5e248c) if ever wanted again;
 data/us-outline.json stays in the repo unused. This reverted build
 is the one the revised claim of 29 Nov 2026 presents.
+
+## Addendum — 28 Nov 2026 (12): Denver figure corrected in the round-3 log
+
+The round-3 reconciliation above (and its results table) reports
+Denver as 1,231 mapped / 305 unmapped. Those were the figures at
+that stage of the build, before one further exclusion was applied:
+a single record (24 Mar 2023) whose published longitude is
+identical to its latitude (39.74159, 39.74159) — not a real
+location. It is kept in the CSV, excluded from the map and counted
+as unmapped, as COVERAGE.md already states. The final, verified
+Denver figures — the ones in the dataset, README, COVERAGE and the
+claim text — are 1,536 pulled / 1,230 mapped / 306 unmapped (252
+records whose source coordinates are 0,0 placeholders, stored blank
+in the CSV; 53 with no coordinates; and the 1 longitude-equals-
+latitude record). No other figure in this report is affected.
