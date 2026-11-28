@@ -237,3 +237,17 @@ Leaflet-rendered reference ring around it scale identically and stay
 centred on each other. After the gesture the layer redraws exactly
 (scale back to 1). Button-zoom animation and the zoom-12 popup check
 were re-run after the change and still pass.
+
+## Addendum — 28 Nov 2026 (5): dots only where they can be told apart
+
+Phone testing at a city-level zoom (Kansas City, zoom 10–11) showed
+that city's 20,176 complaints painted as one solid pile of small red
+dots: the individual-dots branch was chosen purely on the in-view
+count (≤ 50,000), regardless of zoom, so thousands of dots overlapped
+into a smear that reads as a rendering defect. The rule is now:
+individual dots only for a sparse view (≤ 3,000 in view, any zoom) or
+a street-level zoom (12+); anything denser aggregates into the
+counted grid cells at every zoom. Verified headlessly: Kansas City at
+zoom 10/11 now aggregates (142 / 367 cells, counts labelled), while
+Boston at zoom 12 still draws individual points and a click still
+opens the exact complaint popup.
