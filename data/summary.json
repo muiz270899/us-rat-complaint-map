@@ -1351,8 +1351,8 @@
    "filter": "Case_Summary IN ('Rat Problems','Mice Problems','EQ - Rats','Rats','Rats & Mice') in Denver's yearly 311 archive tables 2007-2023 \u2014 the exact controlled rodent values of Denver's own taxonomy (the label changed over the years: 'Rat Problems' to 2015, 'EQ - Rats' from 2016, 'Rats'/'Rats & Mice' from 2020). Free-text one-off summaries that also occur in Case_Summary are not a category and are excluded. Denver publishes no queryable 311 source for Jan 2024 - Nov 2025, so the series has that gap. | the same five exact Case_Summary values in Denver's current rolling-12-months 311 table (its rodent records currently span 2025-11-25 onward; the table rolls, so a re-run may shift the window)",
    "population_2020_census": 727211,
    "pulled": 1536,
-   "geocoded": 1231,
-   "missing_coords": 305,
+   "geocoded": 1230,
+   "missing_coords": 306,
    "date_min": "2007-03-15",
    "date_max": "2026-11-19",
    "types_original": {
@@ -1389,7 +1389,7 @@
     "2026": 209
    },
    "points_file": "denver.json",
-   "points_bytes": 101870,
+   "points_bytes": 101788,
    "csv_files": [
     {
      "file": "csv/denver.csv",
@@ -1563,9 +1563,9 @@
   }
  ],
  "total_pulled": 3474748,
- "total_geocoded": 3449581,
- "total_missing_coords": 25167,
+ "total_geocoded": 3449580,
+ "total_missing_coords": 25168,
  "city_count": 21,
  "total_citizen_pulled": 1697242,
- "total_citizen_geocoded": 1673034
+ "total_citizen_geocoded": 1673033
 }
