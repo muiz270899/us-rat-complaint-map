@@ -383,7 +383,7 @@
     var el = document.getElementById("compareTable");
     var cities = summary.cities.filter(function (c) { return !c.error; })
       .slice().sort(function (a, b) { return b.pulled - a.pulled; });
-    var h = "<table class='compare'><thead><tr><th>City</th><th>Records</th>" +
+    var h = "<table class='compare'><thead><tr><th>Jurisdiction</th><th>Records</th>" +
       "<th>Mapped</th><th>% mapped</th><th>No coords</th><th>Resident-filed</th>" +
       "<th>Years</th><th>Per 100k</th></tr></thead><tbody>";
     cities.forEach(function (c) {
@@ -435,13 +435,13 @@
     var el = document.getElementById("aboutData");
     var fetched = summary.generated_utc ? summary.generated_utc.slice(0, 10) : "unknown";
     var h = "<span class='fetched-note'>Data last fetched: " + fetched + "</span>" +
-      "<p class='hint'>Every record comes straight from an official city 311 open-data API " +
+      "<p class='hint'>Every record comes straight from an official municipal 311 open-data API " +
       "(Socrata, CKAN, ArcGIS) — no scraping, no third-party resellers. The fetch pipeline is " +
       "re-runnable end-to-end from a clean checkout; see the repository README for the " +
       "methodology, cleaning rules and per-city coverage.</p>" +
       "<p class='hint'><strong>Full coverage documentation:</strong> " +
       "<a href='../COVERAGE.md' target='_blank' rel='noopener'>COVERAGE.md</a> lists, " +
-      "for every city, the source dataset, the exact category filter used, the date " +
+      "for every jurisdiction, the source dataset, the exact category filter used, the date " +
       "range, and the pulled vs mapped counts — including how Baltimore's resident-filed " +
       "cases are separated from its proactive Rat Rubout rounds.</p><h3>Sources</h3><ul class='sources'>";
     summary.cities.filter(function (c) { return !c.error; }).forEach(function (c) {
@@ -492,7 +492,7 @@
     var pulled = citizenMode && summary.total_citizen_pulled != null
       ? summary.total_citizen_pulled : summary.total_pulled;
     document.getElementById("headStats").innerHTML =
-      "<span class='chip'><b>" + fmt(summary.city_count) + "</b> cities</span>" +
+      "<span class='chip'><b>" + fmt(summary.city_count) + "</b> jurisdictions</span>" +
       "<span class='chip'><b>" + fmt(mapped) + "</b> complaints mapped" +
       (citizenMode ? " (citizen-filed)" : "") + "</span>" +
       "<span class='chip'><b>" + fmt(pulled) + "</b> records" +
