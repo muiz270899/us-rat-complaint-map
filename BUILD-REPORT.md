@@ -137,3 +137,33 @@ it); Washington DC (30) and Evanston (4) carry a handful of
 source-published outlier coordinates. Post-correction audit: zero swapped
 coordinates, zero invalid latitudes in any CSV, per-city point/CSV rows
 reconcile exactly with summary.json.
+
+---
+
+## Addendum — 28 Nov 2026 (2): map rendering defect found and fixed
+
+A user video showed the complaint dots staying behind on screen when
+the map was panned: after dragging, clusters sat over the wrong part of
+the world (e.g. US cities floating over the Atlantic/Africa), and after
+zooming, points could land off-canvas and disappear. Root cause was in
+the custom canvas layer in `app/app.js`: points were drawn with a
+hand-rolled Web-Mercator projection that subtracted
+`map.getPixelOrigin()`. That origin already includes the map pane
+position, so the math was correct only in the initial view (pane
+position zero); after any pan or zoom re-base, every point drifted by
+exactly the pan/zoom offset. Reproduced headlessly with the verbatim
+layer code against Leaflet-rendered ground-truth markers (dots glued at
+load, separated by the full drag vector after one pan).
+
+Fix: the canvas is pinned to `containerPointToLayerPoint([0, 0])` and
+points are now drawn at `latLngToLayerPoint(p) - topLeft` — one
+consistent coordinate frame for canvas position, drawing, heat view,
+and click hit-testing. Verified on the real app (headless Chromium,
+data subset): pans in all four directions plus a diagonal at zoom 0,
+zooms 4 → 6 → 8 → 10 → 12 and back, with reference complaints from the
+Boston, San Francisco and Washington DC datasets checked pixel-wise at
+their exact projected coordinates after every step — all matched; at
+zoom 12, clicking a Boston dot opens that exact complaint's popup
+(2012-03-29, Rodent Activity). The underlying data was never affected:
+the defect was purely in display projection after interaction, and the
+initial view (as in the claim screenshot) was always correct.
