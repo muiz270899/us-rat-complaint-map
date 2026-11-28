@@ -24,7 +24,11 @@ NOTES = {
         "filter and is added in this revision.** Resident-filed total = "
         "SW-Rat Rubout + SW-Rat Rubout Follow-up + HCD-Rodents; the app's "
         "'Citizen reports only' toggle and the comparison table show both "
-        "counts side by side. Dates use the record creation date."),
+        "counts side by side. A further 325 Baltimore records are two "
+        "'Alley Concern' service types — neither resident-filed complaints "
+        "nor proactive rounds; they are counted in the total and itemized "
+        "in the dataset's per-type breakdown. Dates use the record "
+        "creation date."),
     "chicago": (
         "Current system (2019– ): `sr_type = 'Rodent Baiting/Rat Complaint'`. "
         "Historical archive (to 2018-12-18): the dedicated rodent-baiting "
