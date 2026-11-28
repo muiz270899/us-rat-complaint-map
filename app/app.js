@@ -15,8 +15,7 @@
   var loaded = {};        // slug -> points array
   var loading = {};       // slug -> true while fetching
   var selected = {};      // slug -> bool
-  var view = [];          // filtered records {lat,lng,city,state,date,to,ts,status}
-  var viewDirty = true;
+  var viewDirty = true;   // selection/filters changed since stats were computed
   var aggregates = null;  // last drawn aggregate cells [{x,y,count,lat,lng}]
   var drawnPts = null;    // last drawn individual points [{x,y,rec}]
   var viewMode = "points"; // "points" | "heat"
@@ -48,19 +47,37 @@
   var PointLayer = L.Layer.extend({
     onAdd: function (m) {
       this._map = m;
-      var c = L.DomUtil.create("canvas", "rat-canvas");
+      var c = L.DomUtil.create("canvas", "rat-canvas leaflet-zoom-animated");
       c.style.position = "absolute";
       c.style.pointerEvents = "none";
       m.getPanes().overlayPane.appendChild(c);
       this._canvas = c;
       m.on("moveend zoomend resize", this._reset, this);
+      m.on("zoomanim", this._animateZoom, this);
       this._reset();
     },
     onRemove: function (m) {
       m.off("moveend zoomend resize", this._reset, this);
+      m.off("zoomanim", this._animateZoom, this);
       L.DomUtil.remove(this._canvas);
     },
     _reset: function () { this.redraw(); },
+    // During an animated zoom, scale the canvas with the same
+    // transform Leaflet applies to its own zoom-animated layers, so
+    // the balls and their count labels grow/shrink together with the
+    // map instead of sitting still and snapping at the end. The drawn
+    // content is in container points of the current view; the lat/lng
+    // at container point (0, 0) must land on its layer point in the
+    // target view, scaled about the canvas origin. redraw() at
+    // zoomend replaces this transform with the exact position again.
+    _animateZoom: function (e) {
+      var m = this._map, c = this._canvas;
+      if (!m || !c) return;
+      var scale = m.getZoomScale(e.zoom);
+      var offset = m.project(m.containerPointToLatLng([0, 0]), e.zoom)
+        .subtract(m._getNewPixelOrigin(e.center, e.zoom));
+      L.DomUtil.setTransform(c, offset, scale);
+    },
     redraw: function () {
       var m = this._map;
       if (!m || !this._canvas) return;
@@ -83,71 +100,240 @@
   var pointLayer = new PointLayer();
   pointLayer.addTo(map);
 
-  function currentView() {
-    if (!viewDirty) return view;
-    view = [];
-    var df = document.getElementById("dateFrom").value || "0000-01-01";
-    var dt = document.getElementById("dateTo").value || "9999-12-31";
-    Object.keys(selected).forEach(function (slug) {
-      if (!selected[slug] || !loaded[slug]) return;
-      var meta = cityBySlug[slug];
-      var pts = loaded[slug];
-      for (var i = 0; i < pts.length; i++) {
-        var p = pts[i];
-        if (p[2] < df || p[2] > dt) continue;
-        if (!isCitizenPoint(meta, p)) continue;
-        view.push({
-          lat: p[0], lng: p[1], date: p[2], to: p[3], ts: p[4], status: p[5],
-          city: meta.city, state: meta.state, slug: slug,
-        });
+  // ---------------------------------------------------------- point index
+  // Each city's points are indexed once at load into spatial leaf cells
+  // over Web-Mercator world-fraction coordinates. A redraw only touches
+  // cells intersecting the current view, so panning and zooming stay
+  // fast even with millions of points loaded. (The previous design
+  // rebuilt an array of record objects for the whole selection and
+  // re-iterated it with per-point allocations on every redraw, which
+  // made zooming stutter badly on phones.) Inside a cell, point indices
+  // are grouped citizen-filed first (for cities with a resident split)
+  // and date-sorted within each group, so any filter combination
+  // resolves to at most two contiguous ranges per cell.
+  var CELL_MAX = 2500;
+
+  function dateNum(s) { // "YYYY-MM-DD" -> YYYYMMDD number (0 when empty)
+    if (!s) return 0;
+    return (+s.slice(0, 4)) * 10000 + (+s.slice(5, 7)) * 100 + (+s.slice(8, 10));
+  }
+  function wyOf(lat) {
+    var s = Math.sin((lat * Math.PI) / 180);
+    return 0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI);
+  }
+
+  function buildIndex(slug, pts) {
+    var meta = cityBySlug[slug] || {};
+    var n = pts.length;
+    var wx = new Float32Array(n), wy = new Float32Array(n);
+    var dnum = new Uint32Array(n), cit = new Uint8Array(n);
+    var sumLat = 0, sumLng = 0, i, p;
+    for (i = 0; i < n; i++) {
+      p = pts[i];
+      wx[i] = (p[1] + 180) / 360;
+      wy[i] = wyOf(p[0]);
+      dnum[i] = dateNum(p[2]);
+      cit[i] = isCitizenPoint(meta, p) ? 1 : 0;
+      sumLat += p[0]; sumLng += p[1];
+    }
+    var cells = [];
+    var all = new Uint32Array(n);
+    for (i = 0; i < n; i++) all[i] = i;
+    split(all, 0);
+    function split(idxs, depth) {
+      if (idxs.length <= CELL_MAX || depth >= 14) { cells.push(makeCell(idxs)); return; }
+      var mnx = 1, mxx = -1, mny = 1, mxy = -1, j, v;
+      for (j = 0; j < idxs.length; j++) {
+        v = wx[idxs[j]]; if (v < mnx) mnx = v; if (v > mxx) mxx = v;
+        v = wy[idxs[j]]; if (v < mny) mny = v; if (v > mxy) mxy = v;
       }
+      var alongX = (mxx - mnx) >= (mxy - mny);
+      var mid = alongX ? (mnx + mxx) / 2 : (mny + mxy) / 2;
+      var lo = [], hi = [];
+      for (j = 0; j < idxs.length; j++) {
+        if ((alongX ? wx[idxs[j]] : wy[idxs[j]]) < mid) lo.push(idxs[j]); else hi.push(idxs[j]);
+      }
+      if (!lo.length || !hi.length) { cells.push(makeCell(idxs)); return; }
+      split(Uint32Array.from(lo), depth + 1);
+      split(Uint32Array.from(hi), depth + 1);
+    }
+    function makeCell(idxs) {
+      var arr = Array.prototype.slice.call(idxs);
+      arr.sort(function (a, b) { return (cit[b] - cit[a]) || (dnum[a] - dnum[b]); });
+      var u = Uint32Array.from(arr);
+      var cEnd = 0;
+      while (cEnd < u.length && cit[u[cEnd]]) cEnd++;
+      var sLat = 0, sLng = 0, csLat = 0, csLng = 0;
+      var mnx = 1, mxx = -1, mny = 1, mxy = -1, j, k;
+      for (j = 0; j < u.length; j++) {
+        k = u[j];
+        sLat += pts[k][0]; sLng += pts[k][1];
+        if (j < cEnd) { csLat += pts[k][0]; csLng += pts[k][1]; }
+        if (wx[k] < mnx) mnx = wx[k]; if (wx[k] > mxx) mxx = wx[k];
+        if (wy[k] < mny) mny = wy[k]; if (wy[k] > mxy) mxy = wy[k];
+      }
+      return { idx: u, x0: mnx, x1: mxx, y0: mny, y1: mxy, count: u.length,
+        sumLat: sLat, sumLng: sLng, cEnd: cEnd, cSumLat: csLat, cSumLng: csLng };
+    }
+    return { meta: meta, pts: pts, wx: wx, wy: wy, dnum: dnum, cells: cells,
+      centroid: n ? [sumLat / n, sumLng / n] : null };
+  }
+
+  function filterRange() {
+    var dt = document.getElementById("dateTo").value;
+    return [dateNum(document.getElementById("dateFrom").value), dt ? dateNum(dt) : 99999999];
+  }
+  function groupSlice(ix, cell, a, b, dfN, dtN) {
+    var lo = a, hi = b, mid;
+    while (lo < hi) { mid = (lo + hi) >> 1; if (ix.dnum[cell.idx[mid]] < dfN) lo = mid + 1; else hi = mid; }
+    var start = lo;
+    lo = a; hi = b;
+    while (lo < hi) { mid = (lo + hi) >> 1; if (ix.dnum[cell.idx[mid]] <= dtN) lo = mid + 1; else hi = mid; }
+    return start < lo ? [start, lo] : null;
+  }
+  function cellRanges(ix, cell, dfN, dtN) {
+    var out = [], r;
+    r = groupSlice(ix, cell, 0, cell.cEnd, dfN, dtN); if (r) out.push(r);
+    if (!citizenMode) { r = groupSlice(ix, cell, cell.cEnd, cell.count, dfN, dtN); if (r) out.push(r); }
+    return out;
+  }
+  function rangeCount(ranges) {
+    var c = 0, i;
+    for (i = 0; i < ranges.length; i++) c += ranges[i][1] - ranges[i][0];
+    return c;
+  }
+  // Precomputed cell statistics apply when the slice is the whole
+  // active group (no date narrowing): [count, sumLat, sumLng] or null.
+  function cellStats(cell, ranges) {
+    if (ranges.length !== 1) return null;
+    var r = ranges[0];
+    if (!citizenMode && r[0] === 0 && r[1] === cell.count) return [cell.count, cell.sumLat, cell.sumLng];
+    if (citizenMode && r[0] === 0 && r[1] === cell.cEnd && cell.cEnd > 0) return [cell.cEnd, cell.cSumLat, cell.cSumLng];
+    return null;
+  }
+  function eachSelectedIndex(cb) {
+    Object.keys(selected).forEach(function (slug) {
+      if (selected[slug] && loaded[slug]) cb(slug, loaded[slug]);
     });
+  }
+
+  // ---------------------------------------------------------- selection stats
+  var statsCache = null;
+  function computeStats() {
+    if (!viewDirty && statsCache) return statsCache;
+    var fr = filterRange(), dfN = fr[0], dtN = fr[1];
+    var byCity = {}, byType = {}, total = 0;
+    eachSelectedIndex(function (slug, ix) {
+      var cityCount = 0, ci, ri, i, cell, ranges;
+      for (ci = 0; ci < ix.cells.length; ci++) {
+        cell = ix.cells[ci];
+        ranges = cellRanges(ix, cell, dfN, dtN);
+        for (ri = 0; ri < ranges.length; ri++) {
+          cityCount += ranges[ri][1] - ranges[ri][0];
+          for (i = ranges[ri][0]; i < ranges[ri][1]; i++) {
+            var ts = ix.pts[cell.idx[i]][4];
+            byType[ts] = (byType[ts] || 0) + 1;
+          }
+        }
+      }
+      if (cityCount > 0) { byCity[ix.meta.city + ", " + ix.meta.state] = cityCount; total += cityCount; }
+    });
+    statsCache = { byCity: byCity, byType: byType, total: total };
     viewDirty = false;
     renderSummary();
-    return view;
+    return statsCache;
+  }
+  // Iterate every record in the current selection+filters (CSV export).
+  function eachSelectedRecord(cb) {
+    var fr = filterRange(), dfN = fr[0], dtN = fr[1];
+    eachSelectedIndex(function (slug, ix) {
+      var ci, ri, i, cell, ranges, p;
+      for (ci = 0; ci < ix.cells.length; ci++) {
+        cell = ix.cells[ci];
+        ranges = cellRanges(ix, cell, dfN, dtN);
+        for (ri = 0; ri < ranges.length; ri++) {
+          for (i = ranges[ri][0]; i < ranges[ri][1]; i++) {
+            p = ix.pts[cell.idx[i]];
+            cb({ lat: p[0], lng: p[1], date: p[2], to: p[3], ts: p[4], status: p[5],
+                 city: ix.meta.city, state: ix.meta.state, slug: slug });
+          }
+        }
+      }
+    });
   }
 
   function drawPoints(ctx, size, dpr) {
-    var recs = currentView();
-    // Draw in layer-point space relative to the layer point of the
-    // container's top-left corner — the exact point the canvas is
-    // pinned to in redraw(). (The previous hand-rolled Web-Mercator
-    // projection subtracted map.getPixelOrigin(), which double-counts
-    // the map pane position: correct on first load, but after any pan
-    // every point drifted by the pan distance and ended up over the
-    // wrong part of the world.)
-    var topLeft = map.containerPointToLayerPoint([0, 0]);
+    if (viewDirty) computeStats();
+    // One affine projection calibrated per redraw from Leaflet itself:
+    // canvas coordinates are container points (the canvas is pinned to
+    // the layer point of the container's top-left corner, see redraw()),
+    // and container points are an affine function of world-fraction
+    // coordinates, anchored at lat/lng (0, 0) = world fraction (0.5, 0.5).
+    var scale = 256 * Math.pow(2, map.getZoom());
+    var anchor = map.latLngToContainerPoint([0, 0]);
+    function projX(wx) { return anchor.x + (wx - 0.5) * scale; }
+    function projY(wy) { return anchor.y + (wy - 0.5) * scale; }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, size.x, size.y);
     aggregates = null;
     drawnPts = null;
-    var inView = [];
-    var i, xy, lp;
-    for (i = 0; i < recs.length; i++) {
-      lp = map.latLngToLayerPoint([recs[i].lat, recs[i].lng]);
-      xy = [lp.x - topLeft.x, lp.y - topLeft.y];
-      if (xy[0] < -30 || xy[1] < -30 || xy[0] > size.x + 30 || xy[1] > size.y + 30) continue;
-      inView.push([xy[0], xy[1], recs[i]]);
-    }
+
+    var b = map.getBounds();
+    var vx0 = (b.getWest() + 180) / 360, vx1 = (b.getEast() + 180) / 360;
+    if (vx1 < vx0) { vx0 = 0; vx1 = 1; }
+    var vy0 = wyOf(b.getNorth()), vy1 = wyOf(b.getSouth());
+    var fr = filterRange(), dfN = fr[0], dtN = fr[1];
+    var cellList = [], totalVis = 0, perCity = {};
+    eachSelectedIndex(function (slug, ix) {
+      var ci, cell, ranges, cnt;
+      for (ci = 0; ci < ix.cells.length; ci++) {
+        cell = ix.cells[ci];
+        if (cell.x1 < vx0 || cell.x0 > vx1 || cell.y1 < vy0 || cell.y0 > vy1) continue;
+        ranges = cellRanges(ix, cell, dfN, dtN);
+        cnt = rangeCount(ranges);
+        if (!cnt) continue;
+        cellList.push({ ix: ix, cell: cell, ranges: ranges, cnt: cnt });
+        totalVis += cnt;
+        perCity[slug] = (perCity[slug] || 0) + cnt;
+      }
+    });
+
     var status = document.getElementById("mapStatus");
     if (viewMode === "heat") {
-      drawHeat(ctx, size, dpr, inView);
-      status.textContent = inView.length.toLocaleString() +
+      drawHeat(ctx, size, dpr, cellList, projX, projY);
+      status.textContent = totalVis.toLocaleString() +
         " complaints in view — density view. Switch to Points and zoom in for individual complaints.";
+      drawCityLabels(ctx, size, perCity, projX, projY);
       return;
     }
-    if (inView.length > 50000) {
-      // aggregate into grid cells
-      var cell = 16;
+    if (totalVis > 50000) {
+      // aggregate into 16px screen grid cells; leaf cells that are
+      // small on screen contribute their precomputed statistics
+      // without iterating their points
       var grid = {};
-      for (i = 0; i < inView.length; i++) {
-        var gx = Math.floor(inView[i][0] / cell), gy = Math.floor(inView[i][1] / cell);
-        var key = gx + ":" + gy;
+      function addToGrid(x, y, cnt, sLat, sLng) {
+        var gx = Math.floor(x / 16), gy = Math.floor(y / 16);
+        var key = (gx + 64) * 8192 + (gy + 64);
         var g = grid[key];
-        if (!g) { g = grid[key] = { x: gx * cell + cell / 2, y: gy * cell + cell / 2, count: 0, lat: 0, lng: 0 }; }
-        g.count++;
-        g.lat += inView[i][2].lat;
-        g.lng += inView[i][2].lng;
+        if (!g) { g = grid[key] = { x: gx * 16 + 8, y: gy * 16 + 8, count: 0, lat: 0, lng: 0 }; }
+        g.count += cnt; g.lat += sLat; g.lng += sLng;
+      }
+      var i, j, k, e, st, idx, cx, cy;
+      for (i = 0; i < cellList.length; i++) {
+        e = cellList[i];
+        st = cellStats(e.cell, e.ranges);
+        if (st && (e.cell.x1 - e.cell.x0) * scale <= 18) {
+          addToGrid(projX((e.cell.x0 + e.cell.x1) / 2), projY((e.cell.y0 + e.cell.y1) / 2), st[0], st[1], st[2]);
+          continue;
+        }
+        for (j = 0; j < e.ranges.length; j++) {
+          for (k = e.ranges[j][0]; k < e.ranges[j][1]; k++) {
+            idx = e.cell.idx[k];
+            cx = projX(e.ix.wx[idx]); cy = projY(e.ix.wy[idx]);
+            if (cx < -30 || cy < -30 || cx > size.x + 30 || cy > size.y + 30) continue;
+            addToGrid(cx, cy, 1, e.ix.pts[idx][0], e.ix.pts[idx][1]);
+          }
+        }
       }
       aggregates = Object.values(grid);
       aggregates.forEach(function (g) {
@@ -167,20 +353,70 @@
           ctx.fillText(g.count >= 1000 ? Math.round(g.count / 100) / 10 + "k" : g.count, g.x, g.y + 3);
         }
       });
-      status.textContent = inView.length.toLocaleString() + " complaints in view, aggregated into " +
+      status.textContent = totalVis.toLocaleString() + " complaints in view, aggregated into " +
         aggregates.length.toLocaleString() + " cells — zoom in to see individual points.";
     } else {
-      drawnPts = inView;
+      drawnPts = [];
       ctx.fillStyle = "rgba(212,61,42,0.55)";
-      for (i = 0; i < inView.length; i++) {
-        ctx.beginPath();
-        ctx.arc(inView[i][0], inView[i][1], 2.3, 0, Math.PI * 2);
-        ctx.fill();
+      var i2, j2, k2, e2, idx2, x2, y2, p2;
+      for (i2 = 0; i2 < cellList.length; i2++) {
+        e2 = cellList[i2];
+        for (j2 = 0; j2 < e2.ranges.length; j2++) {
+          for (k2 = e2.ranges[j2][0]; k2 < e2.ranges[j2][1]; k2++) {
+            idx2 = e2.cell.idx[k2];
+            x2 = projX(e2.ix.wx[idx2]); y2 = projY(e2.ix.wy[idx2]);
+            if (x2 < -30 || y2 < -30 || x2 > size.x + 30 || y2 > size.y + 30) continue;
+            p2 = e2.ix.pts[idx2];
+            drawnPts.push([x2, y2, { lat: p2[0], lng: p2[1], date: p2[2], to: p2[3], ts: p2[4],
+              status: p2[5], city: e2.ix.meta.city, state: e2.ix.meta.state, slug: e2.ix.meta.slug }]);
+            ctx.beginPath();
+            ctx.arc(x2, y2, 2.3, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
       }
-      status.textContent = inView.length.toLocaleString() + " complaints in view" +
-        (recs.length !== inView.length ? " (" + recs.length.toLocaleString() + " in selection)" : "") +
+      var selTotal = statsCache ? statsCache.total : totalVis;
+      status.textContent = totalVis.toLocaleString() + " complaints in view" +
+        (selTotal !== totalVis ? " (" + selTotal.toLocaleString() + " in selection)" : "") +
         ". Click a point for details.";
     }
+    drawCityLabels(ctx, size, perCity, projX, projY);
+  }
+
+  // City name labels on the map itself (the basemap does not label
+  // every jurisdiction at these zooms). Drawn at each selected city's
+  // point centroid, largest first, skipping any label that would
+  // overlap one already placed.
+  function drawCityLabels(ctx, size, perCity, projX, projY) {
+    if (map.getZoom() > 9) return;
+    var items = [];
+    Object.keys(perCity).forEach(function (slug) {
+      var ix = loaded[slug];
+      if (!ix || !ix.centroid || !perCity[slug]) return;
+      var x = projX((ix.centroid[1] + 180) / 360);
+      var y = projY(wyOf(ix.centroid[0])) + 30;
+      if (x < -40 || y < -20 || x > size.x + 40 || y > size.y + 20) return;
+      items.push({ name: ix.meta.city, x: x, y: y, cnt: perCity[slug] });
+    });
+    items.sort(function (a, b) { return b.cnt - a.cnt; });
+    var placed = [];
+    ctx.font = "600 10px sans-serif";
+    ctx.textAlign = "center";
+    items.forEach(function (it) {
+      var w = ctx.measureText(it.name).width + 8, h = 13;
+      it.x = Math.max(w / 2 + 2, Math.min(size.x - w / 2 - 2, it.x));
+      var box = { x0: it.x - w / 2, y0: it.y - h, x1: it.x + w / 2, y1: it.y + 2 };
+      for (var i = 0; i < placed.length; i++) {
+        var q = placed[i];
+        if (box.x0 < q.x1 && box.x1 > q.x0 && box.y0 < q.y1 && box.y1 > q.y0) return;
+      }
+      placed.push(box);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "rgba(255,253,248,0.92)";
+      ctx.strokeText(it.name, it.x, it.y);
+      ctx.fillStyle = "#43382a";
+      ctx.fillText(it.name, it.x, it.y);
+    });
   }
 
   // ---------------------------------------------------------- heat view
@@ -201,19 +437,36 @@
     }
     return [196, 30, 20];
   }
-  function drawHeat(ctx, size, dpr, inView) {
-    // bin points into a coarse grid, paint soft blobs by density on an
-    // offscreen intensity canvas, then colorize by alpha -> heat palette
+  function drawHeat(ctx, size, dpr, cellList, projX, projY) {
+    // bin visible points into a coarse grid (leaf cells that are small
+    // on screen contribute their precomputed counts at their centroid),
+    // paint soft blobs by density on an offscreen intensity canvas,
+    // then colorize by alpha -> heat palette
     var cell = 10;
     var grid = {};
     var maxC = 1;
-    for (var i = 0; i < inView.length; i++) {
-      var gx = Math.floor(inView[i][0] / cell), gy = Math.floor(inView[i][1] / cell);
-      var key = gx + ":" + gy;
+    var scale = 256 * Math.pow(2, map.getZoom());
+    function addHeat(x, y, cnt) {
+      var gx = Math.floor(x / cell), gy = Math.floor(y / cell);
+      var key = (gx + 64) * 8192 + (gy + 64);
       var g = grid[key];
       if (!g) { g = grid[key] = { x: gx * cell + cell / 2, y: gy * cell + cell / 2, count: 0 }; }
-      g.count++;
+      g.count += cnt;
       if (g.count > maxC) maxC = g.count;
+    }
+    for (var i = 0; i < cellList.length; i++) {
+      var e = cellList[i];
+      var st = cellStats(e.cell, e.ranges);
+      if (st && (e.cell.x1 - e.cell.x0) * scale <= 12) {
+        addHeat(projX((e.cell.x0 + e.cell.x1) / 2), projY((e.cell.y0 + e.cell.y1) / 2), st[0]);
+        continue;
+      }
+      for (var j = 0; j < e.ranges.length; j++) {
+        for (var k = e.ranges[j][0]; k < e.ranges[j][1]; k++) {
+          var idx = e.cell.idx[k];
+          addHeat(projX(e.ix.wx[idx]), projY(e.ix.wy[idx]), 1);
+        }
+      }
     }
     var off = document.createElement("canvas");
     off.width = Math.max(1, size.x); off.height = Math.max(1, size.y);
@@ -341,7 +594,7 @@
     })).then(function (parts) {
         var pts = [];
         parts.forEach(function (part) { pts = pts.concat(part); });
-        loaded[slug] = pts;
+        loaded[slug] = buildIndex(slug, pts);
         loading[slug] = false;
         viewDirty = true;
         if (ldEl) ldEl.textContent = "";
@@ -354,12 +607,8 @@
   }
 
   function renderSummary() {
-    var byCity = {}, byType = {}, total = 0;
-    view.forEach(function (r) {
-      total++;
-      byCity[r.city + ", " + r.state] = (byCity[r.city + ", " + r.state] || 0) + 1;
-      byType[r.ts] = (byType[r.ts] || 0) + 1;
-    });
+    var st = statsCache || { byCity: {}, byType: {}, total: 0 };
+    var byCity = st.byCity, byType = st.byType, total = st.total;
     document.getElementById("selSummary").textContent =
       fmt(total) + (citizenMode ? " citizen-filed complaints selected"
                                 : " complaints selected");
@@ -468,16 +717,14 @@
 
   // ---------------------------------------------------------- CSV export
   document.getElementById("btnCsv").addEventListener("click", function () {
-    var recs = currentView();
     var lines = ["city,state,date,latitude,longitude,type_original,type_standard,status"];
     function esc(v) {
       v = String(v == null ? "" : v);
       return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
     }
-    for (var i = 0; i < recs.length; i++) {
-      var r = recs[i];
+    eachSelectedRecord(function (r) {
       lines.push([esc(r.city), esc(r.state), r.date, r.lat, r.lng, esc(r.to), esc(r.ts), esc(r.status)].join(","));
-    }
+    });
     var blob = new Blob([lines.join("\n")], { type: "text/csv" });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
