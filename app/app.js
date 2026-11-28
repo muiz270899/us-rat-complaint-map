@@ -54,29 +54,41 @@
       this._canvas = c;
       m.on("moveend zoomend resize", this._reset, this);
       m.on("zoomanim", this._animateZoom, this);
+      m.on("zoom", this._onZoom, this);
       this._reset();
     },
     onRemove: function (m) {
       m.off("moveend zoomend resize", this._reset, this);
       m.off("zoomanim", this._animateZoom, this);
+      m.off("zoom", this._onZoom, this);
       L.DomUtil.remove(this._canvas);
     },
     _reset: function () { this.redraw(); },
-    // During an animated zoom, scale the canvas with the same
-    // transform Leaflet applies to its own zoom-animated layers, so
-    // the balls and their count labels grow/shrink together with the
-    // map instead of sitting still and snapping at the end. The drawn
-    // content is in container points of the current view; the lat/lng
-    // at container point (0, 0) must land on its layer point in the
-    // target view, scaled about the canvas origin. redraw() at
-    // zoomend replaces this transform with the exact position again.
-    _animateZoom: function (e) {
+    // Scale the canvas with the same transform Leaflet applies to
+    // its own layers, so the balls and their count labels grow/shrink
+    // together with the map during a zoom instead of sitting still
+    // and snapping at the end. Two paths lead here: "zoomanim" for
+    // animated zooms (buttons/wheel — the CSS transition interpolates
+    // to this target), and "zoom" for pinch zooms, where Leaflet
+    // fires no zoomanim during the gesture but updates its state
+    // continuously with fractional zooms. The drawn content is in
+    // container points of the view it was drawn for; redraw() stores
+    // that view's container-origin lat/lng, which must land on its
+    // layer point in the target view, scaled about the canvas origin.
+    // redraw() at zoomend replaces the transform with the exact
+    // position again.
+    _transformTo: function (center, zoom) {
       var m = this._map, c = this._canvas;
-      if (!m || !c) return;
-      var scale = m.getZoomScale(e.zoom);
-      var offset = m.project(m.containerPointToLatLng([0, 0]), e.zoom)
-        .subtract(m._getNewPixelOrigin(e.center, e.zoom));
+      if (!m || !c || !this._originLatLng) return;
+      var scale = m.getZoomScale(zoom, this._drawZoom);
+      var offset = m.project(this._originLatLng, zoom)
+        .subtract(m._getNewPixelOrigin(center, zoom));
       L.DomUtil.setTransform(c, offset, scale);
+    },
+    _animateZoom: function (e) { this._transformTo(e.center, e.zoom); },
+    _onZoom: function () {
+      var m = this._map;
+      if (m) this._transformTo(m.getCenter(), m.getZoom());
     },
     redraw: function () {
       var m = this._map;
@@ -94,6 +106,8 @@
       // when Leaflet re-bases the panes after a pan.
       var pos = m.containerPointToLayerPoint([0, 0]);
       L.DomUtil.setPosition(c, pos);
+      this._originLatLng = m.containerPointToLatLng([0, 0]);
+      this._drawZoom = m.getZoom();
       drawPoints(c.getContext("2d"), size, dpr);
     },
   });
